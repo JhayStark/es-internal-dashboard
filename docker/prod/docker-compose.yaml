@@ -4,7 +4,7 @@ services:
   with-docker-multi-env-production:
     build:
       context: ../../
-      dockerfile: docker/production/Dockerfile
-    image: with-docker-multi-env-production
+      dockerfile: docker/production/Dockerfile-production
+    image: internal-dashboard-prod
     ports:
       - '3003:3000'
