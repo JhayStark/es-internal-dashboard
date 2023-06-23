@@ -1,14 +1,18 @@
-FROM node:alpine
+FROM node:alpine as build
 
-RUN mkdir -p /usr/src/
-WORKDIR /usr/src/
-
-COPY package.json /usr/src/
-
+RUN mkdir -p /srv
+WORKDIR /srv
+COPY . .
 RUN npm install
 
-COPY . /usr/src/
-RUN npm run build
-EXPOSE 3000
-CMD npm run start
+
+# production stage
+FROM nginx:stable-alpine as production-stage
+RUN apk add bash netcat-openbsd
+COPY --from=build-stage /srv/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+
+
 
