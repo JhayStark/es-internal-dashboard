@@ -1,23 +1,16 @@
-FROM node:alpine as build-stage
+FROM node:alpine
 
-RUN mkdir -p /srv
-WORKDIR /srv
-RUN apk add bash netcat-openbsd
-COPY package*.json .
-COPY yarn.lock .
-COPY jsconfig.json .
+RUN mkdir -p /usr/src/
+WORKDIR /usr/src/
+
+COPY package.json /usr/src/
+
 RUN npm install
-COPY . .
+
+COPY . /usr/src/
 RUN npm run build
-
-
-# production stage
-FROM nginx:stable-alpine as production-stage
-WORKDIR /srv
-RUN apk add bash netcat-openbsd
-COPY --from=build-stage /srv/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+CMD npm run start
 
 
 
