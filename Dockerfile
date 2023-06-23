@@ -1,4 +1,4 @@
-FROM node:alpine as build
+FROM node:alpine as build-stage
 
 RUN mkdir -p /srv
 WORKDIR /srv
@@ -7,7 +7,7 @@ RUN npm install
 
 
 # production stage
-FROM nginx:stable-alpine as build
+FROM nginx:stable-alpine as production-stage
 RUN apk add bash netcat-openbsd
 COPY --from=build-stage /srv/dist /usr/share/nginx/html
 EXPOSE 80
