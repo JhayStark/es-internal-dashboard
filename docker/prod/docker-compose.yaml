@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  with-docker-multi-env-production:
+  multi-env-production:
     build:
       context: ../../
       dockerfile: docker/production/Dockerfile-production
