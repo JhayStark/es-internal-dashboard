@@ -7,7 +7,7 @@ RUN npm install
 
 
 # production stage
-FROM nginx:stable-alpine as production-stage
+FROM nginx:stable-alpine as build
 RUN apk add bash netcat-openbsd
 COPY --from=build-stage /srv/dist /usr/share/nginx/html
 EXPOSE 80
