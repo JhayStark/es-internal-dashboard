@@ -5,7 +5,7 @@ WORKDIR /srv
 RUN apk add bash netcat-openbsd
 COPY package*.json .
 COPY yarn.lock .
-COPY tsconfig.json .
+COPY jsconfig.json .
 RUN npm install
 COPY . .
 RUN npm run build
