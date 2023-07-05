@@ -2,6 +2,8 @@ import Modal from "@/components/Modal";
 import { useState } from "react";
 import { LuMoreVertical } from "react-icons/lu";
 import { AiOutlineSearch, AiOutlineDownload } from "react-icons/ai";
+import { FiSettings } from "react-icons/fi";
+import Link from "next/link";
 
 const UserDetails = () => {
   const [tab, setTab] = useState("insyt");
@@ -19,8 +21,8 @@ const UserDetails = () => {
       <div className="grid grid-cols-9  3xl:grid-cols-11 gap-[1.4rem] font-sans ">
         <div className="col-span-5 3xl:col-span-7">
           <div className="flex flex-col justify-between h-full ">
-            <div className="p-5 bg-white rounded-lg shadow-3xl min-h-[75%] flex flex-col justify-between  ">
-              <div className="flex flex-row items-start justify-between">
+            <div className="p-5 bg-white rounded-lg shadow-3xl min-h-[75%] flex flex-row justify-between  ">
+              <div className="flex flex-col items-start justify-between h-full">
                 <div className="flex flex-col justify-start">
                   <div className="flex flex-row items-center gap-2">
                     <div className="bg-[#D27C2C] px-2  rounded-lg">
@@ -38,36 +40,38 @@ const UserDetails = () => {
                   <p className="font-medium  text-[#2A3547] ">
                     Pawpaw Street, East legon Ghana
                   </p>
-                  <p className="font-medium  text-[#2A3547] ">
+                  <p className="font-medium text-sm text-[#2A3547] ">
                     0201234567 / 0307894561
                   </p>
-                  <p className="font-medium  text-[#2A3547] ">
+                  <p className="font-medium text-sm text-[#2A3547] ">
                     esoko@gmail.com
                   </p>
                 </div>
               </div>
-              <div className="flex flex-row items-center justify-between">
-                <p className="text-2xl 3xl:text-3xl font-medium text-[#1252A6]">
-                  54,895
-                  <span className="text-sm 3xl:text-base text-[#515050]">
-                    {" "}
+              <div className="flex flex-col items-end justify-between ">
+                <Link href="/clients/settings">
+                  <FiSettings className="text-xl text-[#2A3547] cursor-pointer hover:scale-125" />
+                </Link>
+                {/* <div className="flex flex-col items-center ">
+                  <p className="w-full text-xs font-medium text-right">
                     collaborators
-                  </span>
-                </p>
-                <p className="text-2xl 3xl:text-3xl font-medium text-[#F24E1E]">
-                  54,895
-                  <span className="text-sm 3xl:text-base text-[#515050]">
-                    {" "}
+                    <span className="text-2xl font-medium pl-2 text-[#515050] text-right">
+                      54,895
+                    </span>
+                  </p>
+                  <p className="w-full text-xs font-medium text-right">
                     data collected
-                  </span>
-                </p>
-                <p className="text-2xl 3xl:text-3xl font-medium text-[#00DBDB]">
-                  54,895
-                  <span className="text-sm 3xl:text-base text-[#515050]">
-                    {" "}
+                    <span className="text-2xl font-medium pl-2 text-[#515050] text-right">
+                      54,895
+                    </span>
+                  </p>
+                  <p className="w-full text-xs font-medium text-right">
                     campaigns
-                  </span>
-                </p>
+                    <span className="text-2xl font-medium pl-2 text-[#515050] text-right">
+                      54,895
+                    </span>
+                  </p>
+                </div> */}
               </div>
             </div>
             <div className="bg-white grid grid-cols-2 rounded-lg shadow-3xl w-[50%]">
