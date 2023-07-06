@@ -93,7 +93,8 @@ const Sidebar = () => {
           <Link href="/settings">
             <div
               className={`flex flex-row items-center  py-6 justify-center cursor-pointer ${
-                router.pathname.includes("/settings")
+                router.pathname.includes("/settings") &&
+                !router.pathname.includes("/clients")
                   ? "bg-[#EDF3FF] text-[#055189]"
                   : "text-white"
               }`}
