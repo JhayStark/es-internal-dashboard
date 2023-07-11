@@ -120,3 +120,126 @@ export const recentPayments = [
     service: 'Push',
   },
 ];
+
+export const userList = [
+  {
+    joinedDate: '11/1/2022',
+    organizationName: 'Williamson Inc',
+    smsBalance: 1319,
+    activeForms: 1,
+  },
+  {
+    joinedDate: '4/3/2023',
+    organizationName: 'Reinger-Sipes',
+    smsBalance: 1678,
+    activeForms: 2,
+  },
+  {
+    joinedDate: '6/14/2023',
+    organizationName: 'Blanda LLC',
+    smsBalance: 148,
+    activeForms: 3,
+  },
+  {
+    joinedDate: '6/16/2023',
+    organizationName: 'Abernathy-Veum',
+    smsBalance: 1483,
+    activeForms: 4,
+  },
+  {
+    joinedDate: '1/26/2023',
+    organizationName: 'MacGyver Group',
+    smsBalance: 205,
+    activeForms: 5,
+  },
+  {
+    joinedDate: '6/1/2023',
+    organizationName: 'Sipes and Sons',
+    smsBalance: 319,
+    activeForms: 6,
+  },
+  {
+    joinedDate: '2/15/2023',
+    organizationName: 'Rice Group',
+    smsBalance: 418,
+    activeForms: 7,
+  },
+  {
+    joinedDate: '2/28/2023',
+    organizationName: 'Turcotte-Bins',
+    smsBalance: 2026,
+    activeForms: 8,
+  },
+  {
+    joinedDate: '10/8/2022',
+    organizationName: 'Miller, Robel and Ullrich',
+    smsBalance: 1923,
+    activeForms: 9,
+  },
+  {
+    joinedDate: '10/20/2022',
+    organizationName: 'Oberbrunner, Walter and Lynch',
+    smsBalance: 1278,
+    activeForms: 10,
+  },
+  {
+    joinedDate: '8/19/2022',
+    organizationName: 'Harris, Luettgen and Rutherford',
+    smsBalance: 2152,
+    activeForms: 11,
+  },
+  {
+    joinedDate: '10/19/2022',
+    organizationName: 'Paucek-Thiel',
+    smsBalance: 1593,
+    activeForms: 12,
+  },
+  {
+    joinedDate: '8/3/2022',
+    organizationName: 'Kemmer Group',
+    smsBalance: 469,
+    activeForms: 13,
+  },
+  {
+    joinedDate: '3/22/2023',
+    organizationName: 'Senger Inc',
+    smsBalance: 1582,
+    activeForms: 14,
+  },
+  {
+    joinedDate: '12/7/2022',
+    organizationName: 'Dietrich, Hermann and Braun',
+    smsBalance: 1029,
+    activeForms: 15,
+  },
+  {
+    joinedDate: '6/22/2023',
+    organizationName: 'Steuber, Greenfelder and Nitzsche',
+    smsBalance: 1621,
+    activeForms: 16,
+  },
+  {
+    joinedDate: '10/12/2022',
+    organizationName: 'Kilback-Connelly',
+    smsBalance: 1334,
+    activeForms: 17,
+  },
+  {
+    joinedDate: '9/14/2022',
+    organizationName: 'Champlin Group',
+    smsBalance: 1392,
+    activeForms: 18,
+  },
+  {
+    joinedDate: '10/12/2022',
+    organizationName: 'Breitenberg-Barton',
+    smsBalance: 920,
+    activeForms: 19,
+  },
+  {
+    joinedDate: '11/5/2022',
+    organizationName: 'Schamberger, Stokes and Lehner',
+    smsBalance: 580,
+    activeForms: 20,
+  },
+];
