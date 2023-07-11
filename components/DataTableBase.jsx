@@ -1,25 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
+import { MdClear, MdOutlineSearch } from 'react-icons/md';
 import DataTable from 'react-data-table-component';
-const selectProps = { indeterminate: isIndeterminate => isIndeterminate };
-
-const rowStyles = [
-  {
-    when: row => !row.id % 2 === 0,
-    style: {
-      backgroundColor: 'white',
-      color: 'black',
-      borderColor: 'white',
-    },
-  },
-  {
-    when: row => row.id % 2 === 0,
-    style: {
-      backgroundColor: '#EDF3FF',
-      color: 'black',
-      borderColor: '#EDF3FF',
-    },
-  },
-];
 
 const customStyles = {
   rows: {
@@ -37,26 +18,61 @@ const customStyles = {
     },
   },
 };
-function DataTableBase(props) {
-  const [tableData, setTableData] = useState(props.data);
-  const [filterText, setFilterText] = useState('');
-  const filteredItems = tableData.filter(
-    item =>
-      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
+
+const SearchBox = ({ onSearch, filterText, clear }) => {
+  return (
+    <div className='flex flex-row items-center border-[1px] focus:outline-none rounded p-2'>
+      <MdOutlineSearch className='mr-1 text-xl text-gray-400' />
+      <input
+        type='text'
+        onChange={e => onSearch(e.target.value)}
+        value={filterText}
+        className=' focus:outline-none'
+        placeholder='Search...'
+      />
+      <MdClear
+        className='text-2xl text-red-500 cursor-pointer hover:scale-125'
+        onClick={clear}
+      />
+    </div>
   );
+};
+function DataTableBase({ columns, data, searchParameter, title }) {
+  const [filterText, setFilterText] = useState('');
+  const [resetPagination, setResetPagination] = useState(false);
+  const filteredItems = data.filter(
+    item =>
+      item[searchParameter] &&
+      item[searchParameter].toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const handleClear = () => {
+    if (filterText) {
+      setResetPagination(true);
+      setFilterText('');
+    }
+  };
 
   return (
-    <DataTable
-      pagination
-      selectableRowsComponentProps={selectProps}
-      dense
-      columns={props.columns}
-      data={props.data}
-      conditionalRowStyles={rowStyles}
-      customStyles={customStyles}
-      responsive
-    />
+    <>
+      <div className='flex flex-row items-center justify-between px-3 pt-3 mb-5'>
+        <p className='text-2xl font-semibold'>{title}</p>
+        <SearchBox
+          onSearch={setFilterText}
+          filterText={filterText}
+          clear={handleClear}
+        />
+      </div>
+      <DataTable
+        pagination
+        dense
+        columns={columns}
+        data={filteredItems}
+        customStyles={customStyles}
+        responsive
+        paginationResetDefaultPage={resetPagination}
+      />
+    </>
   );
 }
-
 export default DataTableBase;

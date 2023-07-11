@@ -44,6 +44,8 @@ const Farmers = () => {
       <div className='grid grid-cols-4 gap-8 mt-5 font-sans'>
         <div className='col-span-3 px-5 py-2 bg-white rounded-lg shadow-3xl'>
           <NoSSRTabale
+            title='Farmers'
+            searchParameter='name'
             columns={[
               {
                 name: 'Name',

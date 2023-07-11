@@ -84,11 +84,11 @@ const Index = () => {
       <div className='p-4 my-10 bg-white rounded-lg shadow-3xl'>
         <NoSSRTabale
           title='Total Transactions'
+          searchParameter='clientName'
           columns={[
             {
               name: 'Transaction ID',
               selector: row => row.transactionId,
-
               sortable: true,
             },
             {
