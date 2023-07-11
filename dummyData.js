@@ -243,3 +243,126 @@ export const userList = [
     activeForms: 20,
   },
 ];
+
+export const clientInsytData = [
+  {
+    dateCreated: '4/1/2023',
+    campaignName: 'Jacobs and Sons',
+    status: false,
+    responses: 1,
+  },
+  {
+    dateCreated: '5/20/2023',
+    campaignName: 'Baumbach and Sons',
+    status: false,
+    responses: 2,
+  },
+  {
+    dateCreated: '6/17/2023',
+    campaignName: 'Hyatt and Sons',
+    status: true,
+    responses: 3,
+  },
+  {
+    dateCreated: '1/6/2023',
+    campaignName: 'Stamm, Stehr and Sipes',
+    status: true,
+    responses: 4,
+  },
+  {
+    dateCreated: '10/2/2022',
+    campaignName: 'Walker, Ortiz and Oberbrunner',
+    status: true,
+    responses: 5,
+  },
+  {
+    dateCreated: '1/30/2023',
+    campaignName: 'Schultz, Mann and Roberts',
+    status: false,
+    responses: 6,
+  },
+  {
+    dateCreated: '2/25/2023',
+    campaignName: 'Ferry, Ryan and Jacobi',
+    status: false,
+    responses: 7,
+  },
+  {
+    dateCreated: '9/10/2022',
+    campaignName: 'Schneider, Heathcote and Bartoletti',
+    status: true,
+    responses: 8,
+  },
+  {
+    dateCreated: '5/29/2023',
+    campaignName: 'Steuber and Sons',
+    status: true,
+    responses: 9,
+  },
+  {
+    dateCreated: '8/21/2022',
+    campaignName: 'Reinger Inc',
+    status: false,
+    responses: 10,
+  },
+  {
+    dateCreated: '11/21/2022',
+    campaignName: 'Heller, Orn and Ebert',
+    status: false,
+    responses: 11,
+  },
+  {
+    dateCreated: '4/21/2023',
+    campaignName: 'Ullrich LLC',
+    status: false,
+    responses: 12,
+  },
+  {
+    dateCreated: '8/1/2022',
+    campaignName: 'Muller, Kirlin and Rogahn',
+    status: false,
+    responses: 13,
+  },
+  {
+    dateCreated: '5/26/2023',
+    campaignName: 'Feil and Sons',
+    status: true,
+    responses: 14,
+  },
+  {
+    dateCreated: '3/5/2023',
+    campaignName: 'Lind and Sons',
+    status: true,
+    responses: 15,
+  },
+  {
+    dateCreated: '10/22/2022',
+    campaignName: 'Champlin-Conroy',
+    status: false,
+    responses: 16,
+  },
+  {
+    dateCreated: '10/24/2022',
+    campaignName: 'Flatley-Wuckert',
+    status: true,
+    responses: 17,
+  },
+  {
+    dateCreated: '3/23/2023',
+    campaignName: 'Langworth, Fahey and Schaefer',
+    status: true,
+    responses: 18,
+  },
+  {
+    dateCreated: '12/24/2022',
+    campaignName: 'Price, Marvin and Heidenreich',
+    status: true,
+    responses: 19,
+  },
+  {
+    dateCreated: '2/12/2023',
+    campaignName: 'Shanahan-Durgan',
+    status: true,
+    responses: 20,
+  },
+];

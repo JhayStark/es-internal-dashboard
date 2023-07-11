@@ -39,26 +39,28 @@ const Clients = () => {
       name: 'Organization Name',
       selector: 'organizationName',
       sortable: true,
-      width: '30%',
     },
     {
       name: 'Sms Balance',
       selector: 'smsBalance',
-      cell: row => <p className='w-full text-center'>{row.smsBalance}</p>,
+      cell: row => <p>{row.smsBalance}</p>,
+      center: true,
     },
     {
-      name: 'Active Forms',
+      name: 'Forms',
       selector: 'activeForms',
       sortable: true,
-      cell: row => <p className='w-full text-center'>{row.activeForms}</p>,
+      cell: row => <p>{row.activeForms}</p>,
+      center: true,
     },
     {
       name: 'Action',
       cell: row => (
-        <div className='flex items-center w-full px-5 text-2xl text-[#699BF7] cursor-pointer'>
+        <div className=' text-2xl text-[#699BF7] cursor-pointer'>
           <AiOutlineEye onClick={() => router.push('/clients/1')} />
         </div>
       ),
+      center: true,
     },
   ];
   return (

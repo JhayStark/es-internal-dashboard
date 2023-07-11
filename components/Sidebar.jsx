@@ -51,7 +51,10 @@ const Sidebar = () => {
           />
           <MenuItem
             path='/settings'
-            isActive={router.pathname.includes('/settings')}
+            isActive={
+              router.pathname.includes('/settings') &&
+              !router.pathname.includes('/clients')
+            }
             icon={<FiSettings />}
             title='Settings'
           />
