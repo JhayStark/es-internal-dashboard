@@ -9,13 +9,13 @@ const NoSSRTabale = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
 
-const FarmerOverviewStats = ({ title, iconColor, icon }) => {
+const FarmerOverviewStats = ({ title, icon }) => {
   return (
     <div className='flex flex-col p-5 bg-white rounded-lg gap-9 shadow-3xl'>
       <p className='text-xl font-medium'>{title}</p>
       <div className='flex flex-row items-center justify-between'>
         <p className='text-lg'>5000</p>
-        <div className={`text-[${iconColor}] text-5xl`}>{icon}</div>
+        <div className={` text-5xl`}>{icon}</div>
       </div>
     </div>
   );
@@ -65,23 +65,19 @@ const Farmers = () => {
       <div className='grid grid-cols-4 gap-8 font-sans'>
         <FarmerOverviewStats
           title='Total Countries'
-          iconColor='#FFD233'
-          icon={<FaGlobeAfrica />}
+          icon={<FaGlobeAfrica className='text-[#FFD233]' />}
         />
         <FarmerOverviewStats
           title='Female Farmers'
-          iconColor='#85B6FF'
-          icon={<BiFemale />}
+          icon={<BiFemale className='text-[#85B6FF]' />}
         />
         <FarmerOverviewStats
           title='Male Farmers'
-          iconColor='#FFD233'
-          icon={<BiMale />}
+          icon={<BiMale className='text-[#FFD233]' />}
         />
         <FarmerOverviewStats
           title='Total Farmers'
-          iconColor='#4ECB71'
-          icon={<GiFarmTractor />}
+          icon={<GiFarmTractor className='text-[#4ECB71]' />}
         />
       </div>
       <div className='grid grid-cols-4 gap-8 mt-5 font-sans'>
