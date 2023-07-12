@@ -30,7 +30,7 @@ const UserDetails = () => {
       sortable: true,
     },
     {
-      name: 'Campaign Name',
+      name: 'Form Name',
       selector: 'campaignName',
       sortable: true,
       center: true,
@@ -39,7 +39,17 @@ const UserDetails = () => {
       name: 'Status',
       selector: 'status',
       sortable: true,
-      cell: row => <p>{row.status ? 'Active' : 'Inactive'}</p>,
+      cell: row => (
+        <p
+          className={`${
+            row.status
+              ? 'text-green-500 bg-green-200 '
+              : 'text-red-500 bg-red-200'
+          } rounded-md px-2 text-sm`}
+        >
+          {row.status ? 'Active' : 'Inactive'}
+        </p>
+      ),
       center: true,
     },
     {
@@ -144,9 +154,9 @@ const UserDetails = () => {
               Top-up
             </button>
           </div>
-          <p>Balance: GHC 500</p>
-          <p className='text-center 2xl:py-10 py-8 text-[2.5rem] font-semibold'>
-            985
+          <p>Last top-up: ₵500</p>
+          <p className='text-center 2xl:py-10 py-8 text-[2.5rem] self-center font-semibold text-green-400'>
+            <span className='text-2xl'>₵</span>85.00
           </p>
           <div className='flex flex-row items-center justify-between w-full'>
             <div className='flex flex-col gap-1'>
@@ -166,7 +176,7 @@ const UserDetails = () => {
         <NoSSRTable
           columns={columns}
           data={clientInsytData}
-          title='Insyt'
+          title={tab === 'insyt' ? 'Forms' : 'Messages'}
           searchParameter='campaignName'
         />
       </div>

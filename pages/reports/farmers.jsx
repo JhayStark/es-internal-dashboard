@@ -2,73 +2,94 @@ import React from 'react';
 import ReportsNavigationTab from '@/components/ReportsNavigationTab';
 import { BiMale, BiFemale } from 'react-icons/bi';
 import { GiFarmTractor } from 'react-icons/gi';
+import { FaGlobeAfrica } from 'react-icons/fa';
 import dynamic from 'next/dynamic';
 
 const NoSSRTabale = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
+
+const FarmerOverviewStats = ({ title, iconColor, icon }) => {
+  return (
+    <div className='flex flex-col p-5 bg-white rounded-lg gap-9 shadow-3xl'>
+      <p className='text-xl font-medium'>{title}</p>
+      <div className='flex flex-row items-center justify-between'>
+        <p className='text-lg'>5000</p>
+        <div className={`text-[${iconColor}] text-5xl`}>{icon}</div>
+      </div>
+    </div>
+  );
+};
 const Farmers = () => {
+  const farmerTableColumns = [
+    {
+      name: 'Name',
+      selector: row => row.name,
+
+      sortable: true,
+    },
+    {
+      name: 'District',
+      selector: row => row.region,
+      sortable: true,
+    },
+    {
+      name: 'Region',
+      selector: row => row.category,
+      sortable: true,
+    },
+    {
+      name: 'Category',
+      selector: row => row.category,
+      sortable: true,
+    },
+    {
+      name: 'Contact',
+      selector: row => row.contact,
+      sortable: true,
+    },
+  ];
   return (
     <div>
       <ReportsNavigationTab />
+      <div className='flex flex-row items-center mb-2 '>
+        <p className='text-xl font-medium'>Selected Country:</p>
+        <select
+          name=''
+          id=''
+          className='px-1 text-lg ml-2 rounded-xl bg-[#e3c24a] focus:outline-none'
+        >
+          <option value=''>Ghana</option>
+        </select>
+      </div>
       <div className='grid grid-cols-4 gap-8 font-sans'>
-        <div className='flex flex-col p-5 bg-white rounded-lg gap-9 shadow-3xl'>
-          <p className='text-lg font-medium'>Male Farmers</p>
-          <div className='flex flex-row items-center justify-between'>
-            <p className='text-lg'>5000</p>
-            <BiMale className='text-5xl text-[#FFD233]' />
-          </div>
-        </div>
-        <div className='flex flex-col p-5 bg-white rounded-lg gap-9 shadow-3xl'>
-          <p className='text-lg font-medium'>Female Farmers</p>
-          <div className='flex flex-row items-center justify-between'>
-            <p className='text-lg'>5000</p>
-            <BiFemale className='text-5xl text-[#85B6FF]' />
-          </div>
-        </div>
-        <div className='flex flex-col p-5 bg-white rounded-lg gap-9 shadow-3xl'>
-          <p className='text-lg font-medium'>Female Farmers</p>
-          <div className='flex flex-row items-center justify-between'>
-            <p className='text-lg'>5000</p>
-            <BiFemale className='text-5xl text-[#85B6FF]' />
-          </div>
-        </div>
-        <div className='flex flex-col p-5 bg-white rounded-lg gap-9 shadow-3xl'>
-          <p className='text-lg font-medium'>Total Farmers</p>
-          <div className='flex flex-row items-center justify-between'>
-            <p className='text-lg'>5000</p>
-            <GiFarmTractor className='text-5xl text-[#4ECB71]' />
-          </div>
-        </div>
+        <FarmerOverviewStats
+          title='Total Countries'
+          iconColor='#FFD233'
+          icon={<FaGlobeAfrica />}
+        />
+        <FarmerOverviewStats
+          title='Female Farmers'
+          iconColor='#85B6FF'
+          icon={<BiFemale />}
+        />
+        <FarmerOverviewStats
+          title='Male Farmers'
+          iconColor='#FFD233'
+          icon={<BiMale />}
+        />
+        <FarmerOverviewStats
+          title='Total Farmers'
+          iconColor='#4ECB71'
+          icon={<GiFarmTractor />}
+        />
       </div>
       <div className='grid grid-cols-4 gap-8 mt-5 font-sans'>
         <div className='col-span-3 px-5 py-2 bg-white rounded-lg shadow-3xl'>
           <NoSSRTabale
-            title='Farmers'
+            title='All Farmers'
             searchParameter='name'
-            columns={[
-              {
-                name: 'Name',
-                selector: row => row.name,
-
-                sortable: true,
-              },
-              {
-                name: 'Region',
-                selector: row => row.region,
-                sortable: true,
-              },
-              {
-                name: 'Category',
-                selector: row => row.category,
-                sortable: true,
-              },
-              {
-                name: 'Contact',
-                selector: row => row.contact,
-                sortable: true,
-              },
-            ]}
+            columns={farmerTableColumns}
             data={[
               {
                 id: 1,

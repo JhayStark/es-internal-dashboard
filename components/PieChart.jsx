@@ -1,24 +1,24 @@
-import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const data01 = [
-  { name: "Insyt", value: 2250, fill: "#FE634E" },
-  { name: "Sms", value: 1500, fill: "#214BB8" },
-  { name: "Voice", value: 1250, fill: "#45ADDA" },
+  { name: 'Insyt Forms', value: 2250, fill: '#FE634E' },
+  { name: 'SMS', value: 1500, fill: '#214BB8' },
+  { name: 'Voice', value: 1250, fill: '#45ADDA' },
 ];
 
 const PieComponent = () => {
   return (
-    <ResponsiveContainer width="100%" height="70%" className="py-2 ">
+    <ResponsiveContainer width='100%' height='70%' className='py-2 '>
       <PieChart width={400} height={400}>
         <Pie
-          dataKey="value"
+          dataKey='value'
           isAnimationActive={false}
           data={data01}
-          cx="50%"
-          cy="50%"
+          cx='50%'
+          cy='50%'
           outerRadius={80}
           innerRadius={40}
-          fill="#8884d8"
+          fill='#8884d8'
           {...data01.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.fill} />
           ))}
