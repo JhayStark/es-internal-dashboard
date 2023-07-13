@@ -36,7 +36,7 @@ const Clients = () => {
       sortable: true,
     },
     {
-      name: 'Organization Name',
+      name: 'Name',
       selector: 'organizationName',
       sortable: true,
     },

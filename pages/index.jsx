@@ -75,15 +75,11 @@ export default function Home() {
       <div className='font-sans '>
         <div className='grid md:grid-cols-3 gap-[1.4rem] mb-8 lg:mb-14 '>
           <StatsOverview
-            title='Push (Voice)'
+            title='Voice'
             icon={<RiVoiceprintLine />}
             value='5000'
           />
-          <StatsOverview
-            title='Push (SMS)'
-            icon={<TbMessageDots />}
-            value='5000'
-          />
+          <StatsOverview title='SMS' icon={<TbMessageDots />} value='5000' />
           <StatsOverview
             title='Insyt (Forms)'
             icon={<CgNotes />}

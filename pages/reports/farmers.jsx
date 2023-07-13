@@ -15,7 +15,7 @@ const FarmerOverviewStats = ({ title, icon }) => {
       <p className='text-xl font-medium'>{title}</p>
       <div className='flex flex-row items-center justify-between'>
         <p className='text-lg'>5000</p>
-        <div className={` text-5xl`}>{icon}</div>
+        <div className='text-5xl'>{icon}</div>
       </div>
     </div>
   );
@@ -53,7 +53,7 @@ const Farmers = () => {
     <div>
       <ReportsNavigationTab />
       <div className='flex flex-row items-center mb-2 '>
-        <p className='text-xl font-medium'>Selected Country:</p>
+        <p className='text-xl font-medium'>Select Country:</p>
         <select
           name=''
           id=''
@@ -64,8 +64,8 @@ const Farmers = () => {
       </div>
       <div className='grid grid-cols-4 gap-8 font-sans'>
         <FarmerOverviewStats
-          title='Total Countries'
-          icon={<FaGlobeAfrica className='text-[#FFD233]' />}
+          title='All Countries'
+          icon={<FaGlobeAfrica className='text-[#073150]' />}
         />
         <FarmerOverviewStats
           title='Female Farmers'
@@ -161,7 +161,7 @@ const Farmers = () => {
           />
         </div>
         <div className='flex flex-col items-center px-8 overflow-y-auto bg-white max-h-[60rem] rounded-lg shadow-3xl'>
-          <p className='sticky top-0 py-3 font-medium bg-white '>
+          <p className='sticky top-0 py-3 text-lg font-medium text-center bg-white '>
             Regional Distribution of Farmers
           </p>
           <div className='flex flex-col gap-2 pt-2 pb-4'>

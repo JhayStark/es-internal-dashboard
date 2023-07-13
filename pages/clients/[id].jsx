@@ -33,7 +33,6 @@ const UserDetails = () => {
       name: 'Form Name',
       selector: 'campaignName',
       sortable: true,
-      center: true,
     },
     {
       name: 'Status',
