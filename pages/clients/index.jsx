@@ -65,25 +65,25 @@ const Clients = () => {
   ];
   return (
     <>
-      <div className='grid grid-cols-3 gap-[1.4rem] mb-14 '>
+      <div className='grid grid-rows-3 lg:grid-rows-1  lg:grid-cols-3 gap-[1.4rem] mb-14 '>
         <ClientStatsOverview
-          title='Total Users'
+          title='Total Clients'
           icon={<FaUsers />}
           color='#D27C2C'
         />
         <ClientStatsOverview
-          title='Active Users'
+          title='Active Clients'
           icon={<AiOutlineCheckCircle />}
           color='#0FA958'
         />
         <ClientStatsOverview
-          title='Disabled Users'
+          title='Disabled Clients'
           icon={<FaUserSlash />}
           color='#F24E1E'
         />
       </div>
       <div className='grid grid-cols-3 gap-[1.4rem] mb-14 '>
-        <div className='p-4 bg-white rounded-lg shadow-3xl max-h-[25rem] 3xl:px-7'>
+        <div className='p-4 hidden lg:block bg-white rounded-lg shadow-3xl max-h-[25rem] 3xl:px-7'>
           <p className='xl:text-[1.030rem] 2xl:text-[1.174rem] 3xl:text-[1.493rem]  font-semibold'>
             Services Used
           </p>
@@ -106,9 +106,9 @@ const Clients = () => {
             </div>
           </div>
         </div>
-        <div className='h-full col-span-2 p-4 bg-white rounded-lg shadow-3xl '>
+        <div className='h-full col-span-3 p-4 bg-white roundesd-lg lg:col-span-2 shadow-3xl '>
           <NoSSRTable
-            title='User List'
+            title='Clients'
             searchParameter='organizationName'
             data={userList}
             columns={columns}

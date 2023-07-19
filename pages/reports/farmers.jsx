@@ -62,7 +62,7 @@ const Farmers = () => {
           <option value=''>Ghana</option>
         </select>
       </div>
-      <div className='grid grid-cols-4 gap-8 font-sans'>
+      <div className='hidden grid-cols-4 font-sans lg:gap-8 lg:grid'>
         <FarmerOverviewStats
           title='All Countries'
           icon={<FaGlobeAfrica className='text-[#073150]' />}
@@ -81,7 +81,7 @@ const Farmers = () => {
         />
       </div>
       <div className='grid grid-cols-4 gap-8 mt-5 font-sans'>
-        <div className='col-span-3 px-5 py-2 bg-white rounded-lg shadow-3xl'>
+        <div className='col-span-4 px-5 py-2 bg-white rounded-lg lg:col-span-3 shadow-3xl'>
           <NoSSRTabale
             title='All Farmers'
             searchParameter='name'
@@ -160,7 +160,7 @@ const Farmers = () => {
             ]}
           />
         </div>
-        <div className='flex flex-col items-center px-8 overflow-y-auto bg-white max-h-[60rem] rounded-lg shadow-3xl'>
+        <div className='lg:flex hidden flex-col items-center px-8 overflow-y-auto bg-white max-h-[60rem] rounded-lg shadow-3xl'>
           <p className='sticky top-0 py-3 text-lg font-medium text-center bg-white '>
             Regional Distribution of Farmers
           </p>

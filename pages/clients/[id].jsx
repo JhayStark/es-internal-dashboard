@@ -69,7 +69,7 @@ const UserDetails = () => {
   return (
     <>
       <div className='grid grid-cols-9  3xl:grid-cols-11 gap-[1.4rem] font-sans '>
-        <div className='col-span-5 3xl:col-span-7'>
+        <div className='col-span-9 lg:col-span-5 3xl:col-span-7'>
           <div className='flex flex-col justify-between h-full '>
             <div className='p-5 bg-white rounded-lg shadow-3xl min-h-[75%] flex flex-row justify-between  '>
               <div className='flex flex-col items-start justify-between h-full'>
@@ -102,11 +102,26 @@ const UserDetails = () => {
                 <Link href='/clients/settings'>
                   <FiSettings className='text-xl text-[#2A3547] cursor-pointer hover:scale-125' />
                 </Link>
+                <div className='flex items-center gap-4 lg:hidden'>
+                  <p className='hidden text-lg sm:block'>Balance ₵ 500.00 </p>
+                  <button
+                    className='bg-[#F24E1E] hidden sm:block text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
+                    onClick={openModal}
+                  >
+                    Top-up
+                  </button>
+                  <button
+                    className='bg-[#F24E1E] text-2xl sm:hidden cursor-pointer  font-medium shadow-md hover:scale-110 text-white rounded-lg py-1 px-3'
+                    onClick={openModal}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             </div>
-            <div className='bg-white grid grid-cols-2 rounded-lg shadow-3xl w-[50%]'>
+            <div className='bg-white mt-8 lg:mt-0 grid text-lg sm:text-2xl grid-cols-2 rounded-lg shadow-3xl sm:w-[50%]'>
               <p
-                className={`text-center text-2xl font-medium rounded-lg py-2 cursor-pointer ${
+                className={`text-center  font-medium rounded-lg py-2 cursor-pointer ${
                   tab === 'insyt' && 'bg-[#3D7DAD] text-white'
                 }`}
                 onClick={() => setTab('insyt')}
@@ -115,7 +130,7 @@ const UserDetails = () => {
               </p>
 
               <p
-                className={`text-center text-2xl font-medium rounded-lg py-2 cursor-pointer ${
+                className={`text-center  font-medium rounded-lg py-2 cursor-pointer ${
                   tab === 'push' && 'bg-[#F24E1E] text-white'
                 }`}
                 onClick={() => setTab('push')}
@@ -125,7 +140,7 @@ const UserDetails = () => {
             </div>
           </div>
         </div>
-        <div className='col-span-2 3xl:mx-3 px-4 py-5 bg-white rounded-lg shadow-3xl max-h-[18rem] 2xl:max-h-[20rem]'>
+        <div className=' hidden lg:block col-span-2 3xl:mx-3 px-4 py-5 bg-white rounded-lg shadow-3xl max-h-[18rem] 2xl:max-h-[20rem]'>
           <p className='text-3xl font-semibold text-[#1252A6] mb-6'>insyt</p>
           <p className='text-center 2xl:py-10 py-8 text-[2.5rem] font-semibold'>
             985
@@ -143,7 +158,7 @@ const UserDetails = () => {
             </div>
           </div>
         </div>
-        <div className='col-span-2 px-4 py-5 3xl:mx-3 bg-white rounded-lg shadow-3xl max-h-[20rem]'>
+        <div className='hidden lg:block col-span-2 px-4 py-5 3xl:mx-3 bg-white rounded-lg shadow-3xl max-h-[20rem]'>
           <div className='flex flex-row items-center justify-between w-full'>
             <p className='text-3xl font-semibold text-[#F24E1E]'>Push</p>
             <button

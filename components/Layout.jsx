@@ -1,12 +1,18 @@
 import BreadCrump from './BreadCrump';
+import BreadCrumpMobileDevice from './BreadCrumpMobileDevice';
 import Sidebar from './Sidebar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RxAvatar } from 'react-icons/rx';
 
 const NavBar = ({ menuState, handleMenuToggle }) => {
   return (
     <div className='sticky top-0 flex flex-row justify-between py-4 bg-[#EDF3FF] z-50 '>
-      <BreadCrump />
+      <div className='hidden xl:block'>
+        <BreadCrump />
+      </div>
+      <div className='block xl:hidden'>
+        <BreadCrumpMobileDevice />
+      </div>
       <div className='flex flex-row items-center gap-2'>
         <p>Hi Joel</p>
         <div>

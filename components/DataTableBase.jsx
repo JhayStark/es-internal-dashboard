@@ -55,7 +55,7 @@ function DataTableBase({ columns, data, searchParameter, title }) {
 
   return (
     <>
-      <div className='flex flex-row items-center justify-between px-3 pt-3 mb-5'>
+      <div className='flex flex-col justify-between gap-3 px-3 pt-3 mb-5 md:gap-0 md:items-center md:flex-row'>
         <p className='text-2xl font-semibold'>{title}</p>
         <SearchBox
           onSearch={setFilterText}

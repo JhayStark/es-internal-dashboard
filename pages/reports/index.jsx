@@ -50,13 +50,13 @@ const Index = () => {
     <>
       <ReportsNavigationTab />
       <div className='grid grid-cols-7 gap-3 3xl:gap-5 mb-9'>
-        <div className='col-span-5 p-4 bg-white rounded-lg shadow-3xl'>
-          <p className='py-2 text-xl font-bold'>Revenue Per Qtr</p>
-          <div className='h-80'>
+        <div className='hidden col-span-7 p-4 bg-white rounded-lg sm:block lg:col-span-5 shadow-3xl '>
+          <p className='py-2 text-xl font-bold '>Revenue Per Qtr</p>
+          <div className=' h-80'>
             <AreaGraph />
           </div>
         </div>
-        <div className='col-span-2 p-4 bg-white rounded-lg shadow-3xl '>
+        <div className='hidden p-4 bg-white rounded-lg lg:block lg:col-span-2 shadow-3xl '>
           <p className='text-xl font-bold'>Monthly Service Usage</p>
           <PieChartComponent />
           <div className='flex flex-row items-center justify-between'>

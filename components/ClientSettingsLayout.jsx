@@ -13,7 +13,7 @@ const ClientSettingsLayout = ({ children }) => {
   return (
     <>
       <div className='grid grid-cols-6 gap-4 font-sans 3xl:grid-cols-4'>
-        <div className='py-4 shadow-3xl pb-28 2xl:max-h-[36rem] col-span-2 3xl:col-span-1 bg-white'>
+        <div className='py-4 hidden lg:block shadow-3xl pb-28 2xl:max-h-[36rem] col-span-2 3xl:col-span-1 bg-white'>
           <div className='flex flex-col items-center justify-center pb-6 pt-7 border-b-[1px]'>
             <RxAvatar className='text-9xl ' />
             <p className='pt-5 pb-1 text-lg font-semibold'>Esoko</p>
@@ -70,7 +70,7 @@ const ClientSettingsLayout = ({ children }) => {
             </Link>
           </div>
         </div>
-        <div className='col-span-4 p-4 bg-white 3xl:col-span-3 shadow-3xl  2xl:h-[45rem] 3xl:h-[55rem] font-sans'>
+        <div className='lg:col-span-4  col-span-6 p-4 bg-white 3xl:col-span-3 shadow-3xl  2xl:h-[45rem] 3xl:h-[55rem] font-sans'>
           {children}
         </div>
       </div>

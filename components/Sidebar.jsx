@@ -27,7 +27,7 @@ const MenuItem = ({ path, isActive, icon, title }) => {
 const Sidebar = () => {
   const router = useRouter();
   return (
-    <div className='hidden h-full  xl:w-72 2xl:w-80 3xl:w-96 bg-[#073150] lg:flex justify-center py-5'>
+    <div className='hidden h-full  xl:w-72 2xl:w-80 3xl:w-96 bg-[#073150] xl:flex justify-center py-5'>
       <aside className='flex flex-col items-center w-full '>
         <img src='/images/logo.png' className='w-36' />
         <div className='w-full mt-10'>
