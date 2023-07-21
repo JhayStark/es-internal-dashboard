@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -23,24 +23,6 @@ const customStyles = {
 
 const SearchBox = ({ onSearch, filterText, setResetPagination }) => {
   const [input, setInput] = useState('');
-  const debounce = (functionToCall, delay) => {
-    let timerId;
-    return function (...args) {
-      clearTimeout(timerId);
-      timerId = setTimeout(() => {
-        functionToCall(...args);
-      }, delay);
-    };
-  };
-
-  const debouncedSearch = debounce(() => {
-    onSearch(input);
-  }, 500);
-
-  const handleInputChange = event => {
-    setInput(event.target.value);
-    debouncedSearch();
-  };
 
   const handleClear = () => {
     if (filterText) {
@@ -49,12 +31,19 @@ const SearchBox = ({ onSearch, filterText, setResetPagination }) => {
     }
   };
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      onSearch(input);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [input, 500]);
+
   return (
     <div className='flex flex-row items-center border-[1px] focus:outline-none rounded p-2'>
       <MdOutlineSearch className='mr-1 text-xl text-gray-400' />
       <input
         type='text'
-        onChange={handleInputChange}
+        onChange={e => setInput(e.target.value)}
         value={input}
         className='w-full focus:outline-none'
         placeholder='Search...'

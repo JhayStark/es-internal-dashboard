@@ -10,6 +10,7 @@ function useTableData(passedUrl) {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterText, setFilterText] = useState('');
+
   const { data, error, isLoading } = useSWR(
     `${passedUrl}&page=${pageNumber}&limit=${pageSize}&search=${filterText}`,
     tableDataFetcher

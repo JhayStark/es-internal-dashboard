@@ -17,7 +17,7 @@ const StatsOverview = ({ title, icon, value }) => {
         <p className='xl:text-[1.030rem] 2xl:text-[1.174rem] 3xl:text-[1.493rem] font-medium'>
           {title}
         </p>
-        <div className=' text-[#D27C2C] text-3xl'>{icon}</div>
+        <div className=' text-[#D27C2C] text-3xl 3xl:text-4xl'>{icon}</div>
       </div>
       <div className='flex items-center justify-between'>
         <p className='text-xs font-light lg:text-base '>Updated 30mins ago</p>
@@ -90,7 +90,7 @@ export default function Home() {
   return (
     <>
       <div className='font-sans '>
-        <div className='grid md:grid-cols-3 gap-[1.4rem] mb-8 lg:mb-14 '>
+        <div className='grid md:grid-cols-3 gap-[1.4rem] mb-6 lg:mb-6s '>
           <StatsOverview
             title='Voice'
             icon={<RiVoiceprintLine />}
