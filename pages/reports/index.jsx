@@ -63,7 +63,7 @@ const Index = () => {
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#214BB8]'></div>
               <p className='text-lg font-semibold'>2250</p>
-              <p className='text-sm text-[#7E7E7E]'>Insyt Forms</p>
+              <p className='text-sm text-[#7E7E7E]'>Surveys</p>
             </div>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#FE634E]'></div>

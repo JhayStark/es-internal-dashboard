@@ -1,17 +1,32 @@
 import { useState } from 'react';
 import { LuMoreVertical } from 'react-icons/lu';
-import { AiOutlineSearch, AiOutlineDownload } from 'react-icons/ai';
 import { FiSettings } from 'react-icons/fi';
 import { clientInsytData } from '../../dummyData';
 import Modal from '@/components/Modal';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import useSwr from 'swr';
+import axios from 'axios';
+import Skeleton from 'react-loading-skeleton';
+// import 'react-loading-skeleton/dist/skeleton.css';
 
+const profileFetcher = async url => {
+  const res = await axios.get(url);
+  return res.data.data;
+};
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
 
 const UserDetails = () => {
+  const {
+    data: profileData,
+    error: profileErrors,
+    isLoading: profileIsLoading,
+  } = useSwr(
+    'https://internal-manager-api.onrender.com/api/clients/profiles',
+    profileFetcher
+  );
   const [tab, setTab] = useState('insyt');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -66,6 +81,8 @@ const UserDetails = () => {
       center: true,
     },
   ];
+  console.log(profileIsLoading);
+
   return (
     <>
       <div className='grid grid-cols-9  3xl:grid-cols-11 gap-[1.4rem] font-sans '>
@@ -79,7 +96,7 @@ const UserDetails = () => {
                       <p className='text-lg font-semibold text-white'>E</p>
                     </div>
                     <p className='text-3xl font-semibold text-[#2A3547]'>
-                      ESOKO
+                      {profileData?.clientName}
                     </p>
                   </div>
                   <p className='text-[#828282] text-sm mt-3'>

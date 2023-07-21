@@ -1,7 +1,7 @@
 import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const data01 = [
-  { name: 'Insyt Forms', value: 2250, fill: '#FE634E' },
+  { name: 'Surveys', value: 2250, fill: '#FE634E' },
   { name: 'SMS', value: 1500, fill: '#214BB8' },
   { name: 'Voice', value: 1250, fill: '#45ADDA' },
 ];

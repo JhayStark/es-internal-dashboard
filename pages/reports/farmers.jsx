@@ -39,6 +39,11 @@ const Farmers = () => {
       sortable: true,
     },
     {
+      name: 'Network',
+      selector: row => row.category,
+      sortable: true,
+    },
+    {
       name: 'Category',
       selector: row => row.category,
       sortable: true,
@@ -160,7 +165,7 @@ const Farmers = () => {
             ]}
           />
         </div>
-        <div className='lg:flex hidden flex-col items-center px-8 overflow-y-auto bg-white max-h-[60rem] rounded-lg shadow-3xl'>
+        <div className='flex-col items-center hidden px-8 overflow-y-auto bg-white rounded-lg lg:flex shadow-3xl'>
           <p className='sticky top-0 py-3 text-lg font-medium text-center bg-white '>
             Regional Distribution of Farmers
           </p>

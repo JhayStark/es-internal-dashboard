@@ -1,6 +1,8 @@
-import React, { useState, memo } from 'react';
-import { MdClear, MdOutlineSearch } from 'react-icons/md';
+import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { MdClear, MdOutlineSearch } from 'react-icons/md';
 
 const customStyles = {
   rows: {
@@ -19,39 +21,63 @@ const customStyles = {
   },
 };
 
-const SearchBox = ({ onSearch, filterText, clear }) => {
+const SearchBox = ({ onSearch, filterText, setResetPagination }) => {
+  const [input, setInput] = useState('');
+  const debounce = (functionToCall, delay) => {
+    let timerId;
+    return function (...args) {
+      clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        functionToCall(...args);
+      }, delay);
+    };
+  };
+
+  const debouncedSearch = debounce(() => {
+    onSearch(input);
+  }, 500);
+
+  const handleInputChange = event => {
+    setInput(event.target.value);
+    debouncedSearch();
+  };
+
+  const handleClear = () => {
+    if (filterText) {
+      setResetPagination(true);
+      setInput('');
+    }
+  };
+
   return (
     <div className='flex flex-row items-center border-[1px] focus:outline-none rounded p-2'>
       <MdOutlineSearch className='mr-1 text-xl text-gray-400' />
       <input
         type='text'
-        onChange={e => onSearch(e.target.value)}
-        value={filterText}
-        className=' focus:outline-none'
+        onChange={handleInputChange}
+        value={input}
+        className='w-full focus:outline-none'
         placeholder='Search...'
       />
       <MdClear
-        className='text-2xl text-red-500 cursor-pointer hover:scale-125'
-        onClick={clear}
+        className='hidden text-2xl text-red-500 cursor-pointer lg:block hover:scale-125'
+        onClick={handleClear}
       />
     </div>
   );
 };
-function DataTableBase({ columns, data, searchParameter, title }) {
-  const [filterText, setFilterText] = useState('');
+function DataTableBase({
+  columns,
+  data,
+  title,
+  loading,
+  totalRows,
+  handlePerRowsChange,
+  handlePageChange,
+  setFilterText,
+  filterText,
+}) {
   const [resetPagination, setResetPagination] = useState(false);
-  const filteredItems = data.filter(
-    item =>
-      item[searchParameter] &&
-      item[searchParameter].toLowerCase().includes(filterText.toLowerCase())
-  );
-
-  const handleClear = () => {
-    if (filterText) {
-      setResetPagination(true);
-      setFilterText('');
-    }
-  };
 
   return (
     <>
@@ -60,17 +86,56 @@ function DataTableBase({ columns, data, searchParameter, title }) {
         <SearchBox
           onSearch={setFilterText}
           filterText={filterText}
-          clear={handleClear}
+          setResetPagination={setResetPagination}
         />
       </div>
       <DataTable
         pagination
         dense
         columns={columns}
-        data={filteredItems}
+        data={data}
         customStyles={customStyles}
         responsive
         paginationResetDefaultPage={resetPagination}
+        paginationServer
+        paginationTotalRows={totalRows}
+        onChangeRowsPerPage={handlePerRowsChange}
+        onChangePage={handlePageChange}
+        progressPending={loading}
+        progressComponent={
+          <div className='flex flex-row w-full '>
+            <Skeleton
+              count={10}
+              width={'90%'}
+              borderRadius={10}
+              containerClassName='flex-1 space-y-4'
+            />
+            <Skeleton
+              count={10}
+              width={'90%'}
+              borderRadius={10}
+              containerClassName='flex-1 space-y-4'
+            />
+            <Skeleton
+              count={10}
+              width={'90%'}
+              borderRadius={10}
+              containerClassName='flex-1 space-y-4'
+            />
+            <Skeleton
+              count={10}
+              width={'90%'}
+              borderRadius={10}
+              containerClassName='flex-1 space-y-4'
+            />
+            <Skeleton
+              count={10}
+              width={'90%'}
+              borderRadius={10}
+              containerClassName='flex-1 space-y-4'
+            />
+          </div>
+        }
       />
     </>
   );

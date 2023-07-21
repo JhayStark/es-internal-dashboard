@@ -1,9 +1,9 @@
+import PieChartComponent from '@/components/PieChart';
+import dynamic from 'next/dynamic';
 import { FaUsers, FaUserSlash } from 'react-icons/fa';
 import { AiOutlineCheckCircle, AiOutlineEye } from 'react-icons/ai';
 import { useRouter } from 'next/router';
-import { userList } from '../../dummyData';
-import PieChartComponent from '@/components/PieChart';
-import dynamic from 'next/dynamic';
+import { useTableData } from '../../hooks/fetchers';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
@@ -28,29 +28,34 @@ const ClientStatsOverview = ({ title, icon, color }) => {
 
 const Clients = () => {
   const router = useRouter();
+  const {
+    filterText,
+    handlePageNumberChange,
+    setFilterText,
+    tableData,
+    tableDataIsLoading,
+  } = useTableData('https://internal-manager-api.onrender.com/api/clients');
 
   const columns = [
     {
       name: 'Joined Date',
-      selector: 'joinedDate',
+      selector: 'dateJoined',
       sortable: true,
     },
     {
       name: 'Name',
-      selector: 'organizationName',
+      selector: 'clientName',
       sortable: true,
     },
     {
       name: 'Sms Balance',
       selector: 'smsBalance',
-      cell: row => <p>{row.smsBalance}</p>,
       center: true,
     },
     {
       name: 'Forms',
-      selector: 'activeForms',
+      selector: 'totalForms',
       sortable: true,
-      cell: row => <p>{row.activeForms}</p>,
       center: true,
     },
     {
@@ -63,6 +68,8 @@ const Clients = () => {
       center: true,
     },
   ];
+
+  console.log(tableData);
   return (
     <>
       <div className='grid grid-rows-3 lg:grid-rows-1  lg:grid-cols-3 gap-[1.4rem] mb-14 '>
@@ -92,7 +99,7 @@ const Clients = () => {
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#214BB8]'></div>
               <p className='text-lg font-semibold'>2250</p>
-              <p className='text-sm text-[#7E7E7E]'>insyt</p>
+              <p className='text-sm text-[#7E7E7E]'>Surveys</p>
             </div>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#FE634E]'></div>
@@ -109,9 +116,14 @@ const Clients = () => {
         <div className='h-full col-span-3 p-4 bg-white roundesd-lg lg:col-span-2 shadow-3xl '>
           <NoSSRTable
             title='Clients'
-            searchParameter='organizationName'
-            data={userList}
+            searchParameter='clientName'
+            data={tableData?.clients}
             columns={columns}
+            loading={tableDataIsLoading}
+            totalRows={tableData?.totalRowCount}
+            handlePerRowsChange={handlePageNumberChange}
+            setFilterText={setFilterText}
+            filterText={filterText}
           />
         </div>
       </div>
