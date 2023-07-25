@@ -258,7 +258,7 @@ const UserDetails = () => {
           <p>Last top-up: ₵500</p>
           <p className='text-center 2xl:py-10 py-8 text-[2.5rem] self-center font-semibold text-green-400'>
             <span className='text-2xl'>₵</span>
-            {profile?.smsBalance}.00
+            {profile?.smsBalance}
           </p>
           <div className='flex flex-row items-center justify-between w-full'>
             <div className='flex flex-col gap-1'>

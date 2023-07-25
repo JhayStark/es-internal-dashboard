@@ -18,6 +18,7 @@ const Clients = () => {
     setFilterText,
     tableData,
     tableDataIsLoading,
+    handlePageChange,
   } = useTableData('https://internal-manager-api.onrender.com/api/clients');
   const { serviceTotals } = useServiceTotals();
 
@@ -113,6 +114,7 @@ const Clients = () => {
             handlePerRowsChange={handlePageNumberChange}
             setFilterText={setFilterText}
             filterText={filterText}
+            handlePageChange={handlePageChange}
           />
         </div>
       </div>

@@ -26,6 +26,11 @@ function useTableData(passedUrl, includesQuery) {
     setPageSize(newPerPage);
   };
 
+  const handlePageChange = page => {
+    setPageNumber(page);
+  };
+  console.log(pageSize, pageNumber);
+
   return {
     tableData: data,
     tableDataIsLoading: isLoading,
@@ -33,6 +38,7 @@ function useTableData(passedUrl, includesQuery) {
     handlePageNumberChange,
     setFilterText,
     filterText,
+    handlePageChange,
   };
 }
 
