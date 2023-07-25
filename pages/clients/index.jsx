@@ -3,28 +3,12 @@ import dynamic from 'next/dynamic';
 import { FaUsers, FaUserSlash } from 'react-icons/fa';
 import { AiOutlineCheckCircle, AiOutlineEye } from 'react-icons/ai';
 import { useRouter } from 'next/router';
-import { useTableData } from '../../hooks/fetchers';
+import { useTableData, useServiceTotals } from '../../hooks/fetchers';
+import StatsOverView from '@/components/StatsOverView';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
-
-const ClientStatsOverview = ({ title, icon, color }) => {
-  return (
-    <div className='flex flex-col gap-16 p-4 bg-white rounded-lg shadow-3xl'>
-      <div className='flex items-center justify-between'>
-        <p className='xl:text-[1.030rem] 2xl:text-[1.174rem] 3xl:text-[1.493rem] font-medium'>
-          {title}
-        </p>
-        <div className={` text-[${color}] text-4xl p-1 rounded-lg`}>{icon}</div>
-      </div>
-      <div className='flex items-center justify-between'>
-        <p className='font-light'>Updated 30mins ago</p>
-        <p className='text-[#055189] text-2xl'>5000</p>
-      </div>
-    </div>
-  );
-};
 
 const Clients = () => {
   const router = useRouter();
@@ -35,26 +19,27 @@ const Clients = () => {
     tableData,
     tableDataIsLoading,
   } = useTableData('https://internal-manager-api.onrender.com/api/clients');
+  const { serviceTotals } = useServiceTotals();
 
   const columns = [
     {
       name: 'Joined Date',
-      selector: 'dateJoined',
+      selector: row => row['dateJoined'],
       sortable: true,
     },
     {
       name: 'Name',
-      selector: 'clientName',
+      selector: row => row['clientName'],
       sortable: true,
     },
     {
       name: 'Sms Balance',
-      selector: 'smsBalance',
+      selector: row => row['smsBalance'],
       center: true,
     },
     {
       name: 'Forms',
-      selector: 'totalForms',
+      selector: row => row['totalForms'],
       sortable: true,
       center: true,
     },
@@ -62,36 +47,40 @@ const Clients = () => {
       name: 'Action',
       cell: row => (
         <div className=' text-2xl text-[#699BF7] cursor-pointer'>
-          <AiOutlineEye onClick={() => router.push('/clients/1')} />
+          <AiOutlineEye
+            onClick={() => router.push(`/clients/${row.clientId}`)}
+          />
         </div>
       ),
       center: true,
     },
   ];
 
-  console.log(tableData);
   return (
     <>
-      <div className='grid grid-rows-3 lg:grid-rows-1  lg:grid-cols-3 gap-[1.4rem] mb-14 '>
-        <ClientStatsOverview
+      <div className='grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 gap-[1.4rem] mb-6 '>
+        <StatsOverView
           title='Total Clients'
           icon={<FaUsers />}
           color='#D27C2C'
+          value={serviceTotals?.totalUsers}
         />
-        <ClientStatsOverview
+        <StatsOverView
           title='Active Clients'
           icon={<AiOutlineCheckCircle />}
           color='#0FA958'
+          value={serviceTotals?.activeUsers}
         />
-        <ClientStatsOverview
+        <StatsOverView
           title='Disabled Clients'
           icon={<FaUserSlash />}
           color='#F24E1E'
+          value={serviceTotals?.deletedUsers}
         />
       </div>
       <div className='grid grid-cols-3 gap-[1.4rem] mb-14 '>
         <div className='p-4 hidden lg:block bg-white rounded-lg shadow-3xl max-h-[25rem] 3xl:px-7'>
-          <p className='xl:text-[1.030rem] 2xl:text-[1.174rem] 3xl:text-[1.493rem]  font-semibold'>
+          <p className='xl:text-[1.030rem] 2xl:text-[1.174rem] 3xl:text-[1.493rem]  font-medium'>
             Services Used
           </p>
           <PieChartComponent />
@@ -117,7 +106,7 @@ const Clients = () => {
           <NoSSRTable
             title='Clients'
             searchParameter='clientName'
-            data={tableData?.clients}
+            data={tableData?.paginatedData}
             columns={columns}
             loading={tableDataIsLoading}
             totalRows={tableData?.totalRowCount}

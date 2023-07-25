@@ -12,32 +12,22 @@ const data = [
   {
     name: '',
     revenue: 0,
-    pv: 0,
-    amt: 0,
   },
   {
     name: 'QTR 1',
     revenue: 4000,
-    pv: 2400,
-    amt: 2400,
   },
   {
     name: 'QTR 2',
     revenue: 3000,
-    pv: 1398,
-    amt: 2210,
   },
   {
     name: 'QTR 3',
     revenue: 2000,
-    pv: 9800,
-    amt: 2290,
   },
   {
     name: 'QTR 4',
     revenue: 2780,
-    pv: 3908,
-    amt: 2000,
   },
 ];
 

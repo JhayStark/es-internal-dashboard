@@ -71,7 +71,7 @@ function DataTableBase({
   return (
     <>
       <div className='flex flex-col justify-between gap-3 px-3 pt-3 mb-5 md:gap-0 md:items-center md:flex-row'>
-        <p className='text-2xl font-semibold'>{title}</p>
+        <p className='text-xl font-medium lg:text-2xl'>{title}</p>
         <SearchBox
           onSearch={setFilterText}
           filterText={filterText}
@@ -103,25 +103,25 @@ function DataTableBase({
               count={10}
               width={'90%'}
               borderRadius={10}
-              containerClassName='flex-1 space-y-4'
+              containerClassName='md:flex-1 space-y-4'
             />
             <Skeleton
               count={10}
               width={'90%'}
               borderRadius={10}
-              containerClassName='flex-1 space-y-4'
+              containerClassName='md:flex-1 space-y-4'
             />
             <Skeleton
               count={10}
               width={'90%'}
               borderRadius={10}
-              containerClassName='flex-1 space-y-4'
+              containerClassName='lg:flex-1 space-y-4'
             />
             <Skeleton
               count={10}
               width={'90%'}
               borderRadius={10}
-              containerClassName='flex-1 space-y-4'
+              containerClassName='lg::flex-1 space-y-4'
             />
           </div>
         }

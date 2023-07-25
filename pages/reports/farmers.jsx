@@ -1,26 +1,37 @@
 import React from 'react';
 import ReportsNavigationTab from '@/components/ReportsNavigationTab';
+import dynamic from 'next/dynamic';
 import { BiMale, BiFemale } from 'react-icons/bi';
 import { GiFarmTractor } from 'react-icons/gi';
 import { FaGlobeAfrica } from 'react-icons/fa';
-import dynamic from 'next/dynamic';
+import { useTableData } from '@/hooks/fetchers';
 
-const NoSSRTabale = dynamic(() => import('@/components/DataTableBase'), {
+const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
 
-const FarmerOverviewStats = ({ title, icon }) => {
+const FarmerOverviewStats = ({ title, icon, value }) => {
   return (
     <div className='flex flex-col p-5 bg-white rounded-lg gap-9 shadow-3xl'>
       <p className='text-xl font-medium'>{title}</p>
       <div className='flex flex-row items-center justify-between'>
-        <p className='text-lg'>5000</p>
+        <p className='text-lg'>{value}</p>
         <div className='text-5xl'>{icon}</div>
       </div>
     </div>
   );
 };
 const Farmers = () => {
+  const {
+    filterText,
+    handlePageNumberChange,
+    setFilterText,
+    tableData,
+    tableDataIsLoading,
+  } = useTableData(
+    'https://internal-manager-api.onrender.com/api/reports?type=farmers',
+    true
+  );
   const farmerTableColumns = [
     {
       name: 'Name',
@@ -71,98 +82,35 @@ const Farmers = () => {
         <FarmerOverviewStats
           title='All Countries'
           icon={<FaGlobeAfrica className='text-[#073150]' />}
+          value={tableData?.countriesCovered}
         />
         <FarmerOverviewStats
           title='Female Farmers'
           icon={<BiFemale className='text-[#85B6FF]' />}
+          value={tableData?.totalFemaleFarmers}
         />
         <FarmerOverviewStats
           title='Male Farmers'
           icon={<BiMale className='text-[#FFD233]' />}
+          value={tableData?.totalMaleFarmers}
         />
         <FarmerOverviewStats
           title='Total Farmers'
           icon={<GiFarmTractor className='text-[#4ECB71]' />}
+          value={tableData?.totalFemaleFarmers + tableData?.totalMaleFarmers}
         />
       </div>
       <div className='grid grid-cols-4 gap-8 mt-5 font-sans'>
         <div className='col-span-4 px-5 py-2 bg-white rounded-lg lg:col-span-3 shadow-3xl'>
-          <NoSSRTabale
-            title='All Farmers'
-            searchParameter='name'
+          <NoSSRTable
+            data={tableData?.paginatedData}
             columns={farmerTableColumns}
-            data={[
-              {
-                id: 1,
-                name: 'Atalanta Redferne',
-                region: '89978 Bellgrove Drive',
-                category: 'Saxifragaceae',
-                contact: '427-261-1584',
-              },
-              {
-                id: 2,
-                name: 'Amandy Philippart',
-                region: '975 Tennessee Parkway',
-                category: 'Asteraceae',
-                contact: '747-864-6051',
-              },
-              {
-                id: 3,
-                name: 'Ilise MacKeeg',
-                region: '2766 Southridge Lane',
-                category: 'Monotropaceae',
-                contact: '723-152-2428',
-              },
-              {
-                id: 4,
-                name: 'Lock Dowyer',
-                region: '9 Ilene Circle',
-                category: 'Convolvulaceae',
-                contact: '116-753-4323',
-              },
-              {
-                id: 5,
-                name: 'Karolina Brimming',
-                region: '345 Eggendart Hill',
-                category: 'Malpighiaceae',
-                contact: '379-213-1055',
-              },
-              {
-                id: 6,
-                name: 'Gayle Lankford',
-                region: '05619 Union Parkway',
-                category: 'Geraniaceae',
-                contact: '438-213-7883',
-              },
-              {
-                id: 7,
-                name: 'Livvy Glyssanne',
-                region: '096 Tennyson Park',
-                category: 'Poaceae',
-                contact: '417-310-2197',
-              },
-              {
-                id: 8,
-                name: 'Francis Jiricka',
-                region: '47736 Springview Pass',
-                category: 'Poaceae',
-                contact: '735-295-1626',
-              },
-              {
-                id: 9,
-                name: 'Filippo Soaper',
-                region: '43462 Daystar Circle',
-                category: 'Olacaceae',
-                contact: '510-523-5427',
-              },
-              {
-                id: 10,
-                name: 'Eada Willatts',
-                region: '39 Amoth Avenue',
-                category: 'Poaceae',
-                contact: '708-497-9821',
-              },
-            ]}
+            title='Farmer Profiles'
+            loading={tableDataIsLoading}
+            totalRows={tableData?.totalRowCount}
+            handlePerRowsChange={handlePageNumberChange}
+            setFilterText={setFilterText}
+            filterText={filterText}
           />
         </div>
         <div className='flex-col items-center hidden px-8 overflow-y-auto bg-white rounded-lg lg:flex shadow-3xl'>

@@ -1,33 +1,13 @@
 import dynamic from 'next/dynamic';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import { useServiceTotals, useTableData } from '../hooks/fetchers';
 import { RiVoiceprintLine } from 'react-icons/ri';
 import { TbMessageDots } from 'react-icons/tb';
 import { CgNotes } from 'react-icons/cg';
+import StatsOverview from '../components/StatsOverView';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
-
-const StatsOverview = ({ title, icon, value }) => {
-  return (
-    <div className='flex flex-col gap-8 p-4 bg-white rounded-lg lg:gap-16 shadow-3xl'>
-      <div className='flex items-center justify-between'>
-        <p className='xl:text-[1.030rem] 2xl:text-[1.174rem] 3xl:text-[1.493rem] font-medium'>
-          {title}
-        </p>
-        <div className=' text-[#D27C2C] text-3xl 3xl:text-4xl'>{icon}</div>
-      </div>
-      <div className='flex items-center justify-between'>
-        <p className='text-xs font-light lg:text-base '>Updated 30mins ago</p>
-        <p className='text-[#055189] text-2xl'>
-          {value || <Skeleton count={1} width={'8rem'} borderRadius={10} />}
-        </p>
-      </div>
-    </div>
-  );
-};
 
 const recentPaymentsColumns = [
   {
@@ -46,7 +26,7 @@ const recentPaymentsColumns = [
   },
   {
     name: 'Amount',
-    selector: row => `₵ ${row.amount}`,
+    selector: row => row.amount,
     sortable: true,
   },
   {
@@ -74,9 +54,7 @@ const recentPaymentsColumns = [
 ];
 
 export default function Home() {
-  const { serviceTotals } = useServiceTotals(
-    `https://internal-manager-api.onrender.com/api/reports?type=service-total`
-  );
+  const { serviceTotals } = useServiceTotals();
   const {
     tableData,
     tableDataIsLoading,
@@ -84,13 +62,14 @@ export default function Home() {
     setFilterText,
     handlePageNumberChange,
   } = useTableData(
-    'https://internal-manager-api.onrender.com/api/reports?type=transactions'
+    'https://internal-manager-api.onrender.com/api/reports?type=transactions',
+    true
   );
 
   return (
     <>
       <div className='font-sans '>
-        <div className='grid md:grid-cols-3 gap-[1.4rem] mb-6 lg:mb-6s '>
+        <div className='grid md:grid-cols-3 gap-[1.4rem] mb-6 '>
           <StatsOverview
             title='Voice'
             icon={<RiVoiceprintLine />}
@@ -109,7 +88,7 @@ export default function Home() {
         </div>
         <div className='p-4 bg-white rounded-lg shadow-3xl '>
           <NoSSRTable
-            data={tableData?.transactions}
+            data={tableData?.paginatedData}
             columns={recentPaymentsColumns}
             title='Recent Payments'
             loading={tableDataIsLoading}

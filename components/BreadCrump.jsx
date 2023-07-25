@@ -13,7 +13,9 @@ const BreadCrumb = () => {
     let path = '';
 
     for (let i = 0; i < pathSegments.length; i++) {
-      path += '/' + pathSegments[i];
+      let pathValue = pathSegments[i];
+      if (pathValue.includes('id')) pathValue = router.query.id;
+      path += '/' + pathValue;
       const isLastSegment = i === pathSegments.length - 1;
 
       breadcrumbItems.push(
@@ -25,11 +27,11 @@ const BreadCrumb = () => {
                 href={path}
                 className='ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2'
               >
-                {pathSegments[i]}
+                {pathValue}
               </Link>
             ) : (
               <span className='ml-1 text-sm font-medium text-gray-500 md:ml-2'>
-                {pathSegments[i]}
+                {pathValue}
               </span>
             )}
           </div>

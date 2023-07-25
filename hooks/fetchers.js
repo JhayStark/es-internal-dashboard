@@ -2,7 +2,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 import { useState } from 'react';
 
-function useTableData(passedUrl) {
+function useTableData(passedUrl, includesQuery) {
   const tableDataFetcher = async url => {
     return await axios.get(url).then(res => res.data);
   };
@@ -11,10 +11,15 @@ function useTableData(passedUrl) {
   const [pageSize, setPageSize] = useState(10);
   const [filterText, setFilterText] = useState('');
 
-  const { data, error, isLoading } = useSWR(
-    `${passedUrl}&page=${pageNumber}&limit=${pageSize}&search=${filterText}`,
-    tableDataFetcher
-  );
+  let generatedUrl;
+
+  if (includesQuery) {
+    generatedUrl = `${passedUrl}&page=${pageNumber}&limit=${pageSize}&search=${filterText}`;
+  } else {
+    generatedUrl = `${passedUrl}?page=${pageNumber}&limit=${pageSize}&search=${filterText}`;
+  }
+
+  const { data, error, isLoading } = useSWR(generatedUrl, tableDataFetcher);
 
   const handlePageNumberChange = (newPerPage, page) => {
     setPageNumber(page);
@@ -31,12 +36,15 @@ function useTableData(passedUrl) {
   };
 }
 
-function useServiceTotals(passedUrl) {
+function useServiceTotals() {
   const statisticsFetcher = async url => {
     return await axios.get(url).then(res => res.data.data);
   };
 
-  const { data, error, isLoading } = useSWR(passedUrl, statisticsFetcher);
+  const { data, error, isLoading } = useSWR(
+    'https://internal-manager-api.onrender.com/api/reports?type=service-total',
+    statisticsFetcher
+  );
 
   return {
     serviceTotals: data,
@@ -45,4 +53,20 @@ function useServiceTotals(passedUrl) {
   };
 }
 
-export { useServiceTotals, useTableData };
+function useClientProfile(id) {
+  const profileFetcher = async url => {
+    return await axios.get(url).then(res => res.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `https://internal-manager-api.onrender.com/api/clients/${id}`,
+    profileFetcher
+  );
+  return {
+    profile: data,
+    profileisLoading: isLoading,
+    profileError: error,
+  };
+}
+
+export { useServiceTotals, useTableData, useClientProfile };

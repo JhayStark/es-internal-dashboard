@@ -1,34 +1,44 @@
-import { useState } from 'react';
-import { LuMoreVertical } from 'react-icons/lu';
-import { FiSettings } from 'react-icons/fi';
-import { clientInsytData } from '../../dummyData';
 import Modal from '@/components/Modal';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import useSwr from 'swr';
-import axios from 'axios';
 import Skeleton from 'react-loading-skeleton';
-// import 'react-loading-skeleton/dist/skeleton.css';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { useState } from 'react';
+import { LuMoreVertical } from 'react-icons/lu';
+import { FiSettings } from 'react-icons/fi';
+import { useClientProfile, useTableData } from '../../../hooks/fetchers';
+import { useRouter } from 'next/router';
 
-const profileFetcher = async url => {
-  const res = await axios.get(url);
-  return res.data.data;
-};
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
 
 const UserDetails = () => {
-  const {
-    data: profileData,
-    error: profileErrors,
-    isLoading: profileIsLoading,
-  } = useSwr(
-    'https://internal-manager-api.onrender.com/api/clients/profiles',
-    profileFetcher
-  );
+  const router = useRouter();
   const [tab, setTab] = useState('insyt');
   const [isOpen, setIsOpen] = useState(false);
+  const { profile } = useClientProfile(router.query.id);
+  const {
+    tableData: insyt,
+    filterText,
+    handlePageNumberChange,
+    setFilterText,
+    tableDataIsLoading,
+  } = useTableData(
+    'https://internal-manager-api.onrender.com/api/clients?type=insyt-data',
+    true
+  );
+
+  const {
+    tableData: push,
+    filterText: pushFilterText,
+    handlePageNumberChange: pushPageNumberChange,
+    setFilterText: pushSetFilterText,
+    tableDataIsLoading: pushTableDataIsLoading,
+  } = useTableData(
+    'https://internal-manager-api.onrender.com/api/clients?type=push-data',
+    true
+  );
 
   const openModal = () => {
     setIsOpen(true);
@@ -38,7 +48,7 @@ const UserDetails = () => {
     setIsOpen(false);
   };
 
-  const columns = [
+  const surveyColumns = [
     {
       name: 'Date Created',
       selector: 'dateCreated',
@@ -46,7 +56,7 @@ const UserDetails = () => {
     },
     {
       name: 'Form Name',
-      selector: 'campaignName',
+      selector: 'formName',
       sortable: true,
     },
     {
@@ -81,7 +91,56 @@ const UserDetails = () => {
       center: true,
     },
   ];
-  console.log(profileIsLoading);
+
+  const pushColumns = [
+    {
+      name: 'Date Created',
+      selector: 'dateCreated',
+      sortable: true,
+    },
+    {
+      name: 'Status',
+      selector: 'status',
+      sortable: true,
+      cell: row => (
+        <p
+          className={`${
+            row.status == 'scheduled'
+              ? 'text-green-500 bg-green-200 '
+              : 'text-red-500 bg-red-200'
+          } rounded-md px-2 text-sm`}
+        >
+          {row.status}
+        </p>
+      ),
+    },
+
+    {
+      name: 'Failed',
+      selector: 'failed',
+    },
+    {
+      name: 'Pending',
+      selector: 'pending',
+    },
+    {
+      name: 'Delivered',
+      selector: 'delivered',
+    },
+    {
+      name: 'Type',
+      selector: 'messageType',
+      sortable: true,
+    },
+    {
+      name: 'Actions',
+      cell: row => (
+        <div>
+          <LuMoreVertical className='text-2xl' />
+        </div>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -96,22 +155,33 @@ const UserDetails = () => {
                       <p className='text-lg font-semibold text-white'>E</p>
                     </div>
                     <p className='text-3xl font-semibold text-[#2A3547]'>
-                      {profileData?.clientName}
+                      {profile?.clientName || (
+                        <Skeleton count={1} width={'8rem'} borderRadius={10} />
+                      )}
                     </p>
                   </div>
                   <p className='text-[#828282] text-sm mt-3'>
-                    Joined on 26th July 2021
+                    Joined on{' '}
+                    {profile?.dateJoined || (
+                      <Skeleton count={1} width={'8rem'} borderRadius={10} />
+                    )}
                   </p>
                 </div>
                 <div className='flex flex-col justify-end'>
                   <p className='font-medium  text-[#2A3547] '>
-                    Pawpaw Street, East legon Ghana
+                    {profile?.address || (
+                      <Skeleton count={1} width={'8rem'} borderRadius={10} />
+                    )}
                   </p>
                   <p className='font-medium text-sm text-[#2A3547] '>
-                    0201234567 / 0307894561
+                    {profile?.contact || (
+                      <Skeleton count={1} width={'8rem'} borderRadius={10} />
+                    )}
                   </p>
                   <p className='font-medium text-sm text-[#2A3547] '>
-                    esoko@gmail.com
+                    {profile?.email || (
+                      <Skeleton count={1} width={'8rem'} borderRadius={10} />
+                    )}
                   </p>
                 </div>
               </div>
@@ -143,7 +213,7 @@ const UserDetails = () => {
                 }`}
                 onClick={() => setTab('insyt')}
               >
-                Insyt
+                Surveys
               </p>
 
               <p
@@ -158,9 +228,9 @@ const UserDetails = () => {
           </div>
         </div>
         <div className=' hidden lg:block col-span-2 3xl:mx-3 px-4 py-5 bg-white rounded-lg shadow-3xl max-h-[18rem] 2xl:max-h-[20rem]'>
-          <p className='text-3xl font-semibold text-[#1252A6] mb-6'>insyt</p>
+          <p className='text-3xl font-semibold text-[#1252A6] mb-6'>Surveys</p>
           <p className='text-center 2xl:py-10 py-8 text-[2.5rem] font-semibold'>
-            985
+            {profile?.totalForms}
           </p>
           <div className='flex flex-row items-center justify-between w-full'>
             <div className='flex flex-col gap-1'>
@@ -187,7 +257,8 @@ const UserDetails = () => {
           </div>
           <p>Last top-up: ₵500</p>
           <p className='text-center 2xl:py-10 py-8 text-[2.5rem] self-center font-semibold text-green-400'>
-            <span className='text-2xl'>₵</span>85.00
+            <span className='text-2xl'>₵</span>
+            {profile?.smsBalance}.00
           </p>
           <div className='flex flex-row items-center justify-between w-full'>
             <div className='flex flex-col gap-1'>
@@ -204,12 +275,29 @@ const UserDetails = () => {
         </div>
       </div>
       <div className='w-full p-4 bg-white rounded-lg shadow-3xl mt-14 '>
-        <NoSSRTable
-          columns={columns}
-          data={clientInsytData}
-          title={tab === 'insyt' ? 'Forms' : 'Messages'}
-          searchParameter='campaignName'
-        />
+        {tab === 'insyt' ? (
+          <NoSSRTable
+            columns={surveyColumns}
+            data={insyt?.paginatedData}
+            title='Surveys'
+            loading={tableDataIsLoading}
+            totalRows={insyt?.totalRowCount}
+            handlePerRowsChange={handlePageNumberChange}
+            setFilterText={setFilterText}
+            filterText={filterText}
+          />
+        ) : (
+          <NoSSRTable
+            columns={pushColumns}
+            data={push?.paginatedData}
+            title='Messages'
+            loading={pushTableDataIsLoading}
+            totalRows={push?.totalRowCount}
+            handlePerRowsChange={pushPageNumberChange}
+            setFilterText={pushSetFilterText}
+            filterText={pushFilterText}
+          />
+        )}
       </div>
       <Modal modalState={isOpen} close={closeModal} />
     </>
