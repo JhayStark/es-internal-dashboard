@@ -14,8 +14,8 @@ const MenuItem = ({ path, isActive, icon, title }) => {
         }`}
       >
         <div className='flex flex-row items-center justify-start gap-4  xl:w-[9.33rem]'>
-          <div className='text-3xl'>{icon}</div>
-          <p className='xl:text-[1.030rem]  2xl:text-[1.174rem]  font-medium '>
+          <div className='text-2xl 3xl:text-3xl'>{icon}</div>
+          <p className='xl:text-[1.030rem]  3xl:text-[1.174rem]  font-medium '>
             {title}
           </p>
         </div>

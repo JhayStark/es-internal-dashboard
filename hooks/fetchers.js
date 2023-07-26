@@ -2,7 +2,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 import { useState } from 'react';
 
-function useTableData(passedUrl, includesQuery) {
+function useTableData(passedUrl) {
   const tableDataFetcher = async url => {
     return await axios.get(url).then(res => res.data);
   };
@@ -11,15 +11,10 @@ function useTableData(passedUrl, includesQuery) {
   const [pageSize, setPageSize] = useState(10);
   const [filterText, setFilterText] = useState('');
 
-  let generatedUrl;
-
-  if (includesQuery) {
-    generatedUrl = `${passedUrl}&page=${pageNumber}&limit=${pageSize}&search=${filterText}`;
-  } else {
-    generatedUrl = `${passedUrl}?page=${pageNumber}&limit=${pageSize}&search=${filterText}`;
-  }
-
-  const { data, error, isLoading } = useSWR(generatedUrl, tableDataFetcher);
+  const { data, error, isLoading } = useSWR(
+    `${passedUrl}?page=${pageNumber}&limit=${pageSize}&search=${filterText}`,
+    tableDataFetcher
+  );
 
   const handlePageNumberChange = (newPerPage, page) => {
     setPageNumber(page);
@@ -29,7 +24,6 @@ function useTableData(passedUrl, includesQuery) {
   const handlePageChange = page => {
     setPageNumber(page);
   };
-  console.log(pageSize, pageNumber);
 
   return {
     tableData: data,
@@ -48,7 +42,7 @@ function useServiceTotals() {
   };
 
   const { data, error, isLoading } = useSWR(
-    'https://internal-manager-api.onrender.com/api/reports?type=service-total',
+    'https://internal-manager-api.onrender.com/api/reports/service-total',
     statisticsFetcher
   );
 
@@ -75,4 +69,24 @@ function useClientProfile(id) {
   };
 }
 
-export { useServiceTotals, useTableData, useClientProfile };
+function useRegionalDistribution() {
+  const regionalDistributionFetcher = async url => {
+    return await axios.get(url).then(res => res.data.regionalDistributions);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `https://internal-manager-api.onrender.com/api/reports/regional-distributions`,
+    regionalDistributionFetcher
+  );
+  return {
+    regionalDistribution: data,
+    regionalDistributionisLoading: isLoading,
+    regionalDistributionError: error,
+  };
+}
+export {
+  useServiceTotals,
+  useTableData,
+  useClientProfile,
+  useRegionalDistribution,
+};

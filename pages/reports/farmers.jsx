@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { BiMale, BiFemale } from 'react-icons/bi';
 import { GiFarmTractor } from 'react-icons/gi';
 import { FaGlobeAfrica } from 'react-icons/fa';
-import { useTableData } from '@/hooks/fetchers';
+import { useTableData, useRegionalDistribution } from '@/hooks/fetchers';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
@@ -12,11 +12,11 @@ const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
 
 const FarmerOverviewStats = ({ title, icon, value }) => {
   return (
-    <div className='flex flex-col p-5 bg-white rounded-lg gap-9 shadow-3xl'>
+    <div className='flex flex-col gap-5 p-5 bg-white rounded-lg shadow-3xl'>
       <p className='text-xl font-medium'>{title}</p>
       <div className='flex flex-row items-center justify-between'>
         <p className='text-lg'>{value}</p>
-        <div className='text-5xl'>{icon}</div>
+        <div className='text-4xl 3xl:text-5xl'>{icon}</div>
       </div>
     </div>
   );
@@ -29,9 +29,11 @@ const Farmers = () => {
     tableData,
     tableDataIsLoading,
   } = useTableData(
-    'https://internal-manager-api.onrender.com/api/reports?type=farmers',
+    'https://internal-manager-api.onrender.com/api/reports/farmers',
     true
   );
+
+  const { regionalDistribution } = useRegionalDistribution();
   const farmerTableColumns = [
     {
       name: 'Name',
@@ -69,16 +71,16 @@ const Farmers = () => {
     <div>
       <ReportsNavigationTab />
       <div className='flex flex-row items-center mb-2 '>
-        <p className='text-xl font-medium'>Select Country:</p>
+        <p className='text-lg font-medium 3xl:text-xl'>Select Country:</p>
         <select
           name=''
           id=''
-          className='px-1 text-lg ml-2 rounded-xl bg-[#e3c24a] focus:outline-none'
+          className='px-1  3xl:text-lg ml-2 rounded-xl bg-[#e3c24a] focus:outline-none'
         >
-          <option value=''>Ghana</option>
+          <option value='gh'>Ghana</option>
         </select>
       </div>
-      <div className='hidden grid-cols-4 font-sans lg:gap-8 lg:grid'>
+      <div className='hidden grid-cols-4 gap-4 font-sans 2xl:gap-8 lg:grid'>
         <FarmerOverviewStats
           title='All Countries'
           icon={<FaGlobeAfrica className='text-[#073150]' />}
@@ -100,8 +102,8 @@ const Farmers = () => {
           value={tableData?.totalFemaleFarmers + tableData?.totalMaleFarmers}
         />
       </div>
-      <div className='grid grid-cols-4 gap-8 mt-5 font-sans'>
-        <div className='col-span-4 px-5 py-2 bg-white rounded-lg lg:col-span-3 shadow-3xl'>
+      <div className='grid grid-cols-4 gap-4 mt-5 font-sans 2xl:gap-8 '>
+        <div className='col-span-4 px-5 py-2 bg-white rounded-lg lg:col-span-3 shadow-3xl '>
           <NoSSRTable
             data={tableData?.paginatedData}
             columns={farmerTableColumns}
@@ -113,75 +115,25 @@ const Farmers = () => {
             filterText={filterText}
           />
         </div>
-        <div className='flex-col items-center hidden px-8 overflow-y-auto bg-white rounded-lg lg:flex shadow-3xl'>
-          <p className='sticky top-0 py-3 text-lg font-medium text-center bg-white '>
+        <div className='flex-col items-center hidden px-3 3xl:px-8 overflow-y-auto bg-white rounded-lg lg:flex shadow-3xl max-h-[46rem] '>
+          <p className='sticky top-0 py-3 font-medium text-center bg-white 3xl:text-lg '>
             Regional Distribution of Farmers
           </p>
-          <div className='flex flex-col gap-2 pt-2 pb-4'>
-            <div className='grid w-full grid-cols-2 py-2 '>
-              <p className='text-lg text-left text-[#214BB8]'>Greater Accra</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Eastern</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Ahafo</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Greater Accra</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Eastern</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Ahafo</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Greater Accra</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Eastern</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Ahafo</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Greater Accra</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Eastern</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Ahafo</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Greater Accra</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Eastern</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Ahafo</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
-            <div className='grid w-full grid-cols-2 py-2'>
-              <p className='text-lg text-left text-[#214BB8]'>Greater Accra</p>
-              <p className='text-xl font-medium text-right'>515,123</p>
-            </div>
+          <div className='flex flex-col pt-2 pb-4 '>
+            {regionalDistribution?.map((region, index) => (
+              <div className='grid items-center w-full grid-cols-2 space-y-3'>
+                <p
+                  className={`3xl:text-lg text-left ${
+                    index % 2 === 0 ? 'text-[#073150]' : 'text-[#85B6FF]'
+                  }`}
+                >
+                  {region.region}
+                </p>
+                <p className='text-lg font-medium text-right 3xl:text-xl'>
+                  {region.value}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

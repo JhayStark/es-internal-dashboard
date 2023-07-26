@@ -59,7 +59,7 @@ const BreadCrumbMobileDevices = () => {
             <option value='settings'>Settings</option>
           </select>
         </li>
-        {getBreadcrumbItems()}
+        {/* {getBreadcrumbItems()} */}
       </ol>
     </nav>
   );

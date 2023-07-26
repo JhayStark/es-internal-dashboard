@@ -62,7 +62,7 @@ export default function Home() {
     setFilterText,
     handlePageNumberChange,
   } = useTableData(
-    'https://internal-manager-api.onrender.com/api/reports?type=transactions',
+    'https://internal-manager-api.onrender.com/api/reports/transactions',
     true
   );
 

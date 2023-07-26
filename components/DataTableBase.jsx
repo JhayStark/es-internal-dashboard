@@ -7,16 +7,16 @@ import { MdClear, MdOutlineSearch } from 'react-icons/md';
 const customStyles = {
   rows: {
     style: {
-      paddingTop: '1.5rem',
-      paddingBottom: '1.5rem',
-      fontSize: '1.05rem',
+      paddingTop: '1rem',
+      paddingBottom: '1rem',
+      fontSize: '0.9rem',
     },
   },
   headCells: {
     style: {
-      paddingTop: '1.5rem',
-      paddingBottom: '1.5rem',
-      fontSize: '1.05rem',
+      paddingTop: '1rem',
+      paddingBottom: '1rem',
+      fontSize: '1rem',
     },
   },
 };
@@ -39,7 +39,7 @@ const SearchBox = ({ onSearch, filterText, setResetPagination }) => {
   }, [input, 500]);
 
   return (
-    <div className='flex flex-row items-center border-[1px] focus:outline-none rounded p-2'>
+    <div className='flex flex-row items-center border-[1px] focus:outline-none rounded-md p-2 '>
       <MdOutlineSearch className='mr-1 text-xl text-gray-400' />
       <input
         type='text'
@@ -70,8 +70,8 @@ function DataTableBase({
 
   return (
     <>
-      <div className='flex flex-col justify-between gap-3 px-3 pt-3 mb-5 md:gap-0 md:items-center md:flex-row'>
-        <p className='text-xl font-medium lg:text-2xl'>{title}</p>
+      <div className='flex flex-col justify-between gap-3 px-3 pt-2 md:gap-0 md:items-center md:flex-row'>
+        <p className='text-lg font-medium xl:text-xl 3xl:text-2xl'>{title}</p>
         <SearchBox
           onSearch={setFilterText}
           filterText={filterText}

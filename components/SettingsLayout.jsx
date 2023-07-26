@@ -1,10 +1,7 @@
 import { RxAvatar } from 'react-icons/rx';
 import { AiOutlineUser } from 'react-icons/ai';
 import { RiKey2Line } from 'react-icons/ri';
-import {
-  MdOutlineNotificationsNone,
-  MdOutlineAdminPanelSettings,
-} from 'react-icons/md';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 

@@ -24,7 +24,7 @@ const Clients = () => {
 
   const columns = [
     {
-      name: 'Joined Date',
+      name: 'Joined',
       selector: row => row['dateJoined'],
       sortable: true,
     },
@@ -34,7 +34,7 @@ const Clients = () => {
       sortable: true,
     },
     {
-      name: 'Sms Balance',
+      name: 'Balance',
       selector: row => row['smsBalance'],
       center: true,
     },
@@ -88,22 +88,22 @@ const Clients = () => {
           <div className='flex flex-row items-center justify-between'>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#214BB8]'></div>
-              <p className='text-lg font-semibold'>2250</p>
+              <p className='text-lg font-medium'>2250</p>
               <p className='text-sm text-[#7E7E7E]'>Surveys</p>
             </div>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#FE634E]'></div>
-              <p className='text-lg font-semibold'>2250</p>
+              <p className='text-lg font-medium'>2250</p>
               <p className='text-sm text-[#7E7E7E]'>Sms</p>
             </div>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#45ADDA]'></div>
-              <p className='text-lg font-semibold'>2250</p>
+              <p className='text-lg font-medium'>2250</p>
               <p className='text-sm text-[#7E7E7E]'>Voice</p>
             </div>
           </div>
         </div>
-        <div className='h-full col-span-3 p-4 bg-white roundesd-lg lg:col-span-2 shadow-3xl '>
+        <div className='h-full col-span-3 p-4 bg-white rounded-lg lg:col-span-2 shadow-3xl '>
           <NoSSRTable
             title='Clients'
             searchParameter='clientName'
