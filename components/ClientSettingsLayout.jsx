@@ -9,6 +9,21 @@ import {
 import { useRouter } from 'next/router';
 import { useClientProfile } from '../hooks/fetchers';
 
+const MenuItem = ({ route, isActive, icon, title }) => {
+  return (
+    <Link href={route}>
+      <div
+        className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
+          isActive ? 'text-[#055189]' : 'text-[#747474]'
+        }`}
+      >
+        <div className='text-lg'>{icon}</div>
+        <p>{title}</p>
+      </div>
+    </Link>
+  );
+};
+
 const ClientSettingsLayout = ({ children }) => {
   const router = useRouter();
   const { profile } = useClientProfile(router.query.id);
@@ -25,54 +40,30 @@ const ClientSettingsLayout = ({ children }) => {
             <p className='text-[#747474]'>{profile?.client.address}</p>
           </div>
           <div className='flex flex-col items-center gap-10 pt-11'>
-            <Link href={`/clients/${router.query.id}/settings/`}>
-              <div
-                className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                  router.pathname === '/clients/settings'
-                    ? 'text-[#055189]'
-                    : 'text-[#747474]'
-                }`}
-              >
-                <AiOutlineUser className='text-lg' />
-                <p>Edit Profile</p>
-              </div>
-            </Link>
-            <Link href={`/clients/${router.query.id}/settings/password`}>
-              <div
-                className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                  router.pathname === '/clients/settings/password'
-                    ? 'text-[#055189]'
-                    : 'text-[#747474]'
-                }`}
-              >
-                <RiKey2Line className='text-lg' />
-                <p>Reset Password</p>
-              </div>
-            </Link>
-            <Link href={`/clients/${router.query.id}/settings/services`}>
-              <div
-                className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                  router.pathname === '/clients/settings/services'
-                    ? 'text-[#055189]'
-                    : 'text-[#747474]'
-                }`}
-              >
-                <MdOutlineNotificationsNone className='text-lg' />
-                <p>Enabled Services</p>
-              </div>
-            </Link>
-            <Link href={`/clients/${router.query.id}/settings/admins`}>
-              <div
-                className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                  router.pathname === '/clients/settings/admins'
-                    ? 'text-[#055189]'
-                    : 'text-[#747474]'
-                }`}
-              >
-                <MdOutlineAdminPanelSettings className='text-lg' />
-                <p>Collaborators</p>
-              </div>
-            </Link>
+            <MenuItem
+              icon={<AiOutlineUser />}
+              route={`/clients/${router.query.id}/settings`}
+              isActive={router.pathname === `/clients/[id]/settings`}
+              title='Edit Profile'
+            />
+            <MenuItem
+              icon={<RiKey2Line />}
+              route={`/clients/${router.query.id}/settings/password`}
+              isActive={router.pathname === `/clients/[id]/settings/password`}
+              title='Reset Password'
+            />
+            <MenuItem
+              icon={<MdOutlineNotificationsNone />}
+              route={`/clients/${router.query.id}/settings/services`}
+              isActive={router.pathname === `/clients/[id]/settings/services`}
+              title='Enabled Services'
+            />
+            <MenuItem
+              icon={<MdOutlineAdminPanelSettings />}
+              route={`/clients/${router.query.id}/settings/admins`}
+              isActive={router.pathname === `/clients/[id]/settings/admins`}
+              title='Collaborators'
+            />
           </div>
         </div>
         <div className='lg:col-span-4 rounded-lg  col-span-6 p-4 bg-white 3xl:col-span-3 shadow-3xl  2xl:h-[45rem] 3xl:h-[55rem] font-sans'>

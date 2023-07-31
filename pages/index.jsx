@@ -12,26 +12,26 @@ const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
 const recentPaymentsColumns = [
   {
     name: 'Transaction ID',
-    selector: row => row.transactionId,
+    selector: row => row['transactionId'],
   },
   {
     name: 'Client Name',
-    selector: row => row.clientName,
+    selector: row => row['clientName'],
     sortable: true,
   },
   {
     name: 'Date',
-    selector: row => row.transactionDate,
+    selector: row => row['transactionDate'],
     sortable: true,
   },
   {
     name: 'Amount',
-    selector: row => row.amount,
+    selector: row => row['amount'],
     sortable: true,
   },
   {
     name: 'Status',
-    selector: row => row.status,
+    selector: row => row['status'],
     cell: row => (
       <>
         <p

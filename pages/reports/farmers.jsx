@@ -119,7 +119,7 @@ const Farmers = () => {
           <p className='sticky top-0 py-3 font-medium text-center bg-white 3xl:text-lg '>
             Regional Distribution of Farmers
           </p>
-          <div className='flex flex-col pt-2 pb-4 '>
+          <div className='flex flex-col '>
             {regionalDistribution?.map((region, index) => (
               <div className='grid items-center w-full grid-cols-2 space-y-3'>
                 <p

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useEffect, useState } from 'react';
 import { MdClear, MdOutlineSearch } from 'react-icons/md';
 
 const customStyles = {
@@ -21,14 +21,12 @@ const customStyles = {
   },
 };
 
-const SearchBox = ({ onSearch, filterText, setResetPagination }) => {
+const SearchBox = ({ onSearch, setResetPagination }) => {
   const [input, setInput] = useState('');
 
   const handleClear = () => {
-    if (filterText) {
-      setResetPagination(true);
-      setInput('');
-    }
+    setResetPagination(true);
+    setInput('');
   };
 
   useEffect(() => {
@@ -92,7 +90,7 @@ function DataTableBase({
         onChangePage={handlePageChange}
         progressPending={loading}
         progressComponent={
-          <div className='flex flex-row w-full '>
+          <div className='flex flex-row w-full mt-3'>
             <Skeleton
               count={10}
               width={'90%'}

@@ -1,10 +1,10 @@
 import PieChartComponent from '@/components/PieChart';
 import dynamic from 'next/dynamic';
+import StatsOverView from '@/components/StatsOverView';
 import { FaUsers, FaUserSlash } from 'react-icons/fa';
 import { AiOutlineCheckCircle, AiOutlineEye } from 'react-icons/ai';
 import { useRouter } from 'next/router';
 import { useTableData, useServiceTotals } from '../../hooks/fetchers';
-import StatsOverView from '@/components/StatsOverView';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,

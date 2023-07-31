@@ -1,7 +1,10 @@
 import ClientSettingsLayout from '@/components/ClientSettingsLayout';
-import React from 'react';
+import { useClientProfile } from '@/hooks/fetchers';
+import { useRouter } from 'next/router';
 
 const Index = () => {
+  const router = useRouter();
+  const { profile } = useClientProfile(router.query.id);
   return (
     <ClientSettingsLayout>
       <div className='pb-5 border-b-[1px]'>
@@ -18,7 +21,7 @@ const Index = () => {
               <input
                 type='text'
                 className='border-[1px] py-3 px-5 rounded'
-                placeholder='Doe Ltd'
+                placeholder={profile?.client.clientName || 'Doe Ltd'}
               />
             </div>
             <div className='flex flex-col w-full gap-2'>
@@ -26,7 +29,7 @@ const Index = () => {
               <input
                 type='text'
                 className='border-[1px] py-3 px-5 rounded'
-                placeholder='0247546545'
+                placeholder={profile?.client.contact || '0247546545'}
               />
             </div>
             <div className='flex flex-col w-full gap-2'>
@@ -34,7 +37,7 @@ const Index = () => {
               <input
                 type='text'
                 className='border-[1px] py-3 px-5 rounded'
-                placeholder='doeltd@gmail.com'
+                placeholder={profile?.client.email || 'doeltd@gmail.com'}
               />
             </div>
             <div className='flex flex-col w-full gap-2'>
@@ -42,7 +45,7 @@ const Index = () => {
               <input
                 type='text'
                 className='border-[1px] py-3 px-5 rounded'
-                placeholder='Potato lane, Accra'
+                placeholder={profile?.client.address || 'Potato lane, Accra'}
               />
             </div>
           </div>

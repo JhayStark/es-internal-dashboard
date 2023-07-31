@@ -1,5 +1,5 @@
 import ClientSettingsLayout from '@/components/ClientSettingsLayout';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const ToggleButton = () => {
   const [isToggled, setIsToggled] = useState(false);

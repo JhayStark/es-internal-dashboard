@@ -84,9 +84,27 @@ function useRegionalDistribution() {
     regionalDistributionError: error,
   };
 }
+
+function useAdmins() {
+  const adminsFetcher = async url => {
+    return await axios.get(url).then(res => res.data.admins);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    'https://internal-manager-api.onrender.com/api/admins',
+    adminsFetcher
+  );
+  return {
+    adminData: data,
+    adminDataIsLoading: isLoading,
+    adminDataError: error,
+  };
+}
+
 export {
   useServiceTotals,
   useTableData,
   useClientProfile,
   useRegionalDistribution,
+  useAdmins,
 };
