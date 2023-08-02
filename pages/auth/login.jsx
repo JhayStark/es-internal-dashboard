@@ -1,9 +1,13 @@
+import { useRouter } from 'next/router';
 import Image from 'next/image';
-import React from 'react';
 import axios from 'axios';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { AuthContext } from '@/context/AuthProvider';
 
 const Login = () => {
+  const { loginUser, saveToken } = useContext(AuthContext);
+  const router = useRouter();
   const defaultValues = {
     email: '',
     password: '',
@@ -52,7 +56,11 @@ const Login = () => {
                     'https://internal-manager-api.onrender.com/api/auth/login',
                     data
                   )
-                  .then(res => console.log(res.data))
+                  .then(res => {
+                    saveToken(res.data);
+                    loginUser();
+                    router.push('/');
+                  })
                   .catch(e => console.log(e));
               })}
             >

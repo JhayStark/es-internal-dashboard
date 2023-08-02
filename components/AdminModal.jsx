@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import api from '../utils/axiosInstance';
 
 const AdminModal = ({ modalState, close }) => {
   const defaultValues = {
@@ -21,7 +22,20 @@ const AdminModal = ({ modalState, close }) => {
         <div className='fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center backdrop-blur-[2px] backdrop-invert-[20%] font-sans  '>
           <div className='w-[30%] p-4 mx-auto bg-white rounded-lg shadow-lg'>
             <h2 className='mb-4 text-xl font-bold'>Add New Admin</h2>
-            <form onSubmit={handleSubmit(data => {})}>
+            <form
+              onSubmit={handleSubmit(data => {
+                api
+                  .post('/admins/add-admins', {
+                    ['admin_name']: data.name,
+                    role: data.role,
+                    department: data.department,
+                    password: data.password,
+                  })
+                  .then(res => {
+                    alert('added');
+                  });
+              })}
+            >
               <div className='flex flex-col w-full gap-5 py-4'>
                 <div className='flex flex-col w-full gap-2'>
                   <p>Name:</p>

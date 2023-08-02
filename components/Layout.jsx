@@ -1,12 +1,21 @@
 import BreadCrump from './BreadCrump';
 import BreadCrumpMobileDevice from './BreadCrumpMobileDevice';
 import Sidebar from './Sidebar';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { RxAvatar } from 'react-icons/rx';
+import { AuthContext } from '@/context/AuthProvider';
 
 const NavBar = ({ menuState, handleMenuToggle }) => {
+  const { user, logoutUser } = useContext(AuthContext);
+  console.log(user);
   return (
-    <div className='sticky top-0 flex flex-row justify-between py-4 bg-[#EDF3FF] z-50 '>
+    <div
+      onClick={() => {
+        if (menuState) handleMenuToggle(false);
+        return null;
+      }}
+      className='sticky top-0 flex flex-row justify-between py-4 bg-[#EDF3FF] z-50 '
+    >
       <div className='hidden xl:block'>
         <BreadCrump />
       </div>
@@ -14,7 +23,7 @@ const NavBar = ({ menuState, handleMenuToggle }) => {
         <BreadCrumpMobileDevice />
       </div>
       <div className='flex flex-row items-center gap-2'>
-        <p>Hi Joel</p>
+        <p>Hi {user && `${user['admin_name']}`}</p>
         <div>
           <RxAvatar
             className='text-2xl cursor-pointer'
@@ -22,7 +31,7 @@ const NavBar = ({ menuState, handleMenuToggle }) => {
           />
           {menuState && (
             <div className='absolute p-2 mt-1 font-medium text-red-500 bg-white rounded shadow-2xl cursor-pointer right-1 '>
-              Log Out
+              <p onClick={() => logoutUser()}>Log Out</p>
             </div>
           )}
         </div>

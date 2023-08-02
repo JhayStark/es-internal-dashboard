@@ -58,7 +58,7 @@ const Admins = () => {
         <p className='text-lg font-medium text-center'>Action</p>
       </div>
       {adminData?.map(admin => (
-        <div className='grid grid-cols-4 gap-12 p-5 bg-[#EDF3FF]'>
+        <div className='grid grid-cols-4 gap-12 p-5 '>
           <p className='text-lg font-medium text-[#747474] text-left'>
             {admin?.admin_name}
           </p>

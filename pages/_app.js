@@ -1,7 +1,8 @@
 import '@/styles/globals.css';
+import Layout from '@/components/Layout';
 import { Poppins } from 'next/font/google';
 import { useRouter } from 'next/router';
-import Layout from '@/components/Layout';
+import { AuthContextProvider } from '@/context/AuthProvider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -13,14 +14,16 @@ const poppins = Poppins({
 export default function App({ Component, pageProps }) {
   const router = useRouter();
   return (
-    <main className={`${poppins.variable}`}>
-      {router.pathname.includes('/auth') ? (
-        <Component {...pageProps} />
-      ) : (
-        <Layout>
+    <AuthContextProvider>
+      <main className={`${poppins.variable}`}>
+        {router.pathname.includes('/auth') ? (
           <Component {...pageProps} />
-        </Layout>
-      )}
-    </main>
+        ) : (
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        )}
+      </main>
+    </AuthContextProvider>
   );
 }

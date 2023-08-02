@@ -3,11 +3,12 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { LuMoreVertical } from 'react-icons/lu';
 import { FiSettings } from 'react-icons/fi';
 import { useClientProfile, useTableData } from '../../../hooks/fetchers';
 import { useRouter } from 'next/router';
+import { AuthContext } from '@/context/AuthProvider';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
@@ -55,6 +56,7 @@ const UserDetails = () => {
   const [tab, setTab] = useState('insyt');
   const [isOpen, setIsOpen] = useState(false);
   const { profile } = useClientProfile(router.query.id);
+  const { user } = useContext(AuthContext);
 
   const {
     tableData: insyt,
@@ -223,18 +225,22 @@ const UserDetails = () => {
                       <Skeleton count={1} width={'5rem'} borderRadius={10} />
                     )}
                   </p>
-                  <button
-                    className='bg-[#F24E1E] hidden sm:block text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
-                    onClick={openModal}
-                  >
-                    Top-up
-                  </button>
-                  <button
-                    className='bg-[#F24E1E] text-2xl sm:hidden cursor-pointer  font-medium shadow-md hover:scale-110 text-white rounded-lg py-1 px-3'
-                    onClick={openModal}
-                  >
-                    +
-                  </button>
+                  {user?.role?.includes('Finance') && (
+                    <button
+                      className='bg-[#F24E1E] hidden sm:block text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
+                      onClick={openModal}
+                    >
+                      Top-up
+                    </button>
+                  )}
+                  {user?.role?.includes('Finance') && (
+                    <button
+                      className='bg-[#F24E1E] text-2xl sm:hidden cursor-pointer  font-medium shadow-md hover:scale-110 text-white rounded-lg py-1 px-3'
+                      onClick={openModal}
+                    >
+                      +
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -290,18 +296,20 @@ const UserDetails = () => {
           </div>
         </div>
         <div className='hidden lg:block col-span-2 px-4 py-5 3xl:mx-3 bg-white rounded-lg shadow-3xl max-h-[20rem]'>
-          <div className='flex flex-row items-center justify-between w-full'>
+          <div className='flex flex-row items-center justify-between w-full mb-6'>
             <p className='2xl:text-2xl text-xl font-semibold text-[#F24E1E]'>
               Push
             </p>
-            <button
-              className='bg-[#F24E1E] text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
-              onClick={openModal}
-            >
-              Top-up
-            </button>
+            {user?.role?.includes('Finance') && (
+              <button
+                className='bg-[#F24E1E] text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
+                onClick={openModal}
+              >
+                Top-up
+              </button>
+            )}
           </div>
-          <p>Last top-up: ₵500</p>
+
           <p className='self-center py-8 text-xl font-semibold text-center text-green-400 lg:text-2xl 2xl:py-10 2xl:text-3xl'>
             <span className='text-base 2xl:text-2xl'>₵</span>
             {profile?.client.smsBalance}
