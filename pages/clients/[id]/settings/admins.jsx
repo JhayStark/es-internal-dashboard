@@ -13,7 +13,6 @@ const Admins = () => {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const { profile } = useClientProfile(router.query.id);
-  console.log(profile);
 
   const openModal = () => {
     setIsOpen(true);
@@ -58,7 +57,7 @@ const Admins = () => {
         <p className='text-lg font-medium text-center'>Action</p>
       </div>
       {profile?.collaborators.map(admin => (
-        <div className='grid grid-cols-3 p-5 '>
+        <div key={admin.name} className='grid grid-cols-3 p-5 '>
           <p className='text-lg font-medium text-[#747474] text-left'>
             {admin.name}
           </p>

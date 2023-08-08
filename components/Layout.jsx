@@ -7,7 +7,6 @@ import { AuthContext } from '@/context/AuthProvider';
 
 const NavBar = ({ menuState, handleMenuToggle }) => {
   const { user, logoutUser } = useContext(AuthContext);
-  console.log(user);
   return (
     <div
       onClick={() => {
@@ -23,7 +22,7 @@ const NavBar = ({ menuState, handleMenuToggle }) => {
         <BreadCrumpMobileDevice />
       </div>
       <div className='flex flex-row items-center gap-2'>
-        <p>Hi {user && `${user['admin_name']}`}</p>
+        <p>Hi {user && `${user['name']}`}</p>
         <div>
           <RxAvatar
             className='text-2xl cursor-pointer'

@@ -14,18 +14,17 @@ const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
 
-const Action = ({ push }) => {
-  const [open, setOpen] = useState(false);
+const Action = ({ push, open, id, setOpen }) => {
   return (
     <div>
       <LuMoreVertical
         className='text-2xl cursor-pointer'
-        onClick={() => setOpen(prev => !prev)}
+        onClick={() => setOpen(id)}
       />
       {!push ? (
         <div
           className={`${
-            open ? 'block' : 'hidden'
+            open === id ? 'block' : 'hidden'
           } absolute p-2 space-y-2 lg:text-base text-sm font-medium bg-white z-50 shadow-lg top-2`}
         >
           <p className='text-green-500 cursor-pointer hover:opacity-60'>
@@ -38,7 +37,7 @@ const Action = ({ push }) => {
       ) : (
         <div
           className={`${
-            open ? 'block' : 'hidden'
+            open === id ? 'block' : 'hidden'
           } absolute p-3 space-y-2 font-medium bg-white z-50 shadow-lg left-1 top-2`}
         >
           <p className='text-green-500 cursor-pointer hover:opacity-60'>
@@ -55,6 +54,7 @@ const UserDetails = () => {
   const router = useRouter();
   const [tab, setTab] = useState('insyt');
   const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const { profile } = useClientProfile(router.query.id);
   const { user } = useContext(AuthContext);
 
@@ -123,7 +123,14 @@ const UserDetails = () => {
     },
     {
       name: 'Actions',
-      cell: row => <Action />,
+      cell: row => (
+        <Action
+          id={row.formId}
+          key={row.formId}
+          open={open}
+          setOpen={setOpen}
+        />
+      ),
       center: true,
     },
   ];
@@ -134,22 +141,22 @@ const UserDetails = () => {
       selector: 'dateCreated',
       sortable: true,
     },
-    {
-      name: 'Status',
-      selector: 'status',
-      sortable: true,
-      cell: row => (
-        <p
-          className={`${
-            row.status == 'scheduled'
-              ? 'text-green-500 bg-green-200 '
-              : 'text-red-500 bg-red-200'
-          } rounded-md px-2 text-sm`}
-        >
-          {row.status}
-        </p>
-      ),
-    },
+    // {
+    //   name: 'Status',
+    //   selector: 'status',
+    //   sortable: true,
+    //   cell: row => (
+    //     <p
+    //       className={`${
+    //         row.status == 'scheduled'
+    //           ? 'text-green-500 bg-green-200 '
+    //           : 'text-red-500 bg-red-200'
+    //       } rounded-md px-2 text-sm`}
+    //     >
+    //       {row.status}
+    //     </p>
+    //   ),
+    // },
 
     {
       name: 'Failed',
@@ -170,7 +177,15 @@ const UserDetails = () => {
     },
     {
       name: 'Actions',
-      cell: row => <Action push={true} />,
+      cell: row => (
+        <Action
+          push
+          id={row.messageId}
+          key={row.messageId}
+          open={open}
+          setOpen={setOpen}
+        />
+      ),
     },
   ];
 
@@ -220,12 +235,12 @@ const UserDetails = () => {
                 </Link>
                 <div className='flex items-center gap-4 lg:hidden'>
                   <p className='hidden text-lg sm:block'>
-                    Balance ₵{' '}
+                    Balance ₵
                     {profile?.client.smsBalance || (
                       <Skeleton count={1} width={'5rem'} borderRadius={10} />
                     )}
                   </p>
-                  {user?.role?.includes('Finance') && (
+                  {user?.permissions?.includes(105) && (
                     <button
                       className='bg-[#F24E1E] hidden sm:block text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
                       onClick={openModal}
@@ -233,7 +248,7 @@ const UserDetails = () => {
                       Top-up
                     </button>
                   )}
-                  {user?.role?.includes('Finance') && (
+                  {user?.permissions?.includes(105) && (
                     <button
                       className='bg-[#F24E1E] text-2xl sm:hidden cursor-pointer  font-medium shadow-md hover:scale-110 text-white rounded-lg py-1 px-3'
                       onClick={openModal}
@@ -300,7 +315,7 @@ const UserDetails = () => {
             <p className='2xl:text-2xl text-xl font-semibold text-[#F24E1E]'>
               Push
             </p>
-            {user?.role?.includes('Finance') && (
+            {user?.permissions?.includes(105) && (
               <button
                 className='bg-[#F24E1E] text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
                 onClick={openModal}

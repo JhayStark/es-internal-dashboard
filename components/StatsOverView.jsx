@@ -1,5 +1,6 @@
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { CountUp } from 'use-count-up';
 
 const StatsOverview = ({ title, icon, value }) => {
   return (
@@ -13,7 +14,9 @@ const StatsOverview = ({ title, icon, value }) => {
       <div className='flex items-center justify-between'>
         <p className='text-xs font-light 2xl:text-sm '>Updated 30m ago</p>
         <p className='text-[#055189] xl:text-xl 3xl:text-2xl'>
-          {value || <Skeleton count={1} width={'8rem'} borderRadius={10} />}
+          {<CountUp isCounting end={value} duration={1} /> || (
+            <Skeleton count={1} width={'8rem'} borderRadius={10} />
+          )}
         </p>
       </div>
     </div>

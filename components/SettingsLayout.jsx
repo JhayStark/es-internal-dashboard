@@ -16,10 +16,8 @@ const SettingsLayout = ({ children }) => {
         <div className='py-4 sm:block hidden shadow-3xl pb-28 2xl:max-h-[36rem] col-span-2 3xl:col-span-1 bg-white'>
           <div className='flex flex-col items-center justify-center pb-6 pt-7 border-b-[1px]'>
             <RxAvatar className='text-9xl ' />
-            <p className='pt-5 pb-1 text-lg font-semibold'>
-              {user && `${user['admin_name']}`}
-            </p>
-            <p className='text-[#747474]'>{user?.role}</p>
+            <p className='pt-5 pb-1 text-lg font-semibold'>{user?.name}</p>
+            <p className='text-[#747474]'>{user?.role?.name}</p>
           </div>
           <div className='flex flex-col items-center gap-10 pt-11'>
             <Link href='/settings'>
@@ -46,30 +44,20 @@ const SettingsLayout = ({ children }) => {
                 <p>Change Password</p>
               </div>
             </Link>
-            {/* <Link href="/settings/notifications">
-              <div
-                className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                  router.pathname === "/settings/notifications"
-                    ? "text-[#055189]"
-                    : "text-[#747474]"
-                }`}
-              >
-                <MdOutlineNotificationsNone className="text-lg" />
-                <p>Notifications</p>
-              </div>
-            </Link> */}
-            <Link href='/settings/admins'>
-              <div
-                className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                  router.pathname === '/settings/admins'
-                    ? 'text-[#055189]'
-                    : 'text-[#747474]'
-                }`}
-              >
-                <MdOutlineAdminPanelSettings className='text-lg' />
-                <p>Administrators</p>
-              </div>
-            </Link>
+            {user?.permissions?.includes(101) && (
+              <Link href='/settings/admins'>
+                <div
+                  className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
+                    router.pathname === '/settings/admins'
+                      ? 'text-[#055189]'
+                      : 'text-[#747474]'
+                  }`}
+                >
+                  <MdOutlineAdminPanelSettings className='text-lg' />
+                  <p>Administrators</p>
+                </div>
+              </Link>
+            )}
           </div>
         </div>
         <div className='col-span-6 sm:col-span-4 p-2 sm:p-4 bg-white 3xl:col-span-3 shadow-3xl  2xl:h-[45rem] 3xl:h-[55rem] font-sans'>

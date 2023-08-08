@@ -1,9 +1,11 @@
-import React from 'react';
 import ReportsNavigationTab from '@/components/ReportsNavigationTab';
 import dynamic from 'next/dynamic';
+import api from '@/utils/axiosInstance';
+import { useState } from 'react';
 import { BiMale, BiFemale } from 'react-icons/bi';
 import { GiFarmTractor } from 'react-icons/gi';
 import { FaGlobeAfrica } from 'react-icons/fa';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { useTableData, useRegionalDistribution } from '@/hooks/fetchers';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
@@ -22,6 +24,7 @@ const FarmerOverviewStats = ({ title, icon, value }) => {
   );
 };
 const Farmers = () => {
+  const [selectedFile, setSelectedFile] = useState(null);
   const {
     filterText,
     handlePageNumberChange,
@@ -67,18 +70,52 @@ const Farmers = () => {
       sortable: true,
     },
   ];
+
+  const handleFileChange = event => {
+    setSelectedFile(event.target.files[0]);
+    if (selectedFile) handleUpload();
+  };
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    await api
+      .post('/reports/upload-csv', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then(() => alert('Uploaded'))
+      .catch(() => alert('Failed to update'));
+  };
   return (
     <div>
       <ReportsNavigationTab />
-      <div className='flex flex-row items-center mb-2 '>
-        <p className='text-lg font-medium 3xl:text-xl'>Select Country:</p>
-        <select
-          name=''
-          id=''
-          className='px-1  3xl:text-lg ml-2 rounded-xl bg-[#e3c24a] focus:outline-none'
-        >
-          <option value='gh'>Ghana</option>
-        </select>
+      <div className='flex flex-row items-center justify-between'>
+        <div className='flex flex-row items-center mb-2 '>
+          <p className='text-lg font-medium 3xl:text-xl'>Select Country:</p>
+          <select
+            name=''
+            id=''
+            className='px-1  3xl:text-lg ml-2 rounded-xl bg-[#e3c24a] focus:outline-none'
+          >
+            <option value='gh'>Ghana</option>
+          </select>
+        </div>
+        <div className='flex flex-row items-center'>
+          <label
+            htmlFor='fileUpload'
+            className='flex flex-row items-center gap-2 text-lg cursor-pointer hover:scale-105'
+          >
+            <AiOutlineCloudUpload />
+            <p className='hidden md:block'>Upload Farmers</p>
+          </label>
+          <input
+            type='file'
+            id='fileUpload'
+            name='fileUpload'
+            className='hidden'
+            onChange={handleFileChange}
+          />
+        </div>
       </div>
       <div className='hidden grid-cols-4 gap-4 font-sans 2xl:gap-8 lg:grid'>
         <FarmerOverviewStats

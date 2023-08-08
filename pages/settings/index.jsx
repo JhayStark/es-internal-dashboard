@@ -1,6 +1,9 @@
 import SettingsLayout from '@/components/SettingsLayout';
+import { useContext } from 'react';
+import { AuthContext } from '@/context/AuthProvider';
 
 const Index = () => {
+  const { user } = useContext(AuthContext);
   return (
     <SettingsLayout>
       <div className='pb-5 border-b-[1px]'>
@@ -17,15 +20,15 @@ const Index = () => {
               <input
                 type='text'
                 className='border-[1px] py-3 px-5 rounded'
-                placeholder='John Doe'
+                placeholder={user?.name}
               />
             </div>
             <div className='flex flex-col w-full gap-2'>
-              <p>Phone Number:</p>
+              <p>Role:</p>
               <input
                 type='text'
                 className='border-[1px] py-3 px-5 rounded'
-                placeholder='0247546545'
+                placeholder={user?.role?.name}
               />
             </div>
             <div className='flex flex-col w-full gap-2'>
@@ -33,7 +36,7 @@ const Index = () => {
               <input
                 type='text'
                 className='border-[1px] py-3 px-5 rounded'
-                placeholder='Accounting Department'
+                placeholder={user?.department}
               />
             </div>
           </div>

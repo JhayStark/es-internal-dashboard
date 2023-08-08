@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [user, setUser] = useState({});
 
   const saveToken = token => {
@@ -14,10 +15,11 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const loginUser = async () => {
-    const res = await api.get('/users/profile');
+    const res = await api.get('/profiles');
     localStorage.setItem('user', JSON.stringify(res.data));
     setUser(res.data);
     setIsLoggedIn(true);
+    router.push('/');
   };
 
   const persistUser = () => {
@@ -39,11 +41,19 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     persistUser();
+    setIsInitializing(false);
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ user, saveToken, loginUser, isLoggedIn, logoutUser }}
+      value={{
+        user,
+        saveToken,
+        loginUser,
+        isLoggedIn,
+        logoutUser,
+        isInitializing,
+      }}
     >
       {children}
     </AuthContext.Provider>

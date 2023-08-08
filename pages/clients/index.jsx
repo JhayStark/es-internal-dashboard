@@ -4,7 +4,11 @@ import StatsOverView from '@/components/StatsOverView';
 import { FaUsers, FaUserSlash } from 'react-icons/fa';
 import { AiOutlineCheckCircle, AiOutlineEye } from 'react-icons/ai';
 import { useRouter } from 'next/router';
-import { useTableData, useServiceTotals } from '../../hooks/fetchers';
+import {
+  useTableData,
+  useServiceTotals,
+  useServiceStatistics,
+} from '../../hooks/fetchers';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
@@ -21,6 +25,7 @@ const Clients = () => {
     handlePageChange,
   } = useTableData('https://internal-manager-api.onrender.com/api/clients');
   const { serviceTotals } = useServiceTotals();
+  const { serviceStatistics } = useServiceStatistics();
 
   const columns = [
     {
@@ -88,17 +93,23 @@ const Clients = () => {
           <div className='flex flex-row items-center justify-between'>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#214BB8]'></div>
-              <p className='text-lg font-medium'>2250</p>
+              <p className='text-lg font-medium'>
+                {serviceStatistics ? serviceStatistics['Insyt'] : ''}
+              </p>
               <p className='text-sm text-[#7E7E7E]'>Surveys</p>
             </div>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#FE634E]'></div>
-              <p className='text-lg font-medium'>2250</p>
+              <p className='text-lg font-medium'>
+                {serviceStatistics ? serviceStatistics['Sms'] : ''}
+              </p>
               <p className='text-sm text-[#7E7E7E]'>Sms</p>
             </div>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#45ADDA]'></div>
-              <p className='text-lg font-medium'>2250</p>
+              <p className='text-lg font-medium'>
+                {serviceStatistics ? serviceStatistics['Voice'] : ''}
+              </p>
               <p className='text-sm text-[#7E7E7E]'>Voice</p>
             </div>
           </div>

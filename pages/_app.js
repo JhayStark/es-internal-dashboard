@@ -3,6 +3,7 @@ import Layout from '@/components/Layout';
 import { Poppins } from 'next/font/google';
 import { useRouter } from 'next/router';
 import { AuthContextProvider } from '@/context/AuthProvider';
+import ProtectedRoutes from '@/components/ProtectedRoutes';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -15,6 +16,7 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   return (
     <AuthContextProvider>
+      <ProtectedRoutes />
       <main className={`${poppins.variable}`}>
         {router.pathname.includes('/auth') ? (
           <Component {...pageProps} />
@@ -24,6 +26,7 @@ export default function App({ Component, pageProps }) {
           </Layout>
         )}
       </main>
+      <ProtectedRoutes />
     </AuthContextProvider>
   );
 }

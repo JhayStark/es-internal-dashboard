@@ -1,13 +1,13 @@
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import axios from 'axios';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '@/context/AuthProvider';
+import Spinner from '../../components/svgs/Spinner';
 
 const Login = () => {
   const { loginUser, saveToken } = useContext(AuthContext);
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const defaultValues = {
     email: '',
     password: '',
@@ -51,15 +51,17 @@ const Login = () => {
               className='flex flex-col justify-between w-[40%] 3xl:w[30%]'
               action=''
               onSubmit={handleSubmit(async data => {
+                setIsLoading(true);
                 await axios
                   .post(
                     'https://internal-manager-api.onrender.com/api/auth/login',
                     data
                   )
                   .then(res => {
+                    console.log(res);
                     saveToken(res.data);
                     loginUser();
-                    router.push('/');
+                    setIsLoading(false);
                   })
                   .catch(e => console.log(e));
               })}
@@ -75,7 +77,7 @@ const Login = () => {
                 {...register('email', { required: true })}
               />
               <input
-                type='text'
+                type='password'
                 placeholder='PASSWORD'
                 className='p-2 3xl:p-4 mb-5 border-2 rounded border-[#54545980]'
                 {...register('password', { required: true })}
@@ -85,7 +87,7 @@ const Login = () => {
                   type='submit'
                   className='bg-[#055189] text-white py-1 rounded-full px-10 3xl:py-2 3xl:px-16 3xl:text-lg'
                 >
-                  LOGIN
+                  {isLoading ? <Spinner /> : 'LOGIN'}
                 </button>
                 <p className='text-xs underline 3xl:text-base decoration-dashed underline-offset-4 text-[#055189]'>
                   Forgot User ID or Password?

@@ -101,10 +101,77 @@ function useAdmins() {
   };
 }
 
+function useServiceStatistics() {
+  const statisticsFetcher = async url => {
+    return await axios.get(url).then(res => res.data.totalUsers);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    'https://internal-manager-api.onrender.com/api/clients/total-users',
+    statisticsFetcher
+  );
+  return {
+    serviceStatistics: data,
+    serviceStatisticsIsLoading: isLoading,
+    serviceStatisticsError: error,
+  };
+}
+
+function usePermissions() {
+  const permissionsFetcher = async url => {
+    return await axios.get(url).then(res => res.data.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    'https://internal-manager-api.onrender.com/api/permissions',
+    permissionsFetcher
+  );
+  return {
+    permissions: data,
+    permissionsIsLoading: isLoading,
+    permissionsError: error,
+  };
+}
+
+function useSingleAdmin(id) {
+  const singleAdminFetcher = async url => {
+    return await axios.get(url).then(res => res.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `https://internal-manager-api.onrender.com/api/admins/${id}`,
+    singleAdminFetcher
+  );
+  return {
+    singleAdmin: data,
+    singleAdminIsLoading: isLoading,
+    singleAdminError: error,
+  };
+}
+
+function useDepartments() {
+  const departmentFetcher = async url => {
+    return await axios.get(url).then(res => res.data.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `https://internal-manager-api.onrender.com/api/departments`,
+    departmentFetcher
+  );
+  return {
+    departments: data,
+    departmentsIsLoading: isLoading,
+    departmentsError: error,
+  };
+}
 export {
   useServiceTotals,
   useTableData,
   useClientProfile,
   useRegionalDistribution,
   useAdmins,
+  useServiceStatistics,
+  usePermissions,
+  useSingleAdmin,
+  useDepartments,
 };

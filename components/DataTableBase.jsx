@@ -63,6 +63,7 @@ function DataTableBase({
   handlePageChange,
   setFilterText,
   filterText,
+  hidden,
 }) {
   const [resetPagination, setResetPagination] = useState(false);
 
@@ -70,11 +71,13 @@ function DataTableBase({
     <>
       <div className='flex flex-col justify-between gap-3 px-3 pt-2 md:gap-0 md:items-center md:flex-row'>
         <p className='text-lg font-medium xl:text-xl 3xl:text-2xl'>{title}</p>
-        <SearchBox
-          onSearch={setFilterText}
-          filterText={filterText}
-          setResetPagination={setResetPagination}
-        />
+        {!hidden && (
+          <SearchBox
+            onSearch={setFilterText}
+            filterText={filterText}
+            setResetPagination={setResetPagination}
+          />
+        )}
       </div>
       <DataTable
         pagination
