@@ -31,6 +31,7 @@ const Farmers = () => {
     setFilterText,
     tableData,
     tableDataIsLoading,
+    handlePageChange,
   } = useTableData(
     'https://internal-manager-api.onrender.com/api/reports/farmers',
     true
@@ -46,17 +47,17 @@ const Farmers = () => {
     },
     {
       name: 'District',
-      selector: row => row.region,
+      selector: row => row.district,
       sortable: true,
     },
     {
       name: 'Region',
-      selector: row => row.category,
+      selector: row => row.region,
       sortable: true,
     },
     {
       name: 'Network',
-      selector: row => row.category,
+      selector: row => row.network,
       sortable: true,
     },
     {
@@ -73,8 +74,9 @@ const Farmers = () => {
 
   const handleFileChange = event => {
     setSelectedFile(event.target.files[0]);
-    if (selectedFile) handleUpload();
   };
+
+  console.log(selectedFile);
 
   const handleUpload = async () => {
     const formData = new FormData();
@@ -83,7 +85,10 @@ const Farmers = () => {
       .post('/reports/upload-csv', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .then(() => alert('Uploaded'))
+      .then(res => {
+        alert('Uploaded');
+        console.log(res.data);
+      })
       .catch(() => alert('Failed to update'));
   };
   return (
@@ -100,14 +105,19 @@ const Farmers = () => {
             <option value='gh'>Ghana</option>
           </select>
         </div>
-        <div className='flex flex-row items-center'>
+        <div className='flex flex-row items-center gap-4 '>
           <label
             htmlFor='fileUpload'
-            className='flex flex-row items-center gap-2 text-lg cursor-pointer hover:scale-105'
+            className='flex flex-row items-center gap-2 cursor-pointer hover:scale-105'
           >
-            <AiOutlineCloudUpload />
-            <p className='hidden md:block'>Upload Farmers</p>
+            <p className='hidden rounded-xl md:block'>
+              {selectedFile?.name || 'Select CSV'}
+            </p>
           </label>
+          <AiOutlineCloudUpload
+            className='text-2xl font-extrabold text-green-600 cursor-pointer hover:scale-125'
+            onClick={handleUpload}
+          />
           <input
             type='file'
             id='fileUpload'
@@ -121,22 +131,24 @@ const Farmers = () => {
         <FarmerOverviewStats
           title='All Countries'
           icon={<FaGlobeAfrica className='text-[#073150]' />}
-          value={tableData?.countriesCovered}
+          value={tableData?.countriesCovered || 0}
         />
         <FarmerOverviewStats
           title='Female Farmers'
           icon={<BiFemale className='text-[#85B6FF]' />}
-          value={tableData?.totalFemaleFarmers}
+          value={tableData?.totalFemaleFarmers || 0}
         />
         <FarmerOverviewStats
           title='Male Farmers'
           icon={<BiMale className='text-[#FFD233]' />}
-          value={tableData?.totalMaleFarmers}
+          value={tableData?.totalMaleFarmers || 0}
         />
         <FarmerOverviewStats
           title='Total Farmers'
           icon={<GiFarmTractor className='text-[#4ECB71]' />}
-          value={tableData?.totalFemaleFarmers + tableData?.totalMaleFarmers}
+          value={
+            tableData?.totalFemaleFarmers + tableData?.totalMaleFarmers || 0
+          }
         />
       </div>
       <div className='grid grid-cols-4 gap-4 mt-5 font-sans 2xl:gap-8 '>
@@ -150,6 +162,7 @@ const Farmers = () => {
             handlePerRowsChange={handlePageNumberChange}
             setFilterText={setFilterText}
             filterText={filterText}
+            handlePageChange={handlePageChange}
           />
         </div>
         <div className='flex-col items-center hidden px-3 3xl:px-8 overflow-y-auto bg-white rounded-lg lg:flex shadow-3xl max-h-[46rem] '>

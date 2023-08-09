@@ -3,7 +3,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { LuMoreVertical } from 'react-icons/lu';
 import { FiSettings } from 'react-icons/fi';
 import { useClientProfile, useTableData } from '../../../hooks/fetchers';
@@ -141,23 +141,6 @@ const UserDetails = () => {
       selector: 'dateCreated',
       sortable: true,
     },
-    // {
-    //   name: 'Status',
-    //   selector: 'status',
-    //   sortable: true,
-    //   cell: row => (
-    //     <p
-    //       className={`${
-    //         row.status == 'scheduled'
-    //           ? 'text-green-500 bg-green-200 '
-    //           : 'text-red-500 bg-red-200'
-    //       } rounded-md px-2 text-sm`}
-    //     >
-    //       {row.status}
-    //     </p>
-    //   ),
-    // },
-
     {
       name: 'Failed',
       selector: 'failed',
