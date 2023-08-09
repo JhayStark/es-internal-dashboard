@@ -81,11 +81,10 @@ function DataTableBase({
       </div>
       <DataTable
         pagination
-        dense
         columns={columns}
         data={data}
         customStyles={customStyles}
-        responsive
+        responsive='true'
         paginationResetDefaultPage={resetPagination}
         paginationServer
         paginationTotalRows={totalRows}

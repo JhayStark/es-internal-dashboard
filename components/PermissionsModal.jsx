@@ -9,7 +9,7 @@ const CheckBox = ({ permission, singleAdmin }) => {
 
   useEffect(() => {
     setToggled(toggleCheck);
-  }, []);
+  }, [singleAdmin]);
 
   const updatePermission = async updatedState => {
     await api

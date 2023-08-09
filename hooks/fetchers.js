@@ -164,6 +164,22 @@ function useDepartments() {
     departmentsError: error,
   };
 }
+
+function useUserProfile() {
+  const userProfileFetcher = async url => {
+    return await axios.get(url).then(res => res.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `https://internal-manager-api.onrender.com/api/profiles`,
+    userProfileFetcher
+  );
+  return {
+    profile: data,
+    profileIsLoading: isLoading,
+    profileError: error,
+  };
+}
 export {
   useServiceTotals,
   useTableData,
@@ -174,4 +190,5 @@ export {
   usePermissions,
   useSingleAdmin,
   useDepartments,
+  useUserProfile,
 };

@@ -3,7 +3,8 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { useState, useContext, useEffect } from 'react';
+import useOutsideClick from '../../../hooks/useOutsideClick';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { LuMoreVertical } from 'react-icons/lu';
 import { FiSettings } from 'react-icons/fi';
 import { useClientProfile, useTableData } from '../../../hooks/fetchers';
@@ -14,9 +15,14 @@ const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
 
-const Action = ({ push, open, id, setOpen }) => {
+const Action = ({ push, open, id, setOpen, dropDownref }) => {
+  const closeDropDown = () => {
+    if (open) setOpen('');
+  };
+
+  useOutsideClick(closeDropDown, dropDownref);
   return (
-    <div>
+    <div ref={dropDownref}>
       <LuMoreVertical
         className='text-2xl cursor-pointer'
         onClick={() => setOpen(id)}
@@ -52,9 +58,10 @@ const Action = ({ push, open, id, setOpen }) => {
 
 const UserDetails = () => {
   const router = useRouter();
+  const dropDownref = useRef(null);
   const [tab, setTab] = useState('insyt');
-  const [isOpen, setIsOpen] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [dropDownOpen, setDropDownOpen] = useState('');
   const { profile } = useClientProfile(router.query.id);
   const { user } = useContext(AuthContext);
 
@@ -81,11 +88,11 @@ const UserDetails = () => {
   );
 
   const openModal = () => {
-    setIsOpen(true);
+    setModalIsOpen(true);
   };
 
   const closeModal = () => {
-    setIsOpen(false);
+    if (modalIsOpen) setModalIsOpen(false);
   };
 
   const surveyColumns = [
@@ -127,8 +134,9 @@ const UserDetails = () => {
         <Action
           id={row.formId}
           key={row.formId}
-          open={open}
-          setOpen={setOpen}
+          open={dropDownOpen}
+          setOpen={setDropDownOpen}
+          dropDownref={dropDownref}
         />
       ),
       center: true,
@@ -165,8 +173,9 @@ const UserDetails = () => {
           push
           id={row.messageId}
           key={row.messageId}
-          open={open}
-          setOpen={setOpen}
+          open={dropDownOpen}
+          setOpen={setDropDownOpen}
+          dropDownref={dropDownref}
         />
       ),
     },
@@ -223,7 +232,7 @@ const UserDetails = () => {
                       <Skeleton count={1} width={'5rem'} borderRadius={10} />
                     )}
                   </p>
-                  {user?.permissions?.includes(105) && (
+                  {user?.permissions?.includes(103) && (
                     <button
                       className='bg-[#F24E1E] hidden sm:block text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
                       onClick={openModal}
@@ -231,7 +240,7 @@ const UserDetails = () => {
                       Top-up
                     </button>
                   )}
-                  {user?.permissions?.includes(105) && (
+                  {user?.permissions?.includes(103) && (
                     <button
                       className='bg-[#F24E1E] text-2xl sm:hidden cursor-pointer  font-medium shadow-md hover:scale-110 text-white rounded-lg py-1 px-3'
                       onClick={openModal}
@@ -298,7 +307,7 @@ const UserDetails = () => {
             <p className='2xl:text-2xl text-xl font-semibold text-[#F24E1E]'>
               Push
             </p>
-            {user?.permissions?.includes(105) && (
+            {user?.permissions?.includes(103) && (
               <button
                 className='bg-[#F24E1E] text-sm font-medium shadow-md hover:scale-110 text-white rounded-lg p-1'
                 onClick={openModal}
@@ -359,7 +368,7 @@ const UserDetails = () => {
           />
         )}
       </div>
-      <Modal modalState={isOpen} close={closeModal} />
+      <Modal modalState={modalIsOpen} close={closeModal} />
     </>
   );
 };

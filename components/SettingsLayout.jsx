@@ -6,10 +6,12 @@ import { RiKey2Line } from 'react-icons/ri';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { useRouter } from 'next/router';
 import { AuthContext } from '@/context/AuthProvider';
+import { useUserProfile } from '@/hooks/fetchers';
 
 const SettingsLayout = ({ children }) => {
   const router = useRouter();
   const { user } = useContext(AuthContext);
+  const { profile } = useUserProfile();
   return (
     <>
       <div className='grid grid-cols-6 gap-4 font-sans 3xl:grid-cols-4'>
@@ -44,7 +46,7 @@ const SettingsLayout = ({ children }) => {
                 <p>Change Password</p>
               </div>
             </Link>
-            {user?.permissions?.includes(101) && (
+            {profile?.permissions?.includes(101) && (
               <Link href='/settings/admins'>
                 <div
                   className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${

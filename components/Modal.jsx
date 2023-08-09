@@ -1,49 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from 'react';
 
 const Modal = ({ modalState, close }) => {
-  const [inputValue, setInputValue] = useState("");
+  const modalRef = useRef(null);
+  const [inputValue, setInputValue] = useState('');
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     setInputValue(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     // Handle form submission here
     // e.g., make an API call or perform some action with the input value
-    console.log("Submitted:", inputValue);
-    setInputValue("");
+    console.log('Submitted:', inputValue);
+    setInputValue('');
     close();
+  };
+
+  const outsideClick = event => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      close();
+    }
   };
 
   return (
     <div>
       {modalState && (
-        <div className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center backdrop-blur-[2px] font-sans backdrop-invert-[20%]  ">
-          <div className="w-[30%] p-5 mx-auto bg-white rounded-lg shadow-lg">
-            <h2 className="mb-4 text-lg font-bold">Top Up Balance</h2>
+        <div
+          onClick={outsideClick}
+          className='fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center backdrop-blur-[2px] font-sans backdrop-invert-[20%]  '
+        >
+          <div
+            ref={modalRef}
+            className='w-[30%] p-5 mx-auto bg-white rounded-lg shadow-lg'
+          >
+            <h2 className='mb-4 text-lg font-bold'>Top Up Balance</h2>
             <form onSubmit={handleSubmit}>
-              <select className="w-full px-4 py-2 mb-4 bg-white border-b-[1px]  focus:outline-none ">
-                <option value="cash">Cash</option>
+              <select className='w-full px-4 py-2 mb-4 bg-white border-b-[1px]  focus:outline-none '>
+                <option value='cash'>Cash</option>
               </select>
               <input
-                type="number"
+                type='number'
                 value={inputValue}
                 onChange={handleInputChange}
-                placeholder="Enter amount in cedis"
-                className="w-full px-4 py-2 mb-4 border-b-[1px]  focus:outline-none "
+                placeholder='Enter amount in cedis'
+                className='w-full px-4 py-2 mb-4 border-b-[1px]  focus:outline-none '
               />
-              <div className="flex justify-end">
+              <div className='flex justify-end'>
                 <button
-                  type="button"
+                  type='button'
                   onClick={close}
-                  className="px-4 py-2 mr-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700"
+                  className='px-4 py-2 mr-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700'
                 >
                   Cancel
                 </button>
                 <button
-                  type="submit"
-                  className="px-4 py-2 font-bold text-white bg-[#F24E1E] rounded hover:scale-110"
+                  type='submit'
+                  className='px-4 py-2 font-bold text-white bg-[#F24E1E] rounded hover:scale-110'
                 >
                   Top-Up
                 </button>
