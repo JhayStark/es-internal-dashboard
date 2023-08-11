@@ -29,10 +29,7 @@ const Admins = () => {
     tableData,
     tableDataIsLoading,
     handlePageChange,
-  } = useTableData(
-    'https://internal-manager-api.onrender.com/api/admins',
-    true
-  );
+  } = useTableData('/admins', true);
 
   const adminColumns = [
     {

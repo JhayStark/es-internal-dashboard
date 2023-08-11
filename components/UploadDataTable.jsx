@@ -3,7 +3,19 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useEffect, useState } from 'react';
 import { MdClear, MdOutlineSearch } from 'react-icons/md';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
+
+const conditionalRowStyles = [
+  {
+    when: row => !row.original,
+    style: {
+      backgroundColor: '#BC544B',
+      color: 'white',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+  },
+];
 
 const customStyles = {
   rows: {
@@ -54,7 +66,7 @@ const SearchBox = ({ onSearch, setResetPagination }) => {
     </div>
   );
 };
-function DataTableBase({
+function UploadDataTable({
   columns,
   data,
   title,
@@ -64,43 +76,20 @@ function DataTableBase({
   handlePageChange,
   setFilterText,
   filterText,
-  hidden,
-  farmerTable,
-  setUploadModalState,
 }) {
   const [resetPagination, setResetPagination] = useState(false);
-  const [uploadTextShow, setUploadTextShow] = useState(false);
 
   return (
     <>
       <div className='flex flex-col justify-between gap-3 px-3 pt-2 md:gap-0 md:items-center md:flex-row'>
         <p className='text-lg font-medium xl:text-xl 3xl:text-2xl'>{title}</p>
-        {!hidden && (
-          <div className='flex flex-row items-center gap-2'>
-            <SearchBox
-              onSearch={setFilterText}
-              filterText={filterText}
-              setResetPagination={setResetPagination}
-            />
-            {farmerTable && (
-              <div>
-                <AiOutlineCloudUpload
-                  onClick={() => setUploadModalState(prev => !prev)}
-                  className='p-1 text-3xl text-white bg-[#073150] rounded-md cursor-pointer'
-                  onMouseEnter={() => setUploadTextShow(true)}
-                  onMouseLeave={() => setUploadTextShow(false)}
-                />
-                <p
-                  className={`absolute z-50  bg-green-500 rounded-md p-1 text-white text-sm mt-1 ${
-                    uploadTextShow ? 'block' : 'hidden'
-                  }`}
-                >
-                  Upload File
-                </p>
-              </div>
-            )}
-          </div>
-        )}
+        <div className='flex flex-row items-center gap-2'>
+          {/* <SearchBox
+            onSearch={setFilterText}
+            filterText={filterText}
+            setResetPagination={setResetPagination}
+          /> */}
+        </div>
       </div>
       <DataTable
         pagination
@@ -108,12 +97,15 @@ function DataTableBase({
         data={data}
         customStyles={customStyles}
         responsive='true'
-        paginationResetDefaultPage={resetPagination}
-        paginationServer
-        paginationTotalRows={totalRows}
-        onChangeRowsPerPage={handlePerRowsChange}
-        onChangePage={handlePageChange}
+        selectableRows
+        onSelectedRowsChange={state => console.log(state.selectedRows)}
+        // paginationResetDefaultPage={resetPagination}
+        // paginationServer
+        // paginationTotalRows={totalRows}
+        // onChangeRowsPerPage={handlePerRowsChange}
+        // onChangePage={handlePageChange}
         progressPending={loading}
+        conditionalRowStyles={conditionalRowStyles}
         progressComponent={
           <div className='flex flex-row w-full mt-3'>
             <Skeleton
@@ -152,4 +144,4 @@ function DataTableBase({
     </>
   );
 }
-export default DataTableBase;
+export default UploadDataTable;

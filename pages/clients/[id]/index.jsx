@@ -31,7 +31,7 @@ const Action = ({ push, open, id, setOpen, dropDownref }) => {
         <div
           className={`${
             open === id ? 'block' : 'hidden'
-          } absolute p-2 space-y-2 lg:text-base text-sm font-medium bg-white z-50 shadow-lg top-2`}
+          } absolute p-2 space-y-2 lg:text-base text-sm font-medium bg-white z-50 shadow-lg  left-1 md:left-14 top-2`}
         >
           <p className='text-green-500 cursor-pointer hover:opacity-60'>
             Activate
@@ -71,10 +71,7 @@ const UserDetails = () => {
     handlePageNumberChange,
     setFilterText,
     tableDataIsLoading,
-  } = useTableData(
-    'https://internal-manager-api.onrender.com/api/clients/insyt-data',
-    true
-  );
+  } = useTableData('/clients/insyt-data');
 
   const {
     tableData: push,
@@ -82,10 +79,7 @@ const UserDetails = () => {
     handlePageNumberChange: pushPageNumberChange,
     setFilterText: pushSetFilterText,
     tableDataIsLoading: pushTableDataIsLoading,
-  } = useTableData(
-    'https://internal-manager-api.onrender.com/api/clients/push-data',
-    true
-  );
+  } = useTableData('/clients/push-data');
 
   const openModal = () => {
     setModalIsOpen(true);

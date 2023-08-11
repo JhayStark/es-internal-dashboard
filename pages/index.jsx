@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
+import StatsOverview from '../components/StatsOverView';
 import { useServiceTotals, useTableData } from '../hooks/fetchers';
 import { RiVoiceprintLine } from 'react-icons/ri';
 import { TbMessageDots } from 'react-icons/tb';
 import { CgNotes } from 'react-icons/cg';
-import StatsOverview from '../components/StatsOverView';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
@@ -61,10 +61,8 @@ export default function Home() {
     filterText,
     setFilterText,
     handlePageNumberChange,
-  } = useTableData(
-    'https://internal-manager-api.onrender.com/api/reports/transactions',
-    true
-  );
+    handlePageChange,
+  } = useTableData('/reports/transactions');
 
   return (
     <>
@@ -96,6 +94,7 @@ export default function Home() {
             handlePerRowsChange={handlePageNumberChange}
             setFilterText={setFilterText}
             filterText={filterText}
+            handlePageChange={handlePageChange}
           />
         </div>
       </div>

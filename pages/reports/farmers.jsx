@@ -5,8 +5,12 @@ import { useState } from 'react';
 import { BiMale, BiFemale } from 'react-icons/bi';
 import { GiFarmTractor } from 'react-icons/gi';
 import { FaGlobeAfrica } from 'react-icons/fa';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
-import { useTableData, useRegionalDistribution } from '@/hooks/fetchers';
+import UploadModal from '@/components/UploadModal';
+import {
+  useTableData,
+  useRegionalDistribution,
+  useCountries,
+} from '@/hooks/fetchers';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
@@ -24,7 +28,8 @@ const FarmerOverviewStats = ({ title, icon, value }) => {
   );
 };
 const Farmers = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState('Portugal');
+  const [uploadModalState, setUploadModalState] = useState(false);
   const {
     filterText,
     handlePageNumberChange,
@@ -32,12 +37,12 @@ const Farmers = () => {
     tableData,
     tableDataIsLoading,
     handlePageChange,
-  } = useTableData(
-    'https://internal-manager-api.onrender.com/api/reports/farmers',
-    true
+  } = useTableData(`/reports/farmers?country=${selectedCountry}`, true);
+  const { regionalDistribution } = useRegionalDistribution(
+    `/reports/regional-distributions?country=${selectedCountry}`
   );
+  const { countries } = useCountries();
 
-  const { regionalDistribution } = useRegionalDistribution();
   const farmerTableColumns = [
     {
       name: 'Name',
@@ -72,25 +77,6 @@ const Farmers = () => {
     },
   ];
 
-  const handleFileChange = event => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  console.log(selectedFile);
-
-  const handleUpload = async () => {
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-    await api
-      .post('/reports/upload-csv', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
-      .then(res => {
-        alert('Uploaded');
-        console.log(res.data);
-      })
-      .catch(() => alert('Failed to update'));
-  };
   return (
     <div>
       <ReportsNavigationTab />
@@ -100,31 +86,16 @@ const Farmers = () => {
           <select
             name=''
             id=''
-            className='px-1  3xl:text-lg ml-2 rounded-xl bg-[#e3c24a] focus:outline-none'
+            className='px-1  3xl:text-lg ml-2 rounded-xl bg-inherit text-[#ffd643] focus:outline-none'
+            value={selectedCountry}
+            onChange={e => setSelectedCountry(e.target.value)}
           >
-            <option value='gh'>Ghana</option>
+            {countries?.map(country => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
           </select>
-        </div>
-        <div className='flex flex-row items-center gap-4 '>
-          <label
-            htmlFor='fileUpload'
-            className='flex flex-row items-center gap-2 cursor-pointer hover:scale-105'
-          >
-            <p className='hidden rounded-xl md:block'>
-              {selectedFile?.name || 'Select CSV'}
-            </p>
-          </label>
-          <AiOutlineCloudUpload
-            className='text-2xl font-extrabold text-green-600 cursor-pointer hover:scale-125'
-            onClick={handleUpload}
-          />
-          <input
-            type='file'
-            id='fileUpload'
-            name='fileUpload'
-            className='hidden'
-            onChange={handleFileChange}
-          />
         </div>
       </div>
       <div className='hidden grid-cols-4 gap-4 font-sans 2xl:gap-8 lg:grid'>
@@ -163,6 +134,8 @@ const Farmers = () => {
             setFilterText={setFilterText}
             filterText={filterText}
             handlePageChange={handlePageChange}
+            farmerTable
+            setUploadModalState={setUploadModalState}
           />
         </div>
         <div className='flex-col items-center hidden px-3 3xl:px-8 overflow-y-auto bg-white rounded-lg lg:flex shadow-3xl max-h-[46rem] '>
@@ -187,6 +160,10 @@ const Farmers = () => {
           </div>
         </div>
       </div>
+      <UploadModal
+        modalState={uploadModalState}
+        close={() => setUploadModalState(false)}
+      />
     </div>
   );
 };

@@ -58,10 +58,7 @@ const Index = () => {
     filterText,
     setFilterText,
     handlePageNumberChange,
-  } = useTableData(
-    'https://internal-manager-api.onrender.com/api/reports/transactions',
-    true
-  );
+  } = useTableData('/reports/transactions');
 
   return (
     <>

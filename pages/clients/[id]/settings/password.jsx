@@ -10,7 +10,7 @@ const Password = () => {
         </p>
       </div>
       <div className='flex flex-col items-center py-10 '>
-        <div className='w-[80%]'>
+        <div className='w-full md:w-[80%]'>
           <div className='flex flex-col items-center w-full gap-10'>
             <div className='flex flex-col w-full gap-2'>
               <p>Email:</p>
@@ -24,9 +24,6 @@ const Password = () => {
           <div className='flex flex-row self-start gap-3 pt-8 2xl:pt-16'>
             <button className='py-2 px-5 bg-[#055189] font-semibold rounded text-white'>
               Request Change
-            </button>
-            <button className='p-2 bg-[#F8F9FB] text-[#404040] font-semibold rounded'>
-              Cancel
             </button>
           </div>
         </div>

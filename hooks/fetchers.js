@@ -1,20 +1,21 @@
-import axios from 'axios';
+import api from '@/utils/axiosInstance';
 import useSWR from 'swr';
 import { useState } from 'react';
 
-function useTableData(passedUrl) {
+function useTableData(passedUrl, queryAlreadyExists) {
   const tableDataFetcher = async url => {
-    return await axios.get(url).then(res => res.data);
+    return await api.get(url).then(res => res.data);
   };
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterText, setFilterText] = useState('');
+  let url = `${passedUrl}?page=${pageNumber}&limit=${pageSize}&search=${filterText}`;
+  if (queryAlreadyExists) {
+    url = `${passedUrl}&page=${pageNumber}&limit=${pageSize}&search=${filterText}`;
+  }
 
-  const { data, error, isLoading } = useSWR(
-    `${passedUrl}?page=${pageNumber}&limit=${pageSize}&search=${filterText}`,
-    tableDataFetcher
-  );
+  const { data, error, isLoading } = useSWR(url, tableDataFetcher);
 
   const handlePageNumberChange = (newPerPage, page) => {
     setPageNumber(page);
@@ -38,11 +39,11 @@ function useTableData(passedUrl) {
 
 function useServiceTotals() {
   const statisticsFetcher = async url => {
-    return await axios.get(url).then(res => res.data.data);
+    return await api.get(url).then(res => res.data.data);
   };
 
   const { data, error, isLoading } = useSWR(
-    'https://internal-manager-api.onrender.com/api/reports/service-total',
+    '/reports/service-total',
     statisticsFetcher
   );
 
@@ -55,13 +56,10 @@ function useServiceTotals() {
 
 function useClientProfile(id) {
   const profileFetcher = async url => {
-    return await axios.get(url).then(res => res.data);
+    return await api.get(url).then(res => res.data);
   };
 
-  const { data, error, isLoading } = useSWR(
-    `https://internal-manager-api.onrender.com/api/clients/${id}`,
-    profileFetcher
-  );
+  const { data, error, isLoading } = useSWR(`/clients/${id}`, profileFetcher);
   return {
     profile: data,
     profileisLoading: isLoading,
@@ -69,13 +67,13 @@ function useClientProfile(id) {
   };
 }
 
-function useRegionalDistribution() {
+function useRegionalDistribution(passedUrl) {
   const regionalDistributionFetcher = async url => {
-    return await axios.get(url).then(res => res.data.regionalDistributions);
+    return await api.get(url).then(res => res.data.regions);
   };
 
   const { data, error, isLoading } = useSWR(
-    `https://internal-manager-api.onrender.com/api/reports/regional-distributions`,
+    passedUrl,
     regionalDistributionFetcher
   );
   return {
@@ -87,13 +85,10 @@ function useRegionalDistribution() {
 
 function useAdmins() {
   const adminsFetcher = async url => {
-    return await axios.get(url).then(res => res.data.admins);
+    return await api.get(url).then(res => res.data.admins);
   };
 
-  const { data, error, isLoading } = useSWR(
-    'https://internal-manager-api.onrender.com/api/admins',
-    adminsFetcher
-  );
+  const { data, error, isLoading } = useSWR('/admins', adminsFetcher);
   return {
     adminData: data,
     adminDataIsLoading: isLoading,
@@ -103,11 +98,11 @@ function useAdmins() {
 
 function useServiceStatistics() {
   const statisticsFetcher = async url => {
-    return await axios.get(url).then(res => res.data.totalUsers);
+    return await api.get(url).then(res => res.data.totalUsers);
   };
 
   const { data, error, isLoading } = useSWR(
-    'https://internal-manager-api.onrender.com/api/clients/total-users',
+    '/clients/total-users',
     statisticsFetcher
   );
   return {
@@ -119,13 +114,10 @@ function useServiceStatistics() {
 
 function usePermissions() {
   const permissionsFetcher = async url => {
-    return await axios.get(url).then(res => res.data.data);
+    return await api.get(url).then(res => res.data.data);
   };
 
-  const { data, error, isLoading } = useSWR(
-    'https://internal-manager-api.onrender.com/api/permissions',
-    permissionsFetcher
-  );
+  const { data, error, isLoading } = useSWR('/permissions', permissionsFetcher);
   return {
     permissions: data,
     permissionsIsLoading: isLoading,
@@ -135,11 +127,11 @@ function usePermissions() {
 
 function useSingleAdmin(id) {
   const singleAdminFetcher = async url => {
-    return await axios.get(url).then(res => res.data);
+    return await api.get(url).then(res => res.data);
   };
 
   const { data, error, isLoading } = useSWR(
-    `https://internal-manager-api.onrender.com/api/admins/${id}`,
+    `/admins/${id}`,
     singleAdminFetcher
   );
   return {
@@ -151,13 +143,10 @@ function useSingleAdmin(id) {
 
 function useDepartments() {
   const departmentFetcher = async url => {
-    return await axios.get(url).then(res => res.data.data);
+    return await api.get(url).then(res => res.data.data);
   };
 
-  const { data, error, isLoading } = useSWR(
-    `https://internal-manager-api.onrender.com/api/departments`,
-    departmentFetcher
-  );
+  const { data, error, isLoading } = useSWR(`/departments`, departmentFetcher);
   return {
     departments: data,
     departmentsIsLoading: isLoading,
@@ -167,19 +156,33 @@ function useDepartments() {
 
 function useUserProfile() {
   const userProfileFetcher = async url => {
-    return await axios.get(url).then(res => res.data);
+    return await api.get(url).then(res => res.data);
   };
 
-  const { data, error, isLoading } = useSWR(
-    `https://internal-manager-api.onrender.com/api/profiles`,
-    userProfileFetcher
-  );
+  const { data, error, isLoading } = useSWR(`/profiles`, userProfileFetcher);
   return {
     profile: data,
     profileIsLoading: isLoading,
     profileError: error,
   };
 }
+
+function useCountries() {
+  const countryDropdownFetcher = async url => {
+    return await api.get(url).then(res => res.data.countries);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `/reports/farmers/countries`,
+    countryDropdownFetcher
+  );
+  return {
+    countries: data,
+    countriesIsLoading: isLoading,
+    countriesError: error,
+  };
+}
+
 export {
   useServiceTotals,
   useTableData,
@@ -191,4 +194,5 @@ export {
   useSingleAdmin,
   useDepartments,
   useUserProfile,
+  useCountries,
 };

@@ -46,7 +46,7 @@ const SettingsLayout = ({ children }) => {
                 <p>Change Password</p>
               </div>
             </Link>
-            {profile?.permissions?.includes(101) && (
+            {user?.permissions?.includes(101) && (
               <Link href='/settings/admins'>
                 <div
                   className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${

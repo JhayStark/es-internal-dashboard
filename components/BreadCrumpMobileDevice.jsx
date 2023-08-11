@@ -1,8 +1,23 @@
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const BreadCrumbMobileDevices = () => {
   const router = useRouter();
-  const handleSelectChange = e => router.push(`/${e.target.value}`);
+  const [selectedPage, setSelectedPage] = useState('');
+
+  const handleSelectChange = e => {
+    setSelectedPage(e.target.value);
+    router.push(`${e.target.value}`);
+  };
+
+  useEffect(() => {
+    if (router.pathname !== '/') {
+      const filteredPathname = router.pathname.split('/')[1];
+      setSelectedPage(`/${filteredPathname}`);
+      return;
+    }
+    setSelectedPage(router.pathname);
+  }, []);
 
   //   let breadcrumbItems = [];
   //   let path = '';
@@ -45,11 +60,12 @@ const BreadCrumbMobileDevices = () => {
           id=''
           className='py-2 pr-2 text-gray-700 focus:outline-none bg-inherit '
           onChange={handleSelectChange}
+          value={selectedPage}
         >
           <option value='/'>Dashboard</option>
-          <option value='clients'>Client</option>
-          <option value='reports'>Reports</option>
-          <option value='settings'>Settings</option>
+          <option value='/clients'>Client</option>
+          <option value='/reports'>Reports</option>
+          <option value='/settings'>Settings</option>
         </select>
       </li>
     </ol>

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import axios from 'axios';
+import api from '@/utils/axiosInstance';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '@/context/AuthProvider';
@@ -53,10 +53,7 @@ const Login = () => {
               onSubmit={handleSubmit(async data => {
                 setIsLoading(true);
                 await axios
-                  .post(
-                    'https://internal-manager-api.onrender.com/api/auth/login',
-                    data
-                  )
+                  .post('/auth/login', data)
                   .then(res => {
                     console.log(res);
                     saveToken(res.data);

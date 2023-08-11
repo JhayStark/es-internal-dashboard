@@ -23,29 +23,29 @@ const Clients = () => {
     tableData,
     tableDataIsLoading,
     handlePageChange,
-  } = useTableData('https://internal-manager-api.onrender.com/api/clients');
+  } = useTableData('/clients');
   const { serviceTotals } = useServiceTotals();
   const { serviceStatistics } = useServiceStatistics();
 
   const columns = [
     {
       name: 'Joined',
-      selector: row => row['dateJoined'],
+      selector: row => row.dateJoined,
       sortable: true,
     },
     {
       name: 'Name',
-      selector: row => row['clientName'],
+      selector: row => row.clientName,
       sortable: true,
     },
     {
       name: 'Balance',
-      selector: row => row['smsBalance'],
+      selector: row => row.smsBalance,
       center: true,
     },
     {
       name: 'Forms',
-      selector: row => row['totalForms'],
+      selector: row => row.totalForms,
       sortable: true,
       center: true,
     },

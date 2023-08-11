@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ClientSettingsMobileNav from '@/components/ClientSettingsMobileNav';
 import { RxAvatar } from 'react-icons/rx';
 import { AiOutlineUser } from 'react-icons/ai';
 import { RiKey2Line } from 'react-icons/ri';
@@ -65,6 +66,9 @@ const ClientSettingsLayout = ({ children }) => {
               title='Collaborators'
             />
           </div>
+        </div>
+        <div className='col-span-6 lg:hidden '>
+          <ClientSettingsMobileNav />
         </div>
         <div className='lg:col-span-4 rounded-lg  col-span-6 p-4 bg-white 3xl:col-span-3 shadow-3xl  2xl:h-[45rem] 3xl:h-[55rem] font-sans'>
           {children}

@@ -38,37 +38,45 @@ const Notifications = () => {
           Add or remove services from account
         </p>
       </div>
-      <div className='mx-6 mt-12 p-7 border-[1px] bg-[#EDF3FF] rounded-md'>
+      <div className='mx-1 md:mx-6 mt-12 p-4 md:p-7 border-[1px] bg-[#EDF3FF] rounded-md'>
         <div className='flex flex-row items-center justify-between mb-5'>
           <p>Services</p>
           <p>Toggle All</p>
         </div>
         <div className='my-5 bg-white rounded-md'>
-          <div className='flex flex-row items-center justify-between border-b-[1px] px-6 py-5'>
+          <div className='flex flex-row items-center justify-between border-b-[1px] px-3 md:px-6 py-5'>
             <div>
               <p className='font-semibold text-[#404040]'>Push</p>
-              <p className='text-[#747474]'>Lorem ipsum dolor sit amet.</p>
+              <p className='text-[#747474] hidden md:block'>
+                Lorem ipsum dolor sit amet.
+              </p>
             </div>
             <ToggleButton serviceState={profile?.servicesUsed.push} />
           </div>
-          <div className='flex flex-row items-center justify-between border-b-[1px] px-6 py-5'>
+          <div className='flex flex-row items-center justify-between border-b-[1px] px-3 md:px-6 py-5'>
             <div>
               <p className='font-semibold text-[#404040]'>Insyt</p>
-              <p className='text-[#747474]'>Lorem ipsum dolor sit amet.</p>
+              <p className='text-[#747474] hidden md:block'>
+                Lorem ipsum dolor sit amet.
+              </p>
             </div>
             <ToggleButton serviceState={profile?.servicesUsed['Insyt']} />
           </div>
-          <div className='flex flex-row items-center justify-between border-b-[1px] px-6 py-5'>
+          <div className='flex flex-row items-center justify-between border-b-[1px] px-3 md:px-6 py-5'>
             <div>
               <p className='font-semibold text-[#404040]'>Voice</p>
-              <p className='text-[#747474]'>Lorem ipsum dolor sit amet.</p>
+              <p className='text-[#747474] hidden md:block'>
+                Lorem ipsum dolor sit amet.
+              </p>
             </div>
             <ToggleButton serviceState={profile?.servicesUsed['Voice']} />
           </div>
-          <div className='flex flex-row items-center justify-between border-b-[1px] px-6 py-5'>
+          <div className='flex flex-row items-center justify-between border-b-[1px] px-3 md:px-6 py-5'>
             <div>
               <p className='font-semibold text-[#404040]'>Sms</p>
-              <p className='text-[#747474]'>Lorem ipsum dolor sit amet.</p>
+              <p className='text-[#747474] hidden md:block'>
+                Lorem ipsum dolor sit amet.
+              </p>
             </div>
             <ToggleButton serviceState={profile?.servicesUsed['Sms']} />
           </div>
