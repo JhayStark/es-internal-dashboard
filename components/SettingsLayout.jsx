@@ -6,12 +6,25 @@ import { RiKey2Line } from 'react-icons/ri';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { useRouter } from 'next/router';
 import { AuthContext } from '@/context/AuthProvider';
-import { useUserProfile } from '@/hooks/fetchers';
+
+const MenuItem = ({ link, isActive, title, icon }) => {
+  return (
+    <Link href={link}>
+      <div
+        className={`flex flex-row items-center gap-3 w-48  cursor-pointer ${
+          isActive ? 'text-[#055189]' : 'text-[#747474]'
+        }`}
+      >
+        <div className='text-lg'>{icon}</div>
+        <p>{title}</p>
+      </div>
+    </Link>
+  );
+};
 
 const SettingsLayout = ({ children }) => {
   const router = useRouter();
   const { user } = useContext(AuthContext);
-  const { profile } = useUserProfile();
   return (
     <>
       <div className='grid grid-cols-6 gap-4 font-sans 3xl:grid-cols-4'>
@@ -22,43 +35,25 @@ const SettingsLayout = ({ children }) => {
             <p className='text-[#747474]'>{user?.role?.name}</p>
           </div>
           <div className='flex flex-col items-center gap-10 pt-11'>
-            <Link href='/settings'>
-              <div
-                className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                  router.pathname === '/settings'
-                    ? 'text-[#055189]'
-                    : 'text-[#747474]'
-                }`}
-              >
-                <AiOutlineUser className='text-lg' />
-                <p>Edit Profile</p>
-              </div>
-            </Link>
-            <Link href='/settings/password'>
-              <div
-                className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                  router.pathname === '/settings/password'
-                    ? 'text-[#055189]'
-                    : 'text-[#747474]'
-                }`}
-              >
-                <RiKey2Line className='text-lg' />
-                <p>Change Password</p>
-              </div>
-            </Link>
+            <MenuItem
+              link='/settings'
+              isActive={router.pathname === '/settings'}
+              title='Edit Profile'
+              icon={<AiOutlineUser />}
+            />
+            <MenuItem
+              link='/settings/password'
+              isActive={router.pathname === '/settings/password'}
+              title='Change password'
+              icon={<RiKey2Line />}
+            />
             {user?.permissions?.includes(101) && (
-              <Link href='/settings/admins'>
-                <div
-                  className={`flex flex-row items-center gap-3 w-44  cursor-pointer ${
-                    router.pathname === '/settings/admins'
-                      ? 'text-[#055189]'
-                      : 'text-[#747474]'
-                  }`}
-                >
-                  <MdOutlineAdminPanelSettings className='text-lg' />
-                  <p>Administrators</p>
-                </div>
-              </Link>
+              <MenuItem
+                link='/settings/admins'
+                isActive={router.pathname === '/settings/admins'}
+                icon={<MdOutlineAdminPanelSettings />}
+                title='Administrators'
+              />
             )}
           </div>
         </div>

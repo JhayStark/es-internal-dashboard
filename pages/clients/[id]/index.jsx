@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import useOutsideClick from '../../../hooks/useOutsideClick';
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { LuMoreVertical } from 'react-icons/lu';
 import { FiSettings } from 'react-icons/fi';
 import { useClientProfile, useTableData } from '../../../hooks/fetchers';

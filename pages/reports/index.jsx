@@ -2,7 +2,7 @@ import AreaGraph from '@/components/AreaGraph';
 import PieChartComponent from '@/components/PieChart';
 import dynamic from 'next/dynamic';
 import ReportsNavigationTab from '@/components/ReportsNavigationTab';
-import { useTableData } from '@/hooks/fetchers';
+import { useTableData, useServiceStatistics } from '@/hooks/fetchers';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
@@ -60,6 +60,8 @@ const Index = () => {
     handlePageNumberChange,
   } = useTableData('/reports/transactions');
 
+  const { serviceStatistics } = useServiceStatistics();
+
   return (
     <>
       <ReportsNavigationTab />
@@ -76,17 +78,23 @@ const Index = () => {
           <div className='flex flex-row items-center justify-between'>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#214BB8]'></div>
-              <p className='text-lg font-semibold'>2250</p>
+              <p className='text-lg font-semibold'>
+                {serviceStatistics ? serviceStatistics['Insyt'] : ''}
+              </p>
               <p className='text-sm text-[#7E7E7E]'>Surveys</p>
             </div>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#FE634E]'></div>
-              <p className='text-lg font-semibold'>2250</p>
+              <p className='text-lg font-semibold'>
+                {serviceStatistics ? serviceStatistics['Sms'] : ''}
+              </p>
               <p className='text-sm text-[#7E7E7E]'>SMS</p>
             </div>
             <div className='flex flex-col gap-1'>
               <div className='w-5 h-2 rounded-xl bg-[#45ADDA]'></div>
-              <p className='text-lg font-semibold'>2250</p>
+              <p className='text-lg font-semibold'>
+                {serviceStatistics ? serviceStatistics['Voice'] : ''}
+              </p>
               <p className='text-sm text-[#7E7E7E]'>Voice</p>
             </div>
           </div>

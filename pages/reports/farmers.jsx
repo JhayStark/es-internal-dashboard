@@ -81,7 +81,7 @@ const Farmers = () => {
     <div>
       <ReportsNavigationTab />
       <div className='flex flex-row items-center justify-between'>
-        <div className='flex flex-row items-center mb-2 '>
+        <div className='flex flex-row items-center mb-1 md:mb-2 '>
           <p className='text-lg font-medium 3xl:text-xl'>Select Country:</p>
           <select
             name=''
@@ -122,7 +122,7 @@ const Farmers = () => {
           }
         />
       </div>
-      <div className='grid grid-cols-4 gap-4 mt-5 font-sans 2xl:gap-8 '>
+      <div className='grid grid-cols-4 gap-4 font-sans md:mt-5 2xl:gap-8 '>
         <div className='col-span-4 px-5 py-2 bg-white rounded-lg lg:col-span-3 shadow-3xl '>
           <NoSSRTable
             data={tableData?.paginatedData}

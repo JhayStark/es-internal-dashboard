@@ -29,7 +29,7 @@ const Admins = () => {
     tableData,
     tableDataIsLoading,
     handlePageChange,
-  } = useTableData('/admins', true);
+  } = useTableData('/admins');
 
   const adminColumns = [
     {

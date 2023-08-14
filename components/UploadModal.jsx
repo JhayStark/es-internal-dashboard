@@ -20,23 +20,24 @@ const UploadModal = ({ modalState, close }) => {
       .post('/reports/upload-csv', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .then(res => {
-        if (!res.data.message.includes('duplicated')) {
-          alert('File uploaded successfully');
-          return;
-        }
-        const mergedData = [];
-        res.data.duplicated.map(item => {
-          const newObject = { ...item, original: false };
-          mergedData.push(newObject);
-        });
-        res.data.existing.map(item => {
-          const newObject = { ...item, original: true };
-          mergedData.push(newObject);
-        });
-        console.log(mergedData);
-        setDuplicates(mergedData);
-        alert('Duplicates found');
+      .then(() => {
+        // if (!res.data.message.includes('duplicated')) {
+        //   alert('File uploaded successfully');
+        //   return;
+        // }
+        // const mergedData = [];
+        // res.data.duplicated.map(item => {
+        //   const newObject = { ...item, original: false };
+        //   mergedData.push(newObject);
+        // });
+        // res.data.existing.map(item => {
+        //   const newObject = { ...item, original: true };
+        //   mergedData.push(newObject);
+        // });
+        // console.log(mergedData);
+        // setDuplicates(mergedData);
+        // alert('Duplicates found');
+        alert('File uploaded successfully');
       })
       .catch(() => alert('Failed to update'));
   };
@@ -94,7 +95,7 @@ const UploadModal = ({ modalState, close }) => {
         >
           <div
             ref={modalRef}
-            className='min-w-[30%] p-4 mx-auto bg-white rounded-lg shadow-lg'
+            className=' min-w-[30%] p-4 mx-auto bg-white rounded-lg shadow-lg'
           >
             <div className='flex flex-row items-center justify-between mb-4'>
               <h2 className='text-xl font-bold'>Upload Farmer Data</h2>
@@ -119,7 +120,7 @@ const UploadModal = ({ modalState, close }) => {
                 <AiOutlineCloudUpload className='text-2xl font-extrabold cursor-pointer hover:scale-125' />
               </button>
             </div>
-            {duplicates.length > 1 && (
+            {/* {duplicates.length > 1 && (
               <div className='mt-4'>
                 <UploadDataTable
                   data={duplicates}
@@ -136,7 +137,7 @@ const UploadModal = ({ modalState, close }) => {
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}
