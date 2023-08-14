@@ -52,7 +52,7 @@ const Login = () => {
               action=''
               onSubmit={handleSubmit(async data => {
                 setIsLoading(true);
-                await axios
+                await api
                   .post('/auth/login', data)
                   .then(res => {
                     console.log(res);
@@ -60,7 +60,10 @@ const Login = () => {
                     loginUser();
                     setIsLoading(false);
                   })
-                  .catch(e => console.log(e));
+                  .catch(e => {
+                    setIsLoading(false);
+                    alert('Invalid login or password');
+                  });
               })}
             >
               <div className='text-[#055189] text-2xl 3xl:text-3xl '>
