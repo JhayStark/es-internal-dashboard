@@ -1,7 +1,7 @@
 import ReportsNavigationTab from '@/components/ReportsNavigationTab';
 import dynamic from 'next/dynamic';
 import api from '@/utils/axiosInstance';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BiMale, BiFemale } from 'react-icons/bi';
 import { GiFarmTractor } from 'react-icons/gi';
 import { FaGlobeAfrica } from 'react-icons/fa';
@@ -11,10 +11,152 @@ import {
   useRegionalDistribution,
   useCountries,
 } from '@/hooks/fetchers';
+import StackedBarGraph from '@/components/StackedBarGraph';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
+
+const regionData = [
+  {
+    name: 'Region A',
+    male: 4000,
+    female: 2400,
+  },
+  {
+    name: 'Region B',
+    male: 3000,
+    female: 1398,
+  },
+  {
+    name: 'Region C',
+    male: 2000,
+    female: 9800,
+  },
+  {
+    name: 'Region D',
+    male: 2780,
+    female: 3908,
+  },
+  {
+    name: 'Region E',
+    male: 1890,
+    female: 4800,
+  },
+  {
+    name: 'Region F',
+    male: 2390,
+    female: 3800,
+  },
+  {
+    name: 'Region G',
+    male: 3490,
+    female: 4300,
+  },
+  {
+    name: 'Region B',
+    male: 3000,
+    female: 1398,
+  },
+  {
+    name: 'Region C',
+    male: 2000,
+    female: 9800,
+  },
+  {
+    name: 'Region D',
+    male: 2780,
+    female: 3908,
+  },
+  {
+    name: 'Region E',
+    male: 1890,
+    female: 4800,
+  },
+  {
+    name: 'Region F',
+    male: 2390,
+    female: 3800,
+  },
+  {
+    name: 'Region G',
+    male: 3490,
+    female: 4300,
+  },
+  {
+    name: 'Region B',
+    male: 3000,
+    female: 1398,
+  },
+  {
+    name: 'Region C',
+    male: 2000,
+    female: 9800,
+  },
+  {
+    name: 'Region D',
+    male: 2780,
+    female: 3908,
+  },
+  {
+    name: 'Region E',
+    male: 1890,
+    female: 4800,
+  },
+  {
+    name: 'Region F',
+    male: 2390,
+    female: 3800,
+  },
+  {
+    name: 'Region G',
+    male: 3490,
+    female: 4300,
+  },
+];
+
+const categoryData = [
+  {
+    name: 'Specialized Crop',
+    male: 2800,
+    female: 2200,
+  },
+  {
+    name: 'Mixed Crop',
+    male: 2300,
+    female: 8800,
+  },
+  {
+    name: 'Livestock',
+    male: 1800,
+    female: 6800,
+  },
+  {
+    name: 'Aquaculture',
+    male: 3000,
+    female: 1398,
+  },
+  {
+    name: 'Agroforestry',
+    male: 1600,
+    female: 8800,
+  },
+  {
+    name: 'Mixed Farming',
+    male: 600,
+    female: 6800,
+  },
+  {
+    name: 'Beekeeping',
+    male: 2780,
+    female: 3908,
+  },
+  {
+    name: 'Horticulture',
+    male: 2000,
+    female: 9800,
+  },
+];
 
 const FarmerOverviewStats = ({ title, icon, value }) => {
   return (
@@ -28,7 +170,7 @@ const FarmerOverviewStats = ({ title, icon, value }) => {
   );
 };
 const Farmers = () => {
-  const [selectedCountry, setSelectedCountry] = useState('Portugal');
+  const [selectedCountry, setSelectedCountry] = useState('');
   const [uploadModalState, setUploadModalState] = useState(false);
   const {
     filterText,
@@ -76,6 +218,10 @@ const Farmers = () => {
       sortable: true,
     },
   ];
+
+  useEffect(() => {
+    if (countries) setSelectedCountry(countries[0]);
+  }, [countries]);
 
   return (
     <div>
@@ -159,6 +305,24 @@ const Farmers = () => {
             ))}
           </div>
         </div>
+      </div>
+      <div className='w-full px-5 py-2 mt-3 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
+        <p className='py-2 mb-5 text-xl font-bold '>
+          Regional Distribution of Farmers
+        </p>
+        <StackedBarGraph data={regionData} dataKey='name' />
+      </div>
+      <div className='w-full px-5 py-2 mt-3 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
+        <p className='py-2 mb-5 text-xl font-bold'>
+          Farmer Distribution Across various Agricultural Categories
+        </p>
+        <StackedBarGraph data={categoryData} dataKey='name' />
+      </div>
+      <div className='w-full px-5 py-2 mt-3 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
+        <p className='py-2 mb-5 text-xl font-bold'>
+          Agricultural Categories Per Regions
+        </p>
+        <StackedBarGraph data={regionData} dataKey='name' />
       </div>
       <UploadModal
         modalState={uploadModalState}
