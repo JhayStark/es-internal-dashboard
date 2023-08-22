@@ -158,6 +158,218 @@ const categoryData = [
   },
 ];
 
+const categoriesPerRegion = [
+  {
+    name: 'Region A',
+    specializedCrop: 4000,
+    mixedCrop: 2400,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+  },
+  {
+    name: 'Region B',
+    specializedCrop: 3000,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 1398,
+  },
+  {
+    name: 'Region C',
+    specializedCrop: 2000,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 9800,
+  },
+  {
+    name: 'Region D',
+    specializedCrop: 2780,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 3908,
+  },
+  {
+    name: 'Region E',
+    specializedCrop: 1890,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 4800,
+  },
+  {
+    name: 'Region F',
+    specializedCrop: 2390,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 3800,
+  },
+  {
+    name: 'Region G',
+    specializedCrop: 3490,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 4300,
+  },
+  {
+    name: 'Region B',
+    specializedCrop: 3000,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 1398,
+  },
+  {
+    name: 'Region C',
+    specializedCrop: 2000,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 9800,
+  },
+  {
+    name: 'Region D',
+    specializedCrop: 2780,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 3908,
+  },
+  {
+    name: 'Region E',
+    specializedCrop: 1890,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 4800,
+  },
+  {
+    name: 'Region F',
+    specializedCrop: 2390,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 3800,
+  },
+  {
+    name: 'Region G',
+    specializedCrop: 3490,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 4300,
+  },
+  {
+    name: 'Region B',
+    specializedCrop: 3000,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 1398,
+  },
+  {
+    name: 'Region C',
+    specializedCrop: 2000,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 9800,
+  },
+  {
+    name: 'Region D',
+    specializedCrop: 2780,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 3908,
+  },
+  {
+    name: 'Region E',
+    specializedCrop: 1890,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 4800,
+  },
+  {
+    name: 'Region F',
+    specializedCrop: 2390,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 3800,
+  },
+  {
+    name: 'Region G',
+    specializedCrop: 3490,
+    liveStock: 1800,
+    aquaculture: 3000,
+    agroforestry: 1600,
+    mixedFarming: 600,
+    beekeeping: 2780,
+    horticulture: 2000,
+    mixedCrop: 4300,
+  },
+];
+
 const FarmerOverviewStats = ({ title, icon, value }) => {
   return (
     <div className='flex flex-col gap-5 p-5 bg-white rounded-lg shadow-3xl'>
@@ -306,24 +518,38 @@ const Farmers = () => {
           </div>
         </div>
       </div>
-      <div className='w-full px-5 py-2 mt-3 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
+      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
         <p className='py-2 mb-5 text-xl font-bold '>
           Regional Distribution of Farmers
         </p>
         <StackedBarGraph data={regionData} dataKey='name' />
       </div>
-      <div className='w-full px-5 py-2 mt-3 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
+      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
+        <p className='py-2 mb-5 text-xl font-bold'>
+          Agricultural Categories Per Regions
+        </p>
+        <StackedBarGraph
+          data={categoriesPerRegion}
+          dataKey='name'
+          multipleBars={[
+            { key: 'specializedCrop', color: '#B0E0E6' },
+            { key: 'liveStock', color: '#F0E68C' },
+            { key: 'aquaculture', color: '#98FB98' },
+            { key: 'agroforestry', color: '#87CEEB' },
+            { key: 'mixedFarming', color: '#FFB6C1' },
+            { key: 'beekeeping', color: '#AFEEEE' },
+            { key: 'horticulture', color: '#FFDAB9' },
+            { key: 'mixedCrop', color: '#FFFACD' },
+          ]}
+        />
+      </div>
+      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
         <p className='py-2 mb-5 text-xl font-bold'>
           Farmer Distribution Across various Agricultural Categories
         </p>
         <StackedBarGraph data={categoryData} dataKey='name' />
       </div>
-      <div className='w-full px-5 py-2 mt-3 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
-        <p className='py-2 mb-5 text-xl font-bold'>
-          Agricultural Categories Per Regions
-        </p>
-        <StackedBarGraph data={regionData} dataKey='name' />
-      </div>
+
       <UploadModal
         modalState={uploadModalState}
         close={() => setUploadModalState(false)}

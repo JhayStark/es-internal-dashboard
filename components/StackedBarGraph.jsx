@@ -19,7 +19,7 @@ const renderCustomBarLabel = ({ payload, x, y, width, height, value }) => {
   );
 };
 
-const StackedBarGraph = ({ data, dataKey }) => {
+const StackedBarGraph = ({ data, dataKey, multipleBars }) => {
   const [width, setWidth] = useState(0);
   const updateSize = () => setWidth(window.innerWidth);
   useEffect(() => (window.onresize = updateSize), []);
@@ -37,13 +37,29 @@ const StackedBarGraph = ({ data, dataKey }) => {
         {width > 1100 && <XAxis dataKey={dataKey} fontSize='0.8rem' />}
         <Tooltip />
         <Legend />
-        <Bar dataKey='male' stackId='a' fill='#ADD8E6' />
-        <Bar
-          dataKey='female'
-          stackId='a'
-          fill='#FFB6C1'
-          label={renderCustomBarLabel}
-        />
+        {!multipleBars && <Bar dataKey='male' stackId='a' fill='#ADD8E6' />}
+        {!multipleBars && (
+          <Bar
+            dataKey='female'
+            stackId='a'
+            fill='#FFB6C1'
+            label={renderCustomBarLabel}
+          />
+        )}
+        {multipleBars?.map((bar, index) => {
+          if (multipleBars.length - 1 === index) {
+            return (
+              <Bar
+                dataKey={bar.key}
+                stackId='a'
+                fill={bar.color}
+                label={renderCustomBarLabel}
+              />
+            );
+          } else {
+            return <Bar dataKey={bar.key} stackId='a' fill={bar.color} />;
+          }
+        })}
       </BarChart>
     </ResponsiveContainer>
   );
