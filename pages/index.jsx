@@ -95,6 +95,7 @@ export default function Home() {
             setFilterText={setFilterText}
             filterText={filterText}
             handlePageChange={handlePageChange}
+            options={['Push', 'Insyt']}
           />
         </div>
       </div>

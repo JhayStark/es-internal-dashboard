@@ -111,6 +111,7 @@ const Index = () => {
           handlePerRowsChange={handlePageNumberChange}
           setFilterText={setFilterText}
           filterText={filterText}
+          options={['Push', 'Insyt']}
         />
       </div>
     </>

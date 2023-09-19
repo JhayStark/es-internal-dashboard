@@ -348,6 +348,7 @@ const UserDetails = () => {
             handlePerRowsChange={handlePageNumberChange}
             setFilterText={setFilterText}
             filterText={filterText}
+            options={['Active', 'Inactive']}
           />
         ) : (
           <NoSSRTable

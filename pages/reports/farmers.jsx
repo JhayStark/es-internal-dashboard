@@ -1,6 +1,7 @@
 import ReportsNavigationTab from '@/components/ReportsNavigationTab';
 import dynamic from 'next/dynamic';
 import api from '@/utils/axiosInstance';
+import FarmerTableFilterModal from '@/components/FarmerTableFilterModal';
 import { useEffect, useState } from 'react';
 import { BiMale, BiFemale } from 'react-icons/bi';
 import { GiFarmTractor } from 'react-icons/gi';
@@ -382,8 +383,9 @@ const FarmerOverviewStats = ({ title, icon, value }) => {
   );
 };
 const Farmers = () => {
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState('Ghana');
   const [uploadModalState, setUploadModalState] = useState(false);
+  const [farmerFilterModalState, setFarmerFilterModalState] = useState(false);
   const {
     filterText,
     handlePageNumberChange,
@@ -421,7 +423,7 @@ const Farmers = () => {
     },
     {
       name: 'Category',
-      selector: row => row.category,
+      selector: row => row.crops,
       sortable: true,
     },
     {
@@ -431,6 +433,9 @@ const Farmers = () => {
     },
   ];
 
+  const closeFarmerFilterModal = () => {
+    setFarmerFilterModalState(false);
+  };
   useEffect(() => {
     if (countries) setSelectedCountry(countries[0]);
   }, [countries]);
@@ -483,7 +488,7 @@ const Farmers = () => {
       <div className='grid grid-cols-4 gap-4 font-sans md:mt-5 2xl:gap-8 '>
         <div className='col-span-4 px-5 py-2 bg-white rounded-lg lg:col-span-3 shadow-3xl '>
           <NoSSRTable
-            data={tableData?.paginatedData}
+            data={tableData?.farmersReportsData}
             columns={farmerTableColumns}
             title='Farmer Profiles'
             loading={tableDataIsLoading}
@@ -494,23 +499,24 @@ const Farmers = () => {
             handlePageChange={handlePageChange}
             farmerTable
             setUploadModalState={setUploadModalState}
+            setFarmerFilterModalState={setFarmerFilterModalState}
           />
         </div>
         <div className='flex-col items-center hidden px-3 3xl:px-8 overflow-y-auto bg-white rounded-lg lg:flex shadow-3xl max-h-[46rem] '>
           <p className='sticky top-0 py-3 font-medium text-center bg-white 3xl:text-lg '>
             Regional Distribution of Farmers
           </p>
-          <div className='flex flex-col '>
+          <div className='flex flex-col gap-5'>
             {regionalDistribution?.map((region, index) => (
-              <div className='grid items-center w-full grid-cols-2 space-y-3'>
+              <div className='grid items-center w-full grid-cols-2 '>
                 <p
-                  className={`3xl:text-lg text-left ${
+                  className={` text-left ${
                     index % 2 === 0 ? 'text-[#073150]' : 'text-[#85B6FF]'
                   }`}
                 >
                   {region.region}
                 </p>
-                <p className='text-lg font-medium text-right 3xl:text-xl'>
+                <p className='text-lg font-medium text-right '>
                   {region.value}
                 </p>
               </div>
@@ -518,11 +524,14 @@ const Farmers = () => {
           </div>
         </div>
       </div>
-      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
+
+      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg shadow-3xl'>
         <p className='py-2 mb-5 text-xl font-bold '>
           Regional Distribution of Farmers
         </p>
-        <StackedBarGraph data={regionData} dataKey='name' />
+        <div className='flex items-center justify-center'>
+          {/* <MapChart dataKey='name' /> */}
+        </div>
       </div>
       <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
         <p className='py-2 mb-5 text-xl font-bold'>
@@ -544,7 +553,7 @@ const Farmers = () => {
         />
       </div>
       <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
-        <p className='py-2 mb-5 text-xl font-bold'>
+        <p className='py-2 text-xl font-bold'>
           Farmer Distribution Across various Agricultural Categories
         </p>
         <StackedBarGraph data={categoryData} dataKey='name' />
@@ -553,6 +562,10 @@ const Farmers = () => {
       <UploadModal
         modalState={uploadModalState}
         close={() => setUploadModalState(false)}
+      />
+      <FarmerTableFilterModal
+        modalState={farmerFilterModalState}
+        closeModal={closeFarmerFilterModal}
       />
     </div>
   );
