@@ -25,6 +25,7 @@ const MenuItem = ({ link, isActive, title, icon }) => {
 const SettingsLayout = ({ children }) => {
   const router = useRouter();
   const { user } = useContext(AuthContext);
+  console.log(user);
   return (
     <>
       <div className='grid grid-cols-6 gap-4 font-sans 3xl:grid-cols-4'>

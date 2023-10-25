@@ -11,7 +11,6 @@ const Modal = ({ modalState, close }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log('Submitted:', inputValue);
     setInputValue('');
     close();
   };

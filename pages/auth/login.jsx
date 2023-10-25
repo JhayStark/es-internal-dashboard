@@ -55,7 +55,6 @@ const Login = () => {
                 await api
                   .post('/auth/login', data)
                   .then(res => {
-                    console.log(res);
                     saveToken(res.data);
                     loginUser();
                     setIsLoading(false);

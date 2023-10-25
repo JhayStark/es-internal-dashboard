@@ -183,6 +183,22 @@ function useCountries() {
   };
 }
 
+function useRegionalStatsData() {
+  const regionalStatsFetcher = async url => {
+    return await api.get(url).then(res => res.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `/reports/farmers/by-region?country=Ghana`,
+    regionalStatsFetcher
+  );
+  return {
+    regionalStats: data,
+    regionalStatsIsLoading: isLoading,
+    regionalStatsError: error,
+  };
+}
+
 export {
   useServiceTotals,
   useTableData,
@@ -195,4 +211,5 @@ export {
   useDepartments,
   useUserProfile,
   useCountries,
+  useRegionalStatsData,
 };

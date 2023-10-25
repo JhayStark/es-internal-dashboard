@@ -1,6 +1,5 @@
 import ReportsNavigationTab from '@/components/ReportsNavigationTab';
 import dynamic from 'next/dynamic';
-import api from '@/utils/axiosInstance';
 import FarmerTableFilterModal from '@/components/FarmerTableFilterModal';
 import { useEffect, useState } from 'react';
 import { BiMale, BiFemale } from 'react-icons/bi';
@@ -11,8 +10,10 @@ import {
   useTableData,
   useRegionalDistribution,
   useCountries,
+  useRegionalStatsData,
 } from '@/hooks/fetchers';
 import StackedBarGraph from '@/components/StackedBarGraph';
+import MapChart from '@/components/MapChart';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
@@ -397,6 +398,7 @@ const Farmers = () => {
   const { regionalDistribution } = useRegionalDistribution(
     `/reports/regional-distributions?country=${selectedCountry}`
   );
+  const { regionalStats, regionalStatsIsLoading } = useRegionalStatsData();
   const { countries } = useCountries();
 
   const farmerTableColumns = [
@@ -508,7 +510,10 @@ const Farmers = () => {
           </p>
           <div className='flex flex-col gap-5'>
             {regionalDistribution?.map((region, index) => (
-              <div className='grid items-center w-full grid-cols-2 '>
+              <div
+                className='grid items-center w-full grid-cols-2'
+                key={region.region}
+              >
                 <p
                   className={` text-left ${
                     index % 2 === 0 ? 'text-[#073150]' : 'text-[#85B6FF]'
@@ -526,14 +531,16 @@ const Farmers = () => {
       </div>
 
       <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg shadow-3xl'>
-        <p className='py-2 mb-5 text-xl font-bold '>
+        <p className='py-2 mb-2 text-xl font-bold '>
           Regional Distribution of Farmers
         </p>
-        <div className='flex items-center justify-center'>
-          {/* <MapChart dataKey='name' /> */}
-        </div>
+        <MapChart
+          center={{ lat: 7.9527706, lng: -1.0307118 }}
+          markers={regionalStats?.data}
+          isLoading={regionalStatsIsLoading}
+        />
       </div>
-      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
+      {/* <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg h-[42rem] shadow-3xl overflow-hidden'>
         <p className='py-2 mb-5 text-xl font-bold'>
           Agricultural Categories Per Regions
         </p>
@@ -557,7 +564,7 @@ const Farmers = () => {
           Farmer Distribution Across various Agricultural Categories
         </p>
         <StackedBarGraph data={categoryData} dataKey='name' />
-      </div>
+      </div> */}
 
       <UploadModal
         modalState={uploadModalState}

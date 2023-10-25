@@ -11,7 +11,6 @@ const EditAdminModal = ({ modalState, close }) => {
     event.preventDefault();
     // Handle form submission here
     // e.g., make an API call or perform some action with the input value
-    console.log('Submitted:', inputValue);
     setInputValue('');
     close();
   };

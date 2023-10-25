@@ -7,7 +7,6 @@ api.interceptors.request.use(
     config.baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
     const localStorageObject = localStorage.getItem('token');
     const tokenObject = JSON.parse(localStorageObject);
-    console.log(tokenObject);
     if (tokenObject) {
       config.headers.Authorization = `Bearer ${tokenObject.token}`;
     }

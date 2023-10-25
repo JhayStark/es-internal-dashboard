@@ -4,6 +4,10 @@ import { useRouter } from 'next/router';
 
 export const AuthContext = createContext();
 
+function getPermissionCodes(permissions) {
+  return permissions.map(permission => permission.code);
+}
+
 export const AuthContextProvider = ({ children }) => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,7 +29,9 @@ export const AuthContextProvider = ({ children }) => {
   const persistUser = () => {
     const userObject = localStorage.getItem('user');
     if (userObject) {
-      setUser(JSON.parse(userObject));
+      const user = JSON.parse(userObject);
+      const permissions = getPermissionCodes(user.permissions);
+      setUser({ ...user, permissions });
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
