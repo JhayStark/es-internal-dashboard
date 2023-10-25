@@ -21,7 +21,8 @@ export const AuthContextProvider = ({ children }) => {
   const loginUser = async () => {
     const res = await api.get('/profiles');
     localStorage.setItem('user', JSON.stringify(res.data));
-    setUser(res.data);
+    const permissions = getPermissionCodes(res.data.permissions);
+    setUser({ ...res.data, permissions });
     setIsLoggedIn(true);
     router.push('/');
   };
