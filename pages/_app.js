@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
   return (
     <AuthContextProvider>
       <ProtectedRoutes />
-      <main className={`${poppins.variable}`}>
+      <main className={`${poppins.variable} antialiased`}>
         {router.pathname.includes('/auth') ? (
           <Component {...pageProps} />
         ) : (

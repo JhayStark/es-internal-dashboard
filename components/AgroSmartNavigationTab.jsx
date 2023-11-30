@@ -1,31 +1,31 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const ReportsNavigationTab = () => {
+const AgroSmartNavigationTab = () => {
   const router = useRouter();
   return (
     <div className='flex flex-col items-center justify-center mb-5 font-sans'>
       <div className='flex flex-row items-center justify-center bg-white rounded-lg'>
-        <Link href='/reports'>
+        <Link href='/agro-smart'>
           <p
-            className={`px-5 py-2  3xl:text-xl font-medium rounded-lg cursor-pointer ${
-              router.pathname === '/reports'
+            className={`px-5 py-2  3xl:text-lg antialiased font-medium rounded-lg cursor-pointer ${
+              router.pathname === '/agro-smart'
                 ? 'bg-[#073150] text-white'
                 : 'bg-white'
             }`}
           >
-            Services
+            Market Price
           </p>
         </Link>
-        <Link href='/reports/farmers'>
+        <Link href='/agro-smart/climate-smart'>
           <p
-            className={`px-5 py-2  3xl:text-xl font-medium rounded-lg cursor-pointer ${
-              router.pathname === '/reports/farmers'
+            className={`px-5 py-2  3xl:text-lg antialiased font-medium rounded-lg cursor-pointer ${
+              router.pathname === '/agro-smart/climate-smart'
                 ? 'bg-[#073150] text-white'
                 : 'bg-white'
             }`}
           >
-            Farmers
+            Climate Smart
           </p>
         </Link>
       </div>
@@ -33,4 +33,4 @@ const ReportsNavigationTab = () => {
   );
 };
 
-export default ReportsNavigationTab;
+export default AgroSmartNavigationTab;

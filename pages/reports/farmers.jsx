@@ -12,7 +12,6 @@ import {
   useCountries,
   useRegionalStatsData,
 } from '@/hooks/fetchers';
-import StackedBarGraph from '@/components/StackedBarGraph';
 import MapChart from '@/components/MapChart';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
@@ -508,14 +507,11 @@ const Farmers = () => {
           <p className='sticky top-0 py-3 font-medium text-center bg-white 3xl:text-lg '>
             Regional Distribution of Farmers
           </p>
-          <div className='flex flex-col gap-5'>
+          <div className='flex flex-col w-full gap-5'>
             {regionalDistribution?.map((region, index) => (
-              <div
-                className='grid items-center w-full grid-cols-2'
-                key={region.region}
-              >
+              <div className='grid w-full grid-cols-4 ' key={region.region}>
                 <p
-                  className={` text-left ${
+                  className={` text-left col-span-3 ${
                     index % 2 === 0 ? 'text-[#073150]' : 'text-[#85B6FF]'
                   }`}
                 >

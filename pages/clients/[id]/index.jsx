@@ -184,7 +184,7 @@ const UserDetails = () => {
               <div className='flex flex-col items-start justify-between h-full'>
                 <div className='flex flex-col justify-start'>
                   <div className='flex flex-row items-center gap-2'>
-                    <p className='text-3xl font-semibold text-[#2A3547]'>
+                    <p className=' text-2xl 3xl:text-3xl font-semibold text-[#2A3547]'>
                       {profile?.client.clientName || (
                         <Skeleton count={1} width={'8rem'} borderRadius={10} />
                       )}
@@ -246,23 +246,23 @@ const UserDetails = () => {
               </div>
             </div>
             <div className='bg-white mt-8 lg:mt-0 grid text-lg sm:text-xl  grid-cols-2 rounded-lg shadow-3xl sm:w-[50%]'>
-              <p
+              <button
                 className={`text-center  font-medium rounded-lg py-2 cursor-pointer ${
                   tab === 'insyt' && 'bg-[#3D7DAD] text-white'
                 }`}
                 onClick={() => setTab('insyt')}
               >
                 Surveys
-              </p>
+              </button>
 
-              <p
+              <button
                 className={`text-center  font-medium rounded-lg py-2 cursor-pointer ${
                   tab === 'push' && 'bg-[#F24E1E] text-white'
                 }`}
                 onClick={() => setTab('push')}
               >
                 Push
-              </p>
+              </button>
             </div>
           </div>
         </div>

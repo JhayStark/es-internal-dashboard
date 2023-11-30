@@ -49,6 +49,7 @@ const MapChart = ({ markers, isLoading }) => {
                   }}
                 >
                   <div className='grid grid-cols-2 gap-2 p-2'>
+                    <h2 className='col-span-2 font-medium'>{item.region}</h2>
                     <p>Male:</p>{' '}
                     <h3 className='font-medium text-right'>
                       {infoWindowData?.item.male}

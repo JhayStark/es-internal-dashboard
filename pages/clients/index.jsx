@@ -54,7 +54,7 @@ const Clients = () => {
       cell: row => (
         <div className=' text-2xl text-[#699BF7] cursor-pointer'>
           <AiOutlineEye
-            onClick={() => router.push(`/clients/${row.clientId}`)}
+            onClick={() => router.push(`/clients/${row.client_id}`)}
           />
         </div>
       ),
@@ -86,9 +86,7 @@ const Clients = () => {
       </div>
       <div className='grid grid-cols-3 gap-[1.4rem] mb-14 '>
         <div className='p-4 hidden lg:block bg-white rounded-lg shadow-3xl max-h-[25rem] 3xl:px-7'>
-          <p className='xl:text-[1.030rem] 2xl:text-[1.174rem] 3xl:text-[1.493rem]  font-medium'>
-            Services Used
-          </p>
+          <p className='font-medium xl:text-base 3xl:text-xl'>Services Used</p>
           <PieChartComponent />
           <div className='flex flex-row items-center justify-between'>
             <div className='flex flex-col gap-1'>

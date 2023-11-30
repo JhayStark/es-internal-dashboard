@@ -4,6 +4,7 @@ import { RiHome5Line } from 'react-icons/ri';
 import { FaRegUser } from 'react-icons/fa';
 import { TbReportSearch } from 'react-icons/tb';
 import { FiSettings } from 'react-icons/fi';
+import { MdOutlineAgriculture } from 'react-icons/md';
 
 const MenuItem = ({ path, isActive, icon, title }) => {
   return (
@@ -15,7 +16,7 @@ const MenuItem = ({ path, isActive, icon, title }) => {
       >
         <div className='flex flex-row items-center justify-start gap-4  xl:w-[9.33rem]'>
           <div className='text-2xl 3xl:text-3xl'>{icon}</div>
-          <p className='xl:text-[1.030rem]  3xl:text-[1.174rem]  font-medium '>
+          <p className='xl:text-sm 2xl:text-base  3xl:text-[1.174rem]  font-medium '>
             {title}
           </p>
         </div>
@@ -27,7 +28,7 @@ const MenuItem = ({ path, isActive, icon, title }) => {
 const Sidebar = () => {
   const router = useRouter();
   return (
-    <div className='hidden h-full  xl:w-72 2xl:w-80 3xl:w-96 bg-[#073150] xl:flex justify-center py-5'>
+    <div className='hidden h-full  xl:w-64 2xl:w-72 3xl:w-96 bg-[#073150] xl:flex justify-center py-5'>
       <aside className='flex flex-col items-center w-full '>
         <img src='/images/logo.png' className='w-36' />
         <div className='w-full mt-10'>
@@ -48,6 +49,12 @@ const Sidebar = () => {
             isActive={router.pathname.includes('/reports')}
             icon={<TbReportSearch />}
             title='Reports'
+          />
+          <MenuItem
+            path='/agro-smart'
+            isActive={router.pathname.includes('/agro-smart')}
+            icon={<MdOutlineAgriculture />}
+            title='AgroSmart'
           />
           <MenuItem
             path='/settings'

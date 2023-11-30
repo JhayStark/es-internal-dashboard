@@ -33,17 +33,15 @@ const recentPaymentsColumns = [
     name: 'Status',
     selector: row => row['status'],
     cell: row => (
-      <>
-        <p
-          className={`${
-            row.status
-              ? 'text-green-500 bg-green-200 '
-              : 'text-red-500 bg-red-200'
-          } rounded-md px-2 text-sm`}
-        >
-          {row.status ? 'Approved' : 'Failed'}
-        </p>
-      </>
+      <p
+        className={`${
+          row.status
+            ? 'text-green-500 bg-green-200 '
+            : 'text-red-500 bg-red-200'
+        } rounded-md px-2 text-sm`}
+      >
+        {row.status ? 'Approved' : 'Failed'}
+      </p>
     ),
   },
   {
@@ -65,40 +63,38 @@ export default function Home() {
   } = useTableData('/reports/transactions');
 
   return (
-    <>
-      <div className='font-sans '>
-        <div className='grid md:grid-cols-3 gap-[1.4rem] mb-6 '>
-          <StatsOverview
-            title='Voice'
-            icon={<RiVoiceprintLine />}
-            value={serviceTotals?.push.totalVoiceMessages}
-          />
-          <StatsOverview
-            title='SMS'
-            icon={<TbMessageDots />}
-            value={serviceTotals?.push.totalSMSMessages}
-          />
-          <StatsOverview
-            title='Surverys'
-            icon={<CgNotes />}
-            value={serviceTotals?.activeForms}
-          />
-        </div>
-        <div className='p-4 bg-white rounded-lg shadow-3xl '>
-          <NoSSRTable
-            data={tableData?.paginatedData}
-            columns={recentPaymentsColumns}
-            title='Recent Payments'
-            loading={tableDataIsLoading}
-            totalRows={tableData?.totalRowCount}
-            handlePerRowsChange={handlePageNumberChange}
-            setFilterText={setFilterText}
-            filterText={filterText}
-            handlePageChange={handlePageChange}
-            options={['Push', 'Insyt']}
-          />
-        </div>
+    <div className='font-sans '>
+      <div className='grid md:grid-cols-3 gap-[1.4rem] mb-6 '>
+        <StatsOverview
+          title='Voice'
+          icon={<RiVoiceprintLine />}
+          value={serviceTotals?.push.totalVoiceMessages}
+        />
+        <StatsOverview
+          title='SMS'
+          icon={<TbMessageDots />}
+          value={serviceTotals?.push.totalSMSMessages}
+        />
+        <StatsOverview
+          title='Surverys'
+          icon={<CgNotes />}
+          value={serviceTotals?.activeForms}
+        />
       </div>
-    </>
+      <div className='p-4 bg-white rounded-lg shadow-3xl '>
+        <NoSSRTable
+          data={tableData?.paginatedData}
+          columns={recentPaymentsColumns}
+          title='Recent Payments'
+          loading={tableDataIsLoading}
+          totalRows={tableData?.totalRowCount}
+          handlePerRowsChange={handlePageNumberChange}
+          setFilterText={setFilterText}
+          filterText={filterText}
+          handlePageChange={handlePageChange}
+          options={['Push', 'Insyt']}
+        />
+      </div>
+    </div>
   );
 }

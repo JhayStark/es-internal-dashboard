@@ -23,6 +23,7 @@ const customStyles = {
       fontSize: '1rem',
     },
   },
+  table: { style: { maxHeight: 700, overflow: 'auto', minHeight: 300 } },
 };
 
 const SearchBox = ({ onSearch, setResetPagination }) => {
@@ -57,6 +58,7 @@ const SearchBox = ({ onSearch, setResetPagination }) => {
     </div>
   );
 };
+
 function DataTableBase({
   columns,
   data,
@@ -86,7 +88,7 @@ function DataTableBase({
   return (
     <>
       <div className='flex flex-col justify-between gap-3 px-3 pt-2 md:gap-0 md:items-center md:flex-row'>
-        <p className='text-lg font-medium xl:text-xl 3xl:text-2xl'>{title}</p>
+        <p className='text-lg antialiased font-medium xl:text-xl '>{title}</p>
         {!hidden && (
           <div className='flex flex-row items-center gap-2'>
             <SearchBox
@@ -113,7 +115,7 @@ function DataTableBase({
             )}
             <div className='relative' ref={filterDropDownRef}>
               <BiFilterAlt
-                className='p-1 text-3xl text-white bg-[#c9a72b] rounded-md cursor-pointer hover:scale-110 '
+                className='p-1 text-3xl antialiased shadow text-white bg-[#c9a72b] rounded-md cursor-pointer hover:scale-110 '
                 onClick={() => {
                   if (!farmerTable) setShowFilterDropdown(prev => !prev);
                   if (farmerTable) setFarmerFilterModalState(prev => !prev);

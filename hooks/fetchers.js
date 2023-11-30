@@ -1,6 +1,7 @@
 import api from '@/utils/axiosInstance';
 import useSWR from 'swr';
 import { useState } from 'react';
+import axios from 'axios';
 
 function useTableData(passedUrl, queryAlreadyExists) {
   const tableDataFetcher = async url => {
@@ -199,6 +200,38 @@ function useRegionalStatsData() {
   };
 }
 
+function useMarketPrices() {
+  const marketPricesFetcher = async url => {
+    return await axios.get(url).then(res => res.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `https://api-agrosmart-esoko.onrender.com/v1/market-prices/daily?commodity=&market=`,
+    marketPricesFetcher
+  );
+  return {
+    marketPrices: data,
+    marketPricesIsLoading: isLoading,
+    marketPricesError: error,
+  };
+}
+
+function useMarkets() {
+  const markets = async url => {
+    return await axios.get(url).then(res => res.data.markets);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    'https://api-agrosmart-esoko.onrender.com/v1/markets',
+    markets
+  );
+  return {
+    markets: data,
+    marketsIsLoading: isLoading,
+    marketsError: error,
+  };
+}
+
 export {
   useServiceTotals,
   useTableData,
@@ -212,4 +245,6 @@ export {
   useUserProfile,
   useCountries,
   useRegionalStatsData,
+  useMarketPrices,
+  useMarkets,
 };

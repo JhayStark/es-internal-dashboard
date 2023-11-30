@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
       <div className='w-full bg-[#EDF3FF] overflow-y-auto px-5 3xl:px-14 '>
         <NavBar menuState={openMenu} handleMenuToggle={setOpenMenu} />
         <div
-          className='py-2 '
+          className='py-2  max-w-[2000px]'
           onClick={() => {
             if (openMenu) setOpenMenu(false);
             return null;
