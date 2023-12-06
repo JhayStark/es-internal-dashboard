@@ -16,7 +16,7 @@ const MenuItem = ({ path, isActive, icon, title }) => {
       >
         <div className='flex flex-row items-center justify-start gap-4  xl:w-[9.33rem]'>
           <div className='text-2xl 3xl:text-3xl'>{icon}</div>
-          <p className='xl:text-sm 2xl:text-base  3xl:text-[1.174rem]  font-medium '>
+          <p className='xl:text-base  3xl:text-[1.174rem]  font-medium '>
             {title}
           </p>
         </div>
@@ -28,7 +28,7 @@ const MenuItem = ({ path, isActive, icon, title }) => {
 const Sidebar = () => {
   const router = useRouter();
   return (
-    <div className='hidden h-full  xl:w-64 2xl:w-72 3xl:w-96 bg-[#073150] xl:flex justify-center py-5'>
+    <div className='justify-center hidden h-full py-5 xl:w-72 3xl:w-96 bg-primary xl:flex'>
       <aside className='flex flex-col items-center w-full '>
         <img src='/images/logo.png' className='w-36' />
         <div className='w-full mt-10'>

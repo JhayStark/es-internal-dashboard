@@ -43,7 +43,7 @@ export const AuthContextProvider = ({ children }) => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     setIsLoggedIn(false);
-    router.push('/auth/login');
+    router.push('/auth');
   };
 
   useEffect(() => {

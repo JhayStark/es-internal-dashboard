@@ -1,20 +1,14 @@
 import BreadCrump from './BreadCrump';
 import BreadCrumpMobileDevice from './BreadCrumpMobileDevice';
 import Sidebar from './Sidebar';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { RxAvatar } from 'react-icons/rx';
 import { AuthContext } from '@/context/AuthProvider';
 
-const NavBar = ({ menuState, handleMenuToggle }) => {
+const NavBar = ({ menuState, handleMenuToggle, menuRef }) => {
   const { user, logoutUser } = useContext(AuthContext);
   return (
-    <div
-      onClick={() => {
-        if (menuState) handleMenuToggle(false);
-        return null;
-      }}
-      className='sticky top-0 flex flex-row justify-between py-4 bg-[#EDF3FF] z-50 '
-    >
+    <div className='sticky top-0 flex flex-row justify-between py-4 bg-[#EDF3FF] z-50 '>
       <div className='hidden xl:block'>
         <BreadCrump />
       </div>
@@ -23,14 +17,14 @@ const NavBar = ({ menuState, handleMenuToggle }) => {
       </div>
       <div className='flex flex-row items-center gap-2'>
         <p>Hi {user && `${user['name']}`}</p>
-        <div>
+        <div ref={menuRef}>
           <RxAvatar
             className='text-2xl cursor-pointer'
             onClick={() => handleMenuToggle(!menuState)}
           />
           {menuState && (
             <div className='absolute p-2 mt-1 font-medium text-red-500 bg-white rounded shadow-2xl cursor-pointer right-1 '>
-              <p onClick={() => logoutUser()}>Log Out</p>
+              <button onClick={() => logoutUser()}>Log Out</button>
             </div>
           )}
         </div>
@@ -41,20 +35,29 @@ const NavBar = ({ menuState, handleMenuToggle }) => {
 
 const Layout = ({ children }) => {
   const [openMenu, setOpenMenu] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openMenu]);
   return (
     <div className='flex flex-row w-full h-screen font-sans'>
       <Sidebar />
       <div className='w-full bg-[#EDF3FF] overflow-y-auto px-5 3xl:px-14 '>
-        <NavBar menuState={openMenu} handleMenuToggle={setOpenMenu} />
-        <div
-          className='py-2  max-w-[2000px]'
-          onClick={() => {
-            if (openMenu) setOpenMenu(false);
-            return null;
-          }}
-        >
-          {children}
-        </div>
+        <NavBar
+          menuState={openMenu}
+          handleMenuToggle={setOpenMenu}
+          menuRef={menuRef}
+        />
+        <div className='py-2  max-w-[1500px]'>{children}</div>
       </div>
     </div>
   );

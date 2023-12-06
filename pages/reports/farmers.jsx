@@ -465,7 +465,7 @@ const Farmers = () => {
       <div className='hidden grid-cols-4 gap-4 font-sans 2xl:gap-8 lg:grid'>
         <FarmerOverviewStats
           title='All Countries'
-          icon={<FaGlobeAfrica className='text-[#073150]' />}
+          icon={<FaGlobeAfrica className='text-primary' />}
           value={tableData?.countriesCovered || 0}
         />
         <FarmerOverviewStats
@@ -512,7 +512,7 @@ const Farmers = () => {
               <div className='grid w-full grid-cols-4 ' key={region.region}>
                 <p
                   className={` text-left col-span-3 ${
-                    index % 2 === 0 ? 'text-[#073150]' : 'text-[#85B6FF]'
+                    index % 2 === 0 ? 'text-primary' : 'text-[#85B6FF]'
                   }`}
                 >
                   {region.region}

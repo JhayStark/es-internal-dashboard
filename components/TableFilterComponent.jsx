@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TableFilterComponent = ({ options }) => {
+const TableFilterComponent = ({ options, onChangeHandler }) => {
   return (
     <div className='px-3 py-4 bg-[#f1f6ff] rounded-md shadow-xl'>
       <div className='flex flex-col gap-5 md:gap-10 md:flex-row'>
@@ -26,8 +26,14 @@ const TableFilterComponent = ({ options }) => {
 
       <div className='grid grid-cols-2 mt-4'>
         {options?.map(option => (
-          <div className='flex flex-row items-center gap-2'>
-            <input type='checkbox' name={option} id={option} value={option} />
+          <div className='flex flex-row items-center gap-2' key={option}>
+            <input
+              type='checkbox'
+              name={option}
+              id={option}
+              value={option}
+              onChange={e => onChangeHandler(e.target.value)}
+            />
             <label htmlFor={option}>{option}</label>
           </div>
         ))}

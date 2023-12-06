@@ -118,7 +118,7 @@ function Calendar({
     <div className='relative p-4 mx-auto '>
       <button
         type='button'
-        className='absolute px-10 py-3 text-white bg-[#073150] -top-6 right-10 xl:right-16 rounded-xl '
+        className='absolute px-10 py-3 text-white bg-primary -top-6 right-10 xl:right-16 rounded-xl '
         onClick={() => handleDateClick(moment())}
       >
         Today

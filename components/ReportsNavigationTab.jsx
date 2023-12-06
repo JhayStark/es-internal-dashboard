@@ -10,7 +10,7 @@ const ReportsNavigationTab = () => {
           <p
             className={`px-5 py-2  3xl:text-xl font-medium rounded-lg cursor-pointer ${
               router.pathname === '/reports'
-                ? 'bg-[#073150] text-white'
+                ? 'bg-primary text-white'
                 : 'bg-white'
             }`}
           >
@@ -21,7 +21,7 @@ const ReportsNavigationTab = () => {
           <p
             className={`px-5 py-2  3xl:text-xl font-medium rounded-lg cursor-pointer ${
               router.pathname === '/reports/farmers'
-                ? 'bg-[#073150] text-white'
+                ? 'bg-primary text-white'
                 : 'bg-white'
             }`}
           >

@@ -10,7 +10,7 @@ const AgroSmartNavigationTab = () => {
           <p
             className={`px-5 py-2  3xl:text-lg antialiased font-medium rounded-lg cursor-pointer ${
               router.pathname === '/agro-smart'
-                ? 'bg-[#073150] text-white'
+                ? 'bg-primary text-white'
                 : 'bg-white'
             }`}
           >
@@ -21,11 +21,22 @@ const AgroSmartNavigationTab = () => {
           <p
             className={`px-5 py-2  3xl:text-lg antialiased font-medium rounded-lg cursor-pointer ${
               router.pathname === '/agro-smart/climate-smart'
-                ? 'bg-[#073150] text-white'
+                ? 'bg-primary text-white'
                 : 'bg-white'
             }`}
           >
             Climate Smart
+          </p>
+        </Link>
+        <Link href='/agro-smart/agro-advice'>
+          <p
+            className={`px-5 py-2  3xl:text-lg antialiased font-medium rounded-lg cursor-pointer ${
+              router.pathname === '/agro-smart/agro-advice'
+                ? 'bg-primary text-white'
+                : 'bg-white'
+            }`}
+          >
+            Agro-Advice
           </p>
         </Link>
       </div>

@@ -43,6 +43,7 @@ const recentPaymentsColumns = [
         {row.status ? 'Approved' : 'Failed'}
       </p>
     ),
+    sortable: true,
   },
   {
     name: 'Service',
@@ -64,7 +65,7 @@ export default function Home() {
 
   return (
     <div className='font-sans '>
-      <div className='grid md:grid-cols-3 gap-[1.4rem] mb-6 '>
+      <div className='grid md:grid-cols-3 gap-[1.4rem] mb-5 '>
         <StatsOverview
           title='Voice'
           icon={<RiVoiceprintLine />}

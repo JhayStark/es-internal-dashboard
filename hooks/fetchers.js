@@ -2,8 +2,9 @@ import api from '@/utils/axiosInstance';
 import useSWR from 'swr';
 import { useState } from 'react';
 import axios from 'axios';
+import mtnApi from '../utils/mtnInstance';
 
-function useTableData(passedUrl, queryAlreadyExists) {
+function useTableData(passedUrl, queryAlreadyExists = false) {
   const tableDataFetcher = async url => {
     return await api.get(url).then(res => res.data);
   };
@@ -201,34 +202,80 @@ function useRegionalStatsData() {
 }
 
 function useMarketPrices() {
-  const marketPricesFetcher = async url => {
-    return await axios.get(url).then(res => res.data);
+  const tableDataFetcher = async url => {
+    return await mtnApi.get(url).then(res => res.data);
   };
 
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [filterText, setFilterText] = useState('');
+  const [location, setLocation] = useState('');
+  const [dateRange, setDateRange] = useState({});
+
   const { data, error, isLoading } = useSWR(
-    `https://api-agrosmart-esoko.onrender.com/v1/market-prices/daily?commodity=&market=`,
-    marketPricesFetcher
+    `https://api-agrosmart-esoko.onrender.com/market-prices?page=${pageNumber}&limit=${pageSize}&commodity=${filterText}&location=${location}&startDate=&endDate=`,
+    tableDataFetcher
   );
+
+  const handlePageNumberChange = (newPerPage, page) => {
+    setPageNumber(page);
+    setPageSize(newPerPage);
+  };
+
+  const handlePageChange = page => {
+    setPageNumber(page);
+  };
+
   return {
-    marketPrices: data,
-    marketPricesIsLoading: isLoading,
-    marketPricesError: error,
+    tableData: data,
+    tableDataIsLoading: isLoading,
+    tableDataError: error,
+    handlePageNumberChange,
+    setFilterText,
+    filterText,
+    handlePageChange,
   };
 }
 
 function useMarkets() {
   const markets = async url => {
-    return await axios.get(url).then(res => res.data.markets);
+    return await mtnApi.get(url).then(res => res.data);
   };
 
-  const { data, error, isLoading } = useSWR(
-    'https://api-agrosmart-esoko.onrender.com/v1/markets',
-    markets
-  );
+  const { data, error, isLoading } = useSWR('/markets', markets);
   return {
     markets: data,
     marketsIsLoading: isLoading,
     marketsError: error,
+  };
+}
+
+function useFarmerTypes() {
+  const markets = async url => {
+    return await mtnApi.get(url).then(res => res.data);
+  };
+
+  const { data, error, isLoading } = useSWR('/farmer-types', markets);
+  return {
+    farmerTypes: data,
+    farmerTypesIsLoading: isLoading,
+    farmerTypesError: error,
+  };
+}
+
+function useClimateSmartData(date = '') {
+  const climateSmartData = async url => {
+    return await mtnApi.get(url).then(res => res.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `agronomic-advice?datePublished=${date}`,
+    climateSmartData
+  );
+  return {
+    agronomicAdivce: data,
+    agronomicAdviceIsLoading: isLoading,
+    agronomicAdivceError: error,
   };
 }
 
@@ -247,4 +294,6 @@ export {
   useRegionalStatsData,
   useMarketPrices,
   useMarkets,
+  useFarmerTypes,
+  useClimateSmartData,
 };

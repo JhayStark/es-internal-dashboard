@@ -11,7 +11,7 @@ const StatsOverview = ({ title, icon, value }) => {
       </div>
       <div className='flex items-center justify-between'>
         <p className='text-xs font-light 2xl:text-sm '>Updated 30m ago</p>
-        <p className='text-[#055189] xl:text-xl 3xl:text-2xl'>
+        <p className='text-[#055189] xl:text-xl '>
           {(
             <CountUp
               isCounting

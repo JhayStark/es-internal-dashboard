@@ -39,7 +39,7 @@ const SearchBox = ({ onSearch, setResetPagination }) => {
       onSearch(input);
     }, 500);
     return () => clearTimeout(timeoutId);
-  }, [input, 500]);
+  }, [input]);
 
   return (
     <div className='flex flex-row items-center border-[1px] focus:outline-none rounded-md p-2 '>
@@ -100,7 +100,7 @@ function DataTableBase({
               <div className='relative'>
                 <AiOutlineCloudUpload
                   onClick={() => setUploadModalState(prev => !prev)}
-                  className='p-1 text-3xl text-white bg-[#073150] rounded-md cursor-pointer hover:scale-110'
+                  className='p-1 text-3xl text-white rounded-md cursor-pointer bg-primary hover:scale-110'
                   onMouseEnter={() => setUploadTextShow(true)}
                   onMouseLeave={() => setUploadTextShow(false)}
                 />
