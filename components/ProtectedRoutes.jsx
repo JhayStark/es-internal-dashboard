@@ -8,7 +8,7 @@ const ProtectedRoutes = ({ children }) => {
   useEffect(() => {
     if (!isInitializing) {
       if (!isInitializing && !isLoggedIn && !router.pathname.includes('auth')) {
-        router.replace('/auth/login');
+        router.replace('/auth');
       }
     }
   }, [isInitializing, isLoggedIn, router]);
