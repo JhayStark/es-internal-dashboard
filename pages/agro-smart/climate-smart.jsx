@@ -3,8 +3,11 @@ import AgroSmartNavigationTab from '../../components/AgroSmartNavigationTab';
 import Calendar from '../../components/Calendar';
 import moment from 'moment';
 import WeatherWidget from '@/components/WeatherWidget';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { useFarmerTypes, useClimateSmartData } from '@/hooks/fetchers';
+import {
+  useFarmerTypes,
+  useClimateSmartData,
+  useWeatherData,
+} from '@/hooks/fetchers';
 import mtnApi from '@/utils/mtnInstance';
 
 const Weather = () => {
@@ -21,6 +24,7 @@ const Weather = () => {
   const { farmerTypes } = useFarmerTypes();
   const { agronomicAdivce, agronomicAdviceIsLoading, agronomicAdivceError } =
     useClimateSmartData(new Date(selectedDate).toISOString());
+  // const { weatherData, weatherDataIsLoading } = useWeatherData('accra');
 
   const handleTextAdvice = e => {
     setTextAdvice({ ...textAdvice, [e.target.name]: e.target.value });
@@ -28,7 +32,7 @@ const Weather = () => {
 
   const handleSubmit = async () => {
     try {
-      await mtnApi.post('/agronomic-advice', {
+      await mtnApi.post('/climate-smart', {
         ['farmer_type']: farmerType,
         commodity: selectedCommodity,
         location: textAdvice.location,
@@ -143,8 +147,8 @@ const Weather = () => {
             setSelectedMonth={setSelectedMonth}
           />
         </div>
-        <div className='items-center justify-center hidden bg-white rounded-lg md:flex shadow-3xl'>
-          <WeatherWidget />
+        <div className='hidden bg-white rounded-lg md:flex shadow-3xl bg-gradient-to-r from-blue-500 to-blue-400'>
+          <WeatherWidget location={textAdvice.location} />
         </div>
       </div>
       <div className='flex justify-end mt-3'>

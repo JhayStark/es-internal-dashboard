@@ -280,6 +280,23 @@ function useClimateSmartData(date = '') {
   };
 }
 
+function useWeatherData(location = 'Accra') {
+  const weatherData = async url => {
+    return await mtnApi.get(url).then(res.data);
+  };
+
+  const { data, isLoading, error } = useSWR(
+    `/weather-forecasts/v1/daily?language=twi&location=${location}`,
+    weatherData
+  );
+
+  return {
+    weatherData: data,
+    weatherDataIsLoading: isLoading,
+    weatherDataError: error,
+  };
+}
+
 export {
   useServiceTotals,
   useTableData,
@@ -297,4 +314,5 @@ export {
   useMarkets,
   useFarmerTypes,
   useClimateSmartData,
+  useWeatherData,
 };
