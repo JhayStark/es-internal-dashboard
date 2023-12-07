@@ -74,6 +74,7 @@ function DataTableBase({
   setUploadModalState,
   options,
   setFarmerFilterModalState,
+  onChangeHandler,
 }) {
   const filterDropDownRef = useRef();
   const [resetPagination, setResetPagination] = useState(false);
@@ -123,7 +124,10 @@ function DataTableBase({
               />
               {!farmerTable && showFilterDropdown && (
                 <div className='absolute right-0 z-50 mt-3'>
-                  <TableFilterComponent options={options} />
+                  <TableFilterComponent
+                    options={options}
+                    onChangeHandler={onChangeHandler}
+                  />
                 </div>
               )}
             </div>

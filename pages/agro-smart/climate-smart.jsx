@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AgroSmartNavigationTab from '../../components/AgroSmartNavigationTab';
 import Calendar from '../../components/Calendar';
 import moment from 'moment';
+import WeatherWidget from '@/components/WeatherWidget';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { useFarmerTypes, useClimateSmartData } from '@/hooks/fetchers';
 import mtnApi from '@/utils/mtnInstance';
@@ -61,11 +62,11 @@ const Weather = () => {
     }
   }, [selectedDate, agronomicAdivce]);
   return (
-    <div>
+    <div className='flex flex-col min-h-full '>
       <AgroSmartNavigationTab />
-      <div className='grid grid-cols-2 grid-rows-2 gap-3 '>
-        <div className='row-span-2 p-5 bg-white rounded-lg shadow-3xl'>
-          <div className='flex justify-between mb-5'>
+      <div className='grid flex-grow grid-rows-1 gap-3 md:grid-rows-2 md:grid-cols-2'>
+        <div className='flex flex-col p-5 bg-white rounded-lg md:row-span-2 shadow-3xl'>
+          <div className='flex flex-col items-start justify-between mb-5 lg:flex-row '>
             <label htmlFor='' className='font-medium '>
               Select Commodity:
               <select
@@ -83,7 +84,7 @@ const Weather = () => {
                 ))}
               </select>
             </label>
-            <label htmlFor='' className='self-end font-medium '>
+            <label htmlFor='' className='font-medium '>
               Select Farmer Category:
               <select
                 name='farmerType'
@@ -126,14 +127,14 @@ const Weather = () => {
             value={textAdvice.location}
           />
           <textarea
-            className='border-[1px] rounded-lg w-full p-2 mt-5 flex-1 h-[80%]'
+            className='border-[1px] rounded-lg w-full p-2 mt-5 flex-grow  box-border'
             placeholder='Enter agronomic advice here.....'
             onChange={handleTextAdvice}
             name='body'
             value={textAdvice.body}
           />
         </div>
-        <div className='bg-white rounded-lg shadow-3xl'>
+        <div className='hidden bg-white rounded-lg md:block shadow-3xl'>
           <Calendar
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
@@ -142,11 +143,8 @@ const Weather = () => {
             setSelectedMonth={setSelectedMonth}
           />
         </div>
-        <div className='flex items-center justify-center bg-white rounded-lg shadow-3xl'>
-          <div className='flex flex-col items-center justify-center font-medium text-gray-600 cursor-pointer'>
-            <IoIosAddCircleOutline className='text-2xl' />
-            <p>Add Voice Message</p>
-          </div>
+        <div className='items-center justify-center hidden bg-white rounded-lg md:flex shadow-3xl'>
+          <WeatherWidget />
         </div>
       </div>
       <div className='flex justify-end mt-3'>

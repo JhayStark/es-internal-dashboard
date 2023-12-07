@@ -51,6 +51,7 @@ const Index = () => {
     setFilterText,
     tableData,
     tableDataIsLoading,
+    setLocation,
   } = useMarketPrices();
   const { markets } = useMarkets();
 
@@ -77,6 +78,7 @@ const Index = () => {
           handlePageChange={handlePageChange}
           options={generateMarketsOptions(markets)}
           title='Market Prices'
+          onChangeHandler={setLocation}
         />
       </div>
       {openModal && <AddMarketPriceForm setOpenModal={setOpenModal} />}

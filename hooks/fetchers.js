@@ -234,6 +234,7 @@ function useMarketPrices() {
     setFilterText,
     filterText,
     handlePageChange,
+    setLocation,
   };
 }
 

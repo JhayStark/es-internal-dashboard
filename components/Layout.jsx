@@ -51,13 +51,13 @@ const Layout = ({ children }) => {
   return (
     <div className='flex flex-row w-full h-screen font-sans'>
       <Sidebar />
-      <div className='w-full bg-[#EDF3FF] overflow-y-auto px-5 3xl:px-14 '>
+      <div className='w-full flex flex-col bg-[#EDF3FF] overflow-y-auto px-5 3xl:px-14 '>
         <NavBar
           menuState={openMenu}
           handleMenuToggle={setOpenMenu}
           menuRef={menuRef}
         />
-        <div className='py-2  max-w-[1500px]'>{children}</div>
+        <div className='py-2  max-w-[1500px] flex-grow '>{children}</div>
       </div>
     </div>
   );

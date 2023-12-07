@@ -142,6 +142,7 @@ const AddMarketPriceForm = ({ setOpenModal }) => {
         await mtnApi.post('/market-prices', {
           marketPrices,
         });
+        alert('Price added successfully');
       } else {
         alert('Please fill all the fields');
       }
