@@ -45,7 +45,7 @@ const Login = () => {
             onSubmit={handleSubmit(async data => {
               setIsLoading(true);
               await api
-                .post('/auth', data)
+                .post('/auth/login', data)
                 .then(res => {
                   saveToken(res.data);
                   loginUser();
