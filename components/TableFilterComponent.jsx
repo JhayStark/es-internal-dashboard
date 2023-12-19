@@ -1,6 +1,11 @@
 import React from 'react';
 
-const TableFilterComponent = ({ options, onChangeHandler }) => {
+const TableFilterComponent = ({
+  options,
+  onChangeHandler,
+  selectedOptions,
+  setDateRange,
+}) => {
   return (
     <div className='px-3 py-4 bg-[#f1f6ff] rounded-md shadow-xl'>
       <div className='flex flex-col gap-5 md:gap-10 md:flex-row'>
@@ -11,6 +16,12 @@ const TableFilterComponent = ({ options, onChangeHandler }) => {
             name='from'
             id='from'
             className='px-2 focus:outline-none bg-inherit border-b-[2px] pb-1'
+            onChange={e =>
+              setDateRange(prev => {
+                prev.startDate = e.target.value;
+                return prev;
+              })
+            }
           />
         </div>
         <div>
@@ -20,6 +31,12 @@ const TableFilterComponent = ({ options, onChangeHandler }) => {
             name='to'
             id='to'
             className='px-2 focus:outline-none bg-inherit border-b-[2px] pb-1'
+            onChange={e =>
+              setDateRange(prev => {
+                prev.endDate = e.target.value;
+                return prev;
+              })
+            }
           />
         </div>
       </div>
@@ -32,12 +49,27 @@ const TableFilterComponent = ({ options, onChangeHandler }) => {
               name={option}
               id={option}
               value={option}
-              onChange={e => onChangeHandler(e.target.value)}
+              onChange={e => {
+                if (selectedOptions?.includes(e.target.value)) {
+                  onChangeHandler(prev =>
+                    prev.filter(item => item !== e.target.value)
+                  );
+                } else {
+                  onChangeHandler(prev => [...prev, e.target.value]);
+                }
+              }}
+              checked={selectedOptions?.includes(option)}
             />
             <label htmlFor={option}>{option}</label>
           </div>
         ))}
       </div>
+      <button
+        className='px-2 my-2 text-sm text-white bg-red-500 rounded-md shadow-md'
+        onClick={() => onChangeHandler('')}
+      >
+        Clear filters
+      </button>
     </div>
   );
 };

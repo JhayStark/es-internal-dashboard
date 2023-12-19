@@ -52,6 +52,8 @@ const Index = () => {
     tableData,
     tableDataIsLoading,
     setLocation,
+    location,
+    setDateRange,
   } = useMarketPrices();
   const { markets } = useMarkets();
 
@@ -79,6 +81,8 @@ const Index = () => {
           options={generateMarketsOptions(markets)}
           title='Market Prices'
           onChangeHandler={setLocation}
+          selectedOptions={location}
+          setDateRange={setDateRange}
         />
       </div>
       {openModal && <AddMarketPriceForm setOpenModal={setOpenModal} />}

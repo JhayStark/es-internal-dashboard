@@ -2,142 +2,282 @@ import React, { useEffect, useState } from 'react';
 import AgroSmartNavigationTab from '../../components/AgroSmartNavigationTab';
 import Calendar from '../../components/Calendar';
 import moment from 'moment';
-import WeatherWidget from '@/components/WeatherWidget';
-import {
-  useFarmerTypes,
-  useClimateSmartData,
-  useWeatherData,
-} from '@/hooks/fetchers';
+import dynamic from 'next/dynamic';
 import mtnApi from '@/utils/mtnInstance';
+import VoiceMessages from '../../components/VoiceMessages';
+import { useDebounce } from 'use-debounce';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import { MdOutlineRemoveRedEye } from 'react-icons/md';
+import { useFarmerTypes, useClimateSmartData } from '@/hooks/fetchers';
+import { useForm } from 'react-hook-form';
+
+const defaultValues = {
+  ['farmer_type']: '',
+  location: '',
+  commodity: '',
+  title: '',
+  body: '',
+  ['audio_advices']: [],
+};
+
+const NoSSRWidget = dynamic(() => import('@/components/WeatherWidget'), {
+  ssr: false,
+});
+
+const uploadAudioFile = async file => {
+  const formData = new FormData();
+  formData.append('audio', file);
+  try {
+    const response = await mtnApi.post('/advices/upload', formData);
+    return { title: file.name, body: response.data.downloadURL };
+  } catch (error) {
+    alert('Failed to upload');
+  }
+};
+
+const uploadMulitpleFiles = async files => {
+  const promises = files.map(file => uploadAudioFile(file));
+  const results = await Promise.all(promises);
+  return results;
+};
 
 const Weather = () => {
+  const {
+    register,
+    reset,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm(defaultValues);
+  const [audioFiles, setAudioFiles] = useState([]);
   const [selectedDate, setSelectedDate] = useState(moment());
   const [selectedMonth, setSelectedMonth] = useState(moment());
   const [commodities, setCommodities] = useState([]);
-  const [selectedCommodity, setSelectedCommodity] = useState('');
-  const [farmerType, setFarmerType] = useState('');
-  const [textAdvice, setTextAdvice] = useState({
-    title: '',
-    body: '',
-    location: '',
-  });
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
+  const [weatherData, setWeatherData] = useState({});
+  const [selectedClimateAdivceId, setSelectedClimateAdivceId] = useState('');
   const { farmerTypes } = useFarmerTypes();
-  const { agronomicAdivce, agronomicAdviceIsLoading, agronomicAdivceError } =
-    useClimateSmartData(new Date(selectedDate).toISOString());
-  // const { weatherData, weatherDataIsLoading } = useWeatherData('accra');
-
-  const handleTextAdvice = e => {
-    setTextAdvice({ ...textAdvice, [e.target.name]: e.target.value });
+  const { climateAdivce, climateAdviceIsLoading } = useClimateSmartData(
+    new Date(selectedDate).toISOString()
+  );
+  const [locationValue] = useDebounce(watch('location'), 4000);
+  const [addNew, setAddNew] = useState(true);
+  const getWeatherData = async location => {
+    try {
+      const response = await mtnApi.get(
+        `weather-forecasts?location=${location}`
+      );
+      setWeatherData(response.data?.weather);
+    } catch (error) {
+      alert('Failed to fetch');
+    }
   };
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    getWeatherData(locationValue || 'accra');
+  }, [locationValue]);
+
+  useEffect(() => {
+    if (!climateAdviceIsLoading && climateAdivce.data.length > 0) {
+      setAddNew(false);
+    } else setAddNew(true);
+    reset(defaultValues);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    farmerTypes?.filter(type => {
+      if (type.type === watch('farmer_type')) {
+        setCommodities(type.commodities);
+        return type.type === watch('farmer_type');
+      }
+    });
+  }, [watch('farmer_type')]);
+
+  const viewSelectedAdvice = item => {
+    reset({
+      ['farmer_type']: item['farmer_type'],
+      location: item?.location,
+      commodity: item?.commodity,
+      title: item['text_advice']?.title,
+      body: item['text_advice']?.body,
+      ['audio_advices']: item.audio_advices,
+    });
+    const defaultCommodities =
+      farmerTypes?.find(type => type.type === watch('farmer_type'))
+        ?.commodities || [];
+    setCommodities(defaultCommodities);
+
+    const audioAdivces = item['audio_advices'];
+    const refinedAudios = audioAdivces.map(audio => ({
+      name: audio.title,
+      src: audio.body,
+    }));
+    setAudioFiles(refinedAudios);
+    setSelectedClimateAdivceId(item.id);
+    setAddNew(true);
+  };
+
+  const onSubmit = async data => {
+    const formObject = {
+      ['farmer_type']: data['farmer_type'],
+      commodity: data.commodity,
+      location: data.location,
+      ['text_advice']: {
+        title: data.title,
+        body: data.body,
+      },
+      ['audio_advices']: await uploadMulitpleFiles(audioFiles),
+      ['date_published']: selectedDate,
+      ['weather_info']: weatherData?.description,
+    };
     try {
-      await mtnApi.post('/climate-smart', {
-        ['farmer_type']: farmerType,
-        commodity: selectedCommodity,
-        location: textAdvice.location,
-        ['text_advice']: {
-          title: textAdvice.title,
-          body: textAdvice.body,
-        },
-        ['date_published']: new Date(selectedDate).toISOString(),
-      });
-      alert('Successfully submitted');
+      if (selectedClimateAdivceId) {
+        await mtnApi.put(
+          `/climate-smart/${selectedClimateAdivceId}`,
+          formObject
+        );
+        alert('Updated successfully');
+      } else {
+        await mtnApi.post('/climate-smart', formObject);
+        alert('Created successfully');
+      }
     } catch (error) {
       alert('Failed to submit');
     }
   };
 
-  useEffect(() => {
-    if (agronomicAdivce?.data?.length > 0) {
-      setSelectedCommodity(agronomicAdivce?.data[0]?.commodity);
-      setTextAdvice({
-        title: agronomicAdivce?.data[0]['text_advice']?.title,
-        body: agronomicAdivce?.data[0]['text_advice']?.body,
-        location: agronomicAdivce?.data[0].location,
-      });
-    } else {
-      setTextAdvice({
-        title: '',
-        body: '',
-        location: '',
-      });
-      setSelectedCommodity('');
-    }
-  }, [selectedDate, agronomicAdivce]);
   return (
     <div className='flex flex-col min-h-full '>
       <AgroSmartNavigationTab />
       <div className='grid flex-grow grid-rows-1 gap-3 md:grid-rows-2 md:grid-cols-2'>
         <div className='flex flex-col p-5 bg-white rounded-lg md:row-span-2 shadow-3xl'>
-          <div className='flex flex-col items-start justify-between mb-5 lg:flex-row '>
-            <label htmlFor='' className='font-medium '>
-              Select Commodity:
-              <select
-                name='commodity'
-                id='commodity'
-                className='text-sm font-normal rounded bg-inherit focus:outline-none'
-                onChange={e => setSelectedCommodity(e.target.value)}
-                value={selectedCommodity}
-              >
-                <option value=''>Select option</option>
-                {commodities?.map(crop => (
-                  <option value={crop} key={crop}>
-                    {crop}
-                  </option>
+          {addNew ? (
+            <form
+              className='flex flex-col h-full'
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className='flex flex-col items-start justify-between mb-5 lg:flex-row '>
+                <label htmlFor='' className='font-medium '>
+                  Select Farmer Category:
+                  <select
+                    id='farmerType'
+                    className='text-sm font-normal rounded bg-inherit focus:outline-none'
+                    {...register('farmer_type')}
+                  >
+                    <option value=''>Select option</option>
+                    {farmerTypes?.map(type => (
+                      <option value={type.type} key={type.type}>
+                        {type.type}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label htmlFor='' className='font-medium '>
+                  Select Commodity:
+                  <select
+                    id='commodity'
+                    className='text-sm font-normal rounded bg-inherit focus:outline-none'
+                    {...register('commodity')}
+                  >
+                    <option value=''>Select option</option>
+                    {commodities?.map(crop => (
+                      <option value={crop} key={crop}>
+                        {crop}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <input
+                type='text'
+                className='border-[1px] rounded-lg w-full p-2 mb-5 '
+                placeholder='Location'
+                {...register('location')}
+              />
+              <input
+                type='text'
+                className='border-[1px] rounded-lg w-full p-2  '
+                placeholder='Agronomic advice title'
+                {...register('title')}
+              />
+              <textarea
+                className='border-[1px] rounded-lg w-full p-2 mt-5 flex-grow  box-border'
+                placeholder='Enter agronomic advice here.....'
+                {...register('body')}
+              />
+
+              <div className='flex items-center justify-between pt-2'>
+                <button
+                  className='flex items-center gap-2 text-primary'
+                  type='button'
+                  onClick={() => {
+                    setShowVoiceModal(true);
+                  }}
+                >
+                  <IoIosAddCircleOutline className='text-2xl' />
+                  Add voice messages
+                </button>
+                <div className='flex items-end gap-2'>
+                  <button
+                    className='px-3 py-2 text-sm text-white rounded shadow bg-primary '
+                    type='button'
+                    onClick={() => setAddNew(false)}
+                  >
+                    View Advices
+                  </button>
+                  <button
+                    className='px-3 py-2 text-sm text-white bg-green-500 rounded shadow '
+                    type='submit'
+                  >
+                    {selectedClimateAdivceId ? 'Update' : 'Submit'}
+                  </button>
+                </div>
+              </div>
+            </form>
+          ) : (
+            <div>
+              <div className='flex items-center justify-between'>
+                <p>Total Sent: {`${climateAdivce?.data.length}`}</p>
+                <button
+                  className='p-1 text-sm font-medium text-white bg-green-400 rounded round'
+                  onClick={() => {
+                    setSelectedClimateAdivceId('');
+                    reset(defaultValues);
+                    setAddNew(true);
+                  }}
+                >
+                  Add New
+                </button>
+              </div>
+              <div className='max-h-[80vh] py-2 space-y-4 overflow-y-auto '>
+                {climateAdivce?.data?.map(item => (
+                  <div
+                    className='p-3 rounded shadow-md bg-blue-50'
+                    key={item.id}
+                  >
+                    <div className='space-y-2 text-sm'>
+                      <div className='flex items-center justify-between'>
+                        <p className='font-medium'>
+                          Targert Group :{' '}
+                          {`${item['farmer_type']}(${item.commodity})`}
+                        </p>
+                        <MdOutlineRemoveRedEye
+                          className='text-xl cursor-pointer text-blue-950 hover:scale-125'
+                          onClick={() => viewSelectedAdvice(item)}
+                        />
+                      </div>
+                      <p>Title : {`${item['text_advice']?.title}`}</p>
+                      <p className='overflow-y-auto max-h-20'>
+                        {item['text_advice']?.body}
+                      </p>
+                    </div>
+                  </div>
                 ))}
-              </select>
-            </label>
-            <label htmlFor='' className='font-medium '>
-              Select Farmer Category:
-              <select
-                name='farmerType'
-                id='farmerType'
-                className='text-sm font-normal rounded bg-inherit focus:outline-none'
-                onChange={e => {
-                  setFarmerType(e.target.value);
-                  farmerTypes?.filter(type => {
-                    if (type.type === e.target.value) {
-                      setCommodities(type.commodities);
-                      return type.type === e.target.value;
-                    }
-                  });
-                }}
-                value={farmerType}
-              >
-                <option value=''>Select option</option>
-                {farmerTypes?.map(type => (
-                  <option value={type.type} key={type.type}>
-                    {type.type}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <input
-            type='text'
-            name='title'
-            className='border-[1px] rounded-lg w-full p-2 mb-5 '
-            placeholder='Agronomic advice title'
-            onChange={handleTextAdvice}
-            value={textAdvice.title}
-          />
-          <input
-            type='text'
-            name='location'
-            className='border-[1px] rounded-lg w-full p-2 '
-            placeholder='Location'
-            onChange={handleTextAdvice}
-            value={textAdvice.location}
-          />
-          <textarea
-            className='border-[1px] rounded-lg w-full p-2 mt-5 flex-grow  box-border'
-            placeholder='Enter agronomic advice here.....'
-            onChange={handleTextAdvice}
-            name='body'
-            value={textAdvice.body}
-          />
+              </div>
+            </div>
+          )}
         </div>
+
         <div className='hidden bg-white rounded-lg md:block shadow-3xl'>
           <Calendar
             selectedDate={selectedDate}
@@ -148,17 +288,19 @@ const Weather = () => {
           />
         </div>
         <div className='hidden bg-white rounded-lg md:flex shadow-3xl bg-gradient-to-r from-blue-500 to-blue-400'>
-          <WeatherWidget location={textAdvice.location} />
+          <NoSSRWidget
+            location={locationValue || 'Dodowa'}
+            weatherData={weatherData}
+          />
         </div>
       </div>
-      <div className='flex justify-end mt-3'>
-        <button
-          className='px-3 py-2 text-white bg-green-500 rounded shadow '
-          onClick={() => handleSubmit()}
-        >
-          Submit
-        </button>
-      </div>
+      {showVoiceModal && (
+        <VoiceMessages
+          setAudioFiles={setAudioFiles}
+          messages={audioFiles}
+          closeModal={() => setShowVoiceModal(false)}
+        />
+      )}
     </div>
   );
 };

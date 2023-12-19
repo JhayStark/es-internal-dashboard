@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import AgroSmartNavigationTab from '../../components/AgroSmartNavigationTab';
 import Calendar from '../../components/Calendar';
 import moment from 'moment';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import { useFarmerTypes, useClimateSmartData } from '@/hooks/fetchers';
+import { useFarmerTypes, useAgronomicAdviceData } from '@/hooks/fetchers';
 import mtnApi from '@/utils/mtnInstance';
 
 const AgronomicAdivce = () => {
+  const inputRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(moment());
   const [selectedMonth, setSelectedMonth] = useState(moment());
   const [commodities, setCommodities] = useState([]);
@@ -17,9 +18,11 @@ const AgronomicAdivce = () => {
     body: '',
     location: '',
   });
+  const [audioFiles, setAudioFiles] = useState([]);
   const { farmerTypes } = useFarmerTypes();
   const { agronomicAdivce, agronomicAdviceIsLoading, agronomicAdivceError } =
-    useClimateSmartData(new Date(selectedDate).toISOString());
+    useAgronomicAdviceData(new Date(selectedDate).toISOString().split('T')[0]);
+  const [uploadedAudioFiles, setUploadedAudioFiles] = useState([]);
 
   const handleTextAdvice = e => {
     setTextAdvice({ ...textAdvice, [e.target.name]: e.target.value });
@@ -43,7 +46,33 @@ const AgronomicAdivce = () => {
     }
   };
 
+  const uploadAudioFile = async file => {
+    const formData = new FormData();
+    formData.append('audio', file);
+    try {
+      const response = await mtnApi.post('/advices/upload', formData);
+      return response.data.downloadURL;
+    } catch (error) {
+      alert('Failed to upload');
+    }
+  };
+
   useEffect(() => {
+    if (audioFiles) {
+      audioFiles.forEach(async file => {
+        try {
+          const url = await uploadAudioFile(file);
+          console.log(url);
+          setUploadedAudioFiles(prev => [
+            ...prev,
+            { title: file.name, body: url },
+          ]);
+          console.log(uploadedAudioFiles);
+        } catch (error) {
+          alert('Failed to upload');
+        }
+      });
+    }
     if (agronomicAdivce?.data?.length > 0) {
       setSelectedCommodity(agronomicAdivce?.data[0]?.commodity);
       setTextAdvice({
@@ -66,23 +95,6 @@ const AgronomicAdivce = () => {
       <div className='grid flex-grow grid-rows-1 gap-3 md:grid-rows-2 md:grid-cols-2'>
         <div className='flex flex-col p-5 bg-white rounded-lg md:row-span-2 shadow-3xl'>
           <div className='flex justify-between mb-5 '>
-            <label htmlFor='' className='font-medium '>
-              Select Commodity:
-              <select
-                name='commodity'
-                id='commodity'
-                className='text-sm font-normal rounded bg-inherit focus:outline-none'
-                onChange={e => setSelectedCommodity(e.target.value)}
-                value={selectedCommodity}
-              >
-                <option value=''>Select option</option>
-                {commodities?.map(crop => (
-                  <option value={crop} key={crop}>
-                    {crop}
-                  </option>
-                ))}
-              </select>
-            </label>
             <label htmlFor='' className='self-end font-medium '>
               Select Farmer Category:
               <select
@@ -104,6 +116,23 @@ const AgronomicAdivce = () => {
                 {farmerTypes?.map(type => (
                   <option value={type.type} key={type.type}>
                     {type.type}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label htmlFor='' className='font-medium '>
+              Select Commodity:
+              <select
+                name='commodity'
+                id='commodity'
+                className='text-sm font-normal rounded bg-inherit focus:outline-none'
+                onChange={e => setSelectedCommodity(e.target.value)}
+                value={selectedCommodity}
+              >
+                <option value=''>Select option</option>
+                {commodities?.map(crop => (
+                  <option value={crop} key={crop}>
+                    {crop}
                   </option>
                 ))}
               </select>
@@ -144,8 +173,25 @@ const AgronomicAdivce = () => {
         </div>
         <div className='items-center justify-center hidden bg-white rounded-lg md:flex shadow-3xl'>
           <div className='flex flex-col items-center justify-center font-medium text-gray-600 cursor-pointer'>
-            <IoIosAddCircleOutline className='text-2xl' />
+            <IoIosAddCircleOutline
+              className='text-2xl'
+              onClick={() => inputRef.current.click()}
+            />
+
             <p>Add Voice Message</p>
+            <input
+              type='file'
+              name=''
+              id='add-audio'
+              className='hidden'
+              ref={inputRef}
+              onChange={e =>
+                setAudioFiles(prev => [...prev, e.target.files[0]])
+              }
+            />
+            {audioFiles?.map(file => (
+              <p key={file.name}>{file.name}</p>
+            ))}
           </div>
         </div>
       </div>

@@ -75,6 +75,8 @@ function DataTableBase({
   options,
   setFarmerFilterModalState,
   onChangeHandler,
+  selectedOptions,
+  setDateRange,
 }) {
   const filterDropDownRef = useRef();
   const [resetPagination, setResetPagination] = useState(false);
@@ -127,6 +129,8 @@ function DataTableBase({
                   <TableFilterComponent
                     options={options}
                     onChangeHandler={onChangeHandler}
+                    selectedOptions={selectedOptions}
+                    setDateRange={setDateRange}
                   />
                 </div>
               )}

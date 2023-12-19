@@ -5,7 +5,7 @@ const NavItem = ({ link, router, name }) => {
   return (
     <Link href={link}>
       <p
-        className={`px-5 py-2 text-sm  md:text-lg antialiased font-medium rounded-lg cursor-pointer ${
+        className={`px-5 py-2 text-xs  md:text-lg antialiased font-medium rounded-lg cursor-pointer ${
           router.pathname === link ? 'bg-primary text-white' : 'bg-white'
         }`}
       >

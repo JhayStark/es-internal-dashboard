@@ -209,11 +209,11 @@ function useMarketPrices() {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterText, setFilterText] = useState('');
-  const [location, setLocation] = useState('');
-  const [dateRange, setDateRange] = useState({});
+  const [location, setLocation] = useState([]);
+  const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
 
   const { data, error, isLoading } = useSWR(
-    `https://api-agrosmart-esoko.onrender.com/market-prices?page=${pageNumber}&limit=${pageSize}&commodity=${filterText}&location=${location}&startDate=&endDate=`,
+    `https://api-agrosmart-esoko.onrender.com/market-prices?page=${pageNumber}&limit=${pageSize}&commodity=${filterText}&market=${location}&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
     tableDataFetcher
   );
 
@@ -235,6 +235,8 @@ function useMarketPrices() {
     filterText,
     handlePageChange,
     setLocation,
+    setDateRange,
+    location,
   };
 }
 
@@ -264,19 +266,34 @@ function useFarmerTypes() {
   };
 }
 
+function useAgronomicAdviceData(date = '') {
+  const agronomicData = async url => {
+    return await mtnApi.get(url).then(res => res.data);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `agronomic-advice?datePublished=${date}`,
+    agronomicData
+  );
+  return {
+    agronomicAdivce: data,
+    agronomicAdviceIsLoading: isLoading,
+    agronomicAdivceError: error,
+  };
+}
 function useClimateSmartData(date = '') {
   const climateSmartData = async url => {
     return await mtnApi.get(url).then(res => res.data);
   };
 
   const { data, error, isLoading } = useSWR(
-    `agronomic-advice?datePublished=${date}`,
+    `climate-smart?date_published=${date}`,
     climateSmartData
   );
   return {
-    agronomicAdivce: data,
-    agronomicAdviceIsLoading: isLoading,
-    agronomicAdivceError: error,
+    climateAdivce: data,
+    climateAdviceIsLoading: isLoading,
+    climateAdivceError: error,
   };
 }
 
@@ -286,7 +303,7 @@ function useWeatherData(location = 'Accra') {
   };
 
   const { data, isLoading, error } = useSWR(
-    `/weather-forecasts/v1/daily?language=twi&location=${location}`,
+    `/weather-forecasts?location=${location}`,
     weatherData
   );
 
@@ -313,6 +330,7 @@ export {
   useMarketPrices,
   useMarkets,
   useFarmerTypes,
-  useClimateSmartData,
+  useAgronomicAdviceData,
   useWeatherData,
+  useClimateSmartData,
 };

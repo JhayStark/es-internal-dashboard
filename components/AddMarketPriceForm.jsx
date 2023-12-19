@@ -143,6 +143,7 @@ const AddMarketPriceForm = ({ setOpenModal }) => {
           marketPrices,
         });
         alert('Price added successfully');
+        setOpenModal(false);
       } else {
         alert('Please fill all the fields');
       }
