@@ -118,6 +118,16 @@ const Weather = () => {
   };
 
   const onSubmit = async data => {
+    const filesToUpload = audioFiles.filter(audio => audio instanceof File);
+    const uploadedAudios = await uploadMulitpleFiles(filesToUpload);
+    const filesAlreadyUploaded = audioFiles.filter(
+      audio => !(audio instanceof File)
+    );
+    const refinedAudios = filesAlreadyUploaded.map(audio => {
+      return { title: audio.name, body: audio.src };
+    });
+    const audioToSubmit = [...uploadedAudios, ...refinedAudios];
+
     const formObject = {
       ['farmer_type']: data['farmer_type'],
       commodity: data.commodity,
@@ -126,10 +136,11 @@ const Weather = () => {
         title: data.title,
         body: data.body,
       },
-      ['audio_advices']: await uploadMulitpleFiles(audioFiles),
+      ['audio_advices']: audioToSubmit,
       ['date_published']: selectedDate,
       ['weather_info']: weatherData?.description,
     };
+
     try {
       if (selectedClimateAdivceId) {
         await mtnApi.put(

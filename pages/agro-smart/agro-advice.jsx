@@ -95,6 +95,15 @@ const AgronomicAdivce = () => {
   };
 
   const onSubmit = async data => {
+    const filesToUpload = audioFiles.filter(audio => audio instanceof File);
+    const uploadedAudios = await uploadMulitpleFiles(filesToUpload);
+    const filesAlreadyUploaded = audioFiles.filter(
+      audio => !(audio instanceof File)
+    );
+    const refinedAudios = filesAlreadyUploaded.map(audio => {
+      return { title: audio.name, body: audio.src };
+    });
+    const audioToSubmit = [...uploadedAudios, ...refinedAudios];
     const formObject = {
       ['farmer_type']: data['farmer_type'],
       commodity: data.commodity,
@@ -104,7 +113,7 @@ const AgronomicAdivce = () => {
         body: data.body,
       },
       ['date_published']: new Date(selectedDate).toISOString(),
-      ['audio_advices']: await uploadMulitpleFiles(audioFiles),
+      ['audio_advices']: audioToSubmit,
     };
     try {
       if (selectedAgronomicAdvice) {
@@ -112,9 +121,15 @@ const AgronomicAdivce = () => {
           `/agronomic-advice/${selectedAgronomicAdvice}`,
           formObject
         );
+
+        reset(defaultValues);
+        setAudioFiles([]);
         alert('Successfully updated');
       } else {
         await mtnApi.post('/agronomic-advice', formObject);
+
+        reset(defaultValues);
+        setAudioFiles([]);
         alert('Successfully submitted');
       }
     } catch (error) {
