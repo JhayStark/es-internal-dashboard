@@ -35,10 +35,10 @@ const uploadAudioFile = async file => {
   }
 };
 
-const uploadMulitpleFiles = async files => {
+export const uploadMulitpleFiles = async files => {
   const promises = files.map(file => uploadAudioFile(file));
   const results = await Promise.all(promises);
-  return results;
+  return results || [];
 };
 
 const Weather = () => {
