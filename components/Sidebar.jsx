@@ -30,7 +30,7 @@ const Sidebar = () => {
   return (
     <div className='justify-center hidden h-full py-5 xl:w-72 3xl:w-96 bg-primary xl:flex'>
       <aside className='flex flex-col items-center w-full '>
-        <img src='/images/logo-1.png' className='w-60' />
+        <img src='/images/logo-1.png' className='w-40 3xl:w-60' />
         <div className='w-full mt-10'>
           <MenuItem
             path='/'
