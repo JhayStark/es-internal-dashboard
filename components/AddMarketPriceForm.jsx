@@ -72,6 +72,7 @@ const AddPrice = ({ price, deletePrice, index, handleInputChange }) => {
         name='wholesale'
         onChange={e => setWholesalePrice(e.target.value)}
         value={wholesalePrice}
+        min={0}
       />
       <input
         type='number'
@@ -80,6 +81,7 @@ const AddPrice = ({ price, deletePrice, index, handleInputChange }) => {
         name='retail'
         onChange={e => setRetailPrice(e.target.value)}
         value={retailPrice}
+        min={0}
       />
       {index !== 0 && (
         <RiDeleteBin6Line
