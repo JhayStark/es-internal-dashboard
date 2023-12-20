@@ -7,10 +7,11 @@ import { useForm } from 'react-hook-form';
 import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 import { useFarmerTypes, useAgronomicAdviceData } from '@/hooks/fetchers';
 import { uploadMulitpleFiles } from './climate-smart';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
+import { MdDeleteOutline, MdOutlineRemoveRedEye } from 'react-icons/md';
 import { useDropzone } from 'react-dropzone';
 import { FaPlay } from 'react-icons/fa';
 import { HiOutlinePause } from 'react-icons/hi';
+import { AudioListItem } from '../../components/VoiceMessages';
 
 const defaultValues = {
   ['farmer_type']: '',
@@ -43,14 +44,14 @@ const AgronomicAdivce = () => {
     new Date(selectedDate).toISOString().split('T')[0]
   );
 
-  const hanleDrop = file => {
+  const handleDrop = file => {
     const fileCopy = file[0];
     const src = URL.createObjectURL(fileCopy);
     fileCopy.src = src;
     setAudioFiles(prev => [...prev, fileCopy]);
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: hanleDrop,
+    onDrop: handleDrop,
     multiple: true,
   });
 
@@ -97,13 +98,13 @@ const AgronomicAdivce = () => {
   const onSubmit = async data => {
     const filesToUpload = audioFiles.filter(audio => audio instanceof File);
     const uploadedAudios = await uploadMulitpleFiles(filesToUpload);
-    const filesAlreadyUploaded = audioFiles.filter(
-      audio => !(audio instanceof File)
-    );
-    const refinedAudios = filesAlreadyUploaded.map(audio => {
-      return { title: audio.name, body: audio.src };
-    });
-    const audioToSubmit = [...uploadedAudios, ...refinedAudios];
+    // const filesAlreadyUploaded = audioFiles.filter(
+    //   audio => !(audio instanceof File)
+    // );
+    // const refinedAudios = filesAlreadyUploaded.map(audio => {
+    //   return { title: audio.name, body: audio.src };
+    // });
+    const audioToSubmit = [...uploadedAudios];
     const formObject = {
       ['farmer_type']: data['farmer_type'],
       commodity: data.commodity,
@@ -135,6 +136,11 @@ const AgronomicAdivce = () => {
     } catch (error) {
       alert('Failed to submit');
     }
+  };
+
+  const handleDelete = file => {
+    URL.revokeObjectURL(file.src);
+    setAudioFiles(prev => prev.filter(audio => audio.name !== file.name));
   };
 
   return (
@@ -286,34 +292,13 @@ const AgronomicAdivce = () => {
             <div className='flex-grow mt-5'>
               {audioFiles.length > 0 && (
                 <ul className='px-5 space-y-3'>
-                  {audioFiles.map(file => {
-                    const audio = new Audio(file.src);
-
-                    return (
-                      <li
-                        key={file.name}
-                        className='flex items-center justify-between gap-2 text-sm'
-                      >
-                        <div className='flex items-center gap-2'>
-                          <FaPlay
-                            className='text-blue-500 cursor-pointer hover:scale-125'
-                            onClick={() => {
-                              audio.play();
-                            }}
-                          />
-                          <HiOutlinePause
-                            className='text-base text-red-600 cursor-pointer hover:scale-125'
-                            onClick={() => {
-                              audio.pause();
-                            }}
-                          />
-                        </div>
-                        <span className='truncate max-w-[60ch]'>
-                          {file.name}
-                        </span>
-                      </li>
-                    );
-                  })}
+                  {audioFiles.map(file => (
+                    <AudioListItem
+                      file={file}
+                      handleDelete={handleDelete}
+                      key={file.name}
+                    />
+                  ))}
                 </ul>
               )}
             </div>

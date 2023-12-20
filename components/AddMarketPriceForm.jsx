@@ -66,7 +66,7 @@ const AddPrice = ({ price, deletePrice, index, handleInputChange }) => {
         ))}
       </select>
       <input
-        type='text'
+        type='number'
         placeholder='wholesale'
         className='border-[1px] bg-inherit rounded px-5 py-2 focus:outline-none xl:col-span-2'
         name='wholesale'
@@ -74,7 +74,7 @@ const AddPrice = ({ price, deletePrice, index, handleInputChange }) => {
         value={wholesalePrice}
       />
       <input
-        type='text'
+        type='number'
         placeholder='retail'
         className='border-[1px] bg-inherit rounded px-5 py-2 focus:outline-none xl:col-span-2'
         name='retail'
@@ -156,7 +156,7 @@ const AddMarketPriceForm = ({ setOpenModal }) => {
     <div className='fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center backdrop-blur-[2px] backdrop-invert-[20%] font-sans  '>
       <div className=' p-5 lg:p-10 mx-auto bg-white rounded-lg shadow-lg w-[90vw] xl:w-[60vw] min-h-[300px] '>
         <div className='flex flex-row items-center justify-between'>
-          <h2 className='text-xl font-medium'>Add Market Price </h2>
+          <h2 className='text-lg font-medium 3xl:text-xl'>Add Market Price </h2>
           <IoIosCloseCircle
             className='text-xl text-red-500 cursor-pointer'
             onClick={() => {
@@ -175,7 +175,7 @@ const AddMarketPriceForm = ({ setOpenModal }) => {
             />
           ))}
           <button
-            className='px-5 py-2 text-white bg-green-500 rounded-lg'
+            className='px-5 py-2 text-white bg-green-500 rounded-lg hover:opacity-80'
             onClick={() => addPrice()}
           >
             Add Price
@@ -183,7 +183,7 @@ const AddMarketPriceForm = ({ setOpenModal }) => {
         </div>
         <div className='flex items-end justify-end'>
           <button
-            className='px-5 py-2 text-white rounded-lg bg-primary'
+            className='px-5 py-2 text-white rounded-lg bg-primary hover:opacity-80'
             type='button'
             onClick={submitPrices}
           >

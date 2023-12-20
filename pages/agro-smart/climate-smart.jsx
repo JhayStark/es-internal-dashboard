@@ -5,6 +5,7 @@ import moment from 'moment';
 import dynamic from 'next/dynamic';
 import mtnApi from '@/utils/mtnInstance';
 import VoiceMessages from '../../components/VoiceMessages';
+import Spinner from '../../components/svgs/Spinner';
 import { useDebounce } from 'use-debounce';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
@@ -55,6 +56,7 @@ const Weather = () => {
   const [commodities, setCommodities] = useState([]);
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [weatherData, setWeatherData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedClimateAdivceId, setSelectedClimateAdivceId] = useState('');
   const { farmerTypes } = useFarmerTypes();
   const { climateAdivce, climateAdviceIsLoading } = useClimateSmartData(
@@ -118,15 +120,16 @@ const Weather = () => {
   };
 
   const onSubmit = async data => {
+    setIsLoading(true);
     const filesToUpload = audioFiles.filter(audio => audio instanceof File);
     const uploadedAudios = await uploadMulitpleFiles(filesToUpload);
-    const filesAlreadyUploaded = audioFiles.filter(
-      audio => !(audio instanceof File)
-    );
-    const refinedAudios = filesAlreadyUploaded.map(audio => {
-      return { title: audio.name, body: audio.src };
-    });
-    const audioToSubmit = [...uploadedAudios, ...refinedAudios];
+    // const filesAlreadyUploaded = audioFiles.filter(
+    //   audio => !(audio instanceof File)
+    // );
+    // const refinedAudios = filesAlreadyUploaded.map(audio => {
+    //   return { title: audio.name, body: audio.src };
+    // });
+    const audioToSubmit = [...uploadedAudios];
 
     const formObject = {
       ['farmer_type']: data['farmer_type'],
@@ -147,27 +150,37 @@ const Weather = () => {
           `/climate-smart/${selectedClimateAdivceId}`,
           formObject
         );
+        reset(defaultValues);
+        setAudioFiles([]);
         alert('Updated successfully');
       } else {
         await mtnApi.post('/climate-smart', formObject);
+        reset(defaultValues);
+        setAudioFiles([]);
         alert('Created successfully');
       }
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       alert('Failed to submit');
     }
   };
 
+  // useEffect(() => {
+  //   navigator.geolocation.getCurrentPosition(position => console.log(position));
+  // }, []);
+
   return (
-    <div className='flex flex-col min-h-full '>
+    <div className='flex flex-col min-h-full pb-2 '>
       <AgroSmartNavigationTab />
-      <div className='grid flex-grow grid-rows-1 gap-3 md:grid-rows-2 md:grid-cols-2'>
+      <div className='grid flex-grow grid-rows-1 gap-3 lg:grid-rows-2 lg:grid-cols-2'>
         <div className='flex flex-col p-5 bg-white rounded-lg md:row-span-2 shadow-3xl'>
           {addNew ? (
             <form
               className='flex flex-col h-full'
               onSubmit={handleSubmit(onSubmit)}
             >
-              <div className='flex flex-col items-start justify-between mb-5 lg:flex-row '>
+              <div className='flex items-start justify-between mb-5 md:flex-row '>
                 <label htmlFor='' className='font-medium '>
                   Select Farmer Category:
                   <select
@@ -240,7 +253,11 @@ const Weather = () => {
                     className='px-3 py-2 text-sm text-white bg-green-500 rounded shadow '
                     type='submit'
                   >
-                    {selectedClimateAdivceId ? 'Update' : 'Submit'}
+                    {isLoading
+                      ? 'Loading...'
+                      : selectedClimateAdivceId
+                      ? 'Update'
+                      : 'Submit'}
                   </button>
                 </div>
               </div>
@@ -253,6 +270,7 @@ const Weather = () => {
                   className='p-1 text-sm font-medium text-white bg-green-400 rounded round'
                   onClick={() => {
                     setSelectedClimateAdivceId('');
+                    setAudioFiles([]);
                     reset(defaultValues);
                     setAddNew(true);
                   }}
@@ -277,8 +295,10 @@ const Weather = () => {
                           onClick={() => viewSelectedAdvice(item)}
                         />
                       </div>
-                      <p>Title : {`${item['text_advice']?.title}`}</p>
-                      <p className='overflow-y-auto max-h-20'>
+                      <p className='text-gray-700'>
+                        Title : {`${item['text_advice']?.title}`}
+                      </p>
+                      <p className='overflow-y-auto text-gray-700 max-h-20'>
                         {item['text_advice']?.body}
                       </p>
                     </div>
@@ -289,7 +309,7 @@ const Weather = () => {
           )}
         </div>
 
-        <div className='hidden bg-white rounded-lg md:block shadow-3xl'>
+        <div className='hidden bg-white rounded-lg lg:block shadow-3xl'>
           <Calendar
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
@@ -298,7 +318,7 @@ const Weather = () => {
             setSelectedMonth={setSelectedMonth}
           />
         </div>
-        <div className='hidden bg-white rounded-lg md:flex shadow-3xl bg-gradient-to-r from-blue-500 to-blue-400'>
+        <div className='hidden bg-white rounded-lg lg:flex shadow-3xl bg-gradient-to-r from-blue-500 to-blue-400'>
           <NoSSRWidget
             location={locationValue || 'Dodowa'}
             weatherData={weatherData}
