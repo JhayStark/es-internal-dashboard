@@ -38,9 +38,9 @@ const Login = () => {
         </div>
       </div>
       <div className='flex flex-row items-center col-span-8 xl:col-span-6 xl:ml-32'>
-        <div className='flex flex-row w-full min-h-[40vh] md:min-h-fit justify-evenly '>
+        <div className='flex flex-row w-full  min-h-[40vh] md:min-h-fit justify-evenly '>
           <form
-            className='flex flex-col  justify-around  xl:w-[40%] 3xl:w[30%]'
+            className='flex flex-col justify-center   xl:w-[40%] 3xl:w[30%]'
             action=''
             onSubmit={handleSubmit(async data => {
               setIsLoading(true);
@@ -57,38 +57,44 @@ const Login = () => {
                 });
             })}
           >
-            <div className='text-[#055189] text-xl xl:text-2xl '>
-              <p>Login to your</p>
-              <p>management dashboard</p>
-            </div>
-            <input
-              type='text'
-              placeholder={`${errors.email ? errors.email.message : 'User ID'}`}
-              className={`p-3   border-2 rounded border-[#54545980] focus:outline-none ${
-                errors.email && 'border-error'
-              }`}
-              {...register('email', { required: 'Enter valid email address' })}
-            />
-            <input
-              type='password'
-              placeholder={`${
-                errors.password ? errors.password.message : 'Password'
-              }`}
-              className={`p-3   border-2 rounded border-[#54545980] focus:outline-none ${
-                errors.password && 'border-error'
-              }`}
-              {...register('password', { required: 'Enter valid password' })}
-            />
-            <div className='flex flex-row items-center justify-between w-full'>
-              <button
-                type='submit'
-                className='bg-[#055189] text-white py-1 rounded-full px-10 3xl:py-2 3xl:px-16 3xl:text-lg'
-              >
-                {isLoading ? <Spinner /> : 'LOGIN'}
-              </button>
-              <p className='text-xs underline cursor-pointer 3xl:text-base decoration-dashed underline-offset-4 text-[#055189]'>
-                Forgot User ID or Password?
-              </p>
+            <div className='w-full space-y-6'>
+              <div className='text-[#055189] text-xl xl:text-2xl '>
+                <p>Login to your</p>
+                <p>management dashboard</p>
+              </div>
+              <input
+                type='text'
+                placeholder={`${
+                  errors.email ? errors.email.message : 'User ID'
+                }`}
+                className={`px-3 py-2 w-full  border-2 rounded border-[#54545980] focus:outline-none ${
+                  errors.email && 'border-error'
+                }`}
+                {...register('email', {
+                  required: 'Enter valid email address',
+                })}
+              />
+              <input
+                type='password'
+                placeholder={`${
+                  errors.password ? errors.password.message : 'Password'
+                }`}
+                className={`px-3 py-2 w-full   border-2 rounded border-[#54545980] focus:outline-none ${
+                  errors.password && 'border-error'
+                }`}
+                {...register('password', { required: 'Enter valid password' })}
+              />
+              <div className='flex flex-row items-center justify-between w-full'>
+                <button
+                  type='submit'
+                  className='bg-[#055189] text-white  rounded-full px-10 py-2 3xl:px-16 3xl:text-lg'
+                >
+                  {isLoading ? <Spinner /> : 'LOGIN'}
+                </button>
+                <p className='text-xs underline cursor-pointer 3xl:text-base decoration-dashed underline-offset-4 text-[#055189]'>
+                  Forgot User ID or Password?
+                </p>
+              </div>
             </div>
           </form>
 
