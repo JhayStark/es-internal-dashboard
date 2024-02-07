@@ -1,17 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import AgroSmartNavigationTab from '../../components/AgroSmartNavigationTab';
 import Calendar from '../../components/Calendar';
 import moment from 'moment';
 import mtnApi from '@/utils/mtnInstance';
 import { useForm } from 'react-hook-form';
-import { IoIosAddCircleOutline, IoMdCloseCircle } from 'react-icons/io';
 import { useFarmerTypes, useAgronomicAdviceData } from '@/hooks/fetchers';
-import { uploadMulitpleFiles } from './climate-smart';
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from 'react-icons/md';
+import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { useDropzone } from 'react-dropzone';
-import { FaPlay } from 'react-icons/fa';
-import { HiOutlinePause } from 'react-icons/hi';
 import { AudioListItem } from '../../components/VoiceMessages';
+import { uploadMulitpleFiles } from '@/utils/helpers/audio';
 
 const defaultValues = {
   ['farmer_type']: '',
@@ -23,19 +20,11 @@ const defaultValues = {
 };
 
 const AgronomicAdivce = () => {
-  const {
-    register,
-    reset,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm(defaultValues);
+  const { register, reset, handleSubmit, watch } = useForm(defaultValues);
 
-  const inputRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(moment());
   const [selectedMonth, setSelectedMonth] = useState(moment());
   const [commodities, setCommodities] = useState([]);
-  const [selectedCommodity, setSelectedCommodity] = useState('');
   const [selectedAgronomicAdvice, setSelectedAgronomicAdvice] = useState('');
   const [addNew, setAddNew] = useState(false);
   const [audioFiles, setAudioFiles] = useState([]);
@@ -50,6 +39,7 @@ const AgronomicAdivce = () => {
     fileCopy.src = src;
     setAudioFiles(prev => [...prev, fileCopy]);
   };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
     multiple: true,
@@ -98,12 +88,6 @@ const AgronomicAdivce = () => {
   const onSubmit = async data => {
     const filesToUpload = audioFiles.filter(audio => audio instanceof File);
     const uploadedAudios = await uploadMulitpleFiles(filesToUpload);
-    // const filesAlreadyUploaded = audioFiles.filter(
-    //   audio => !(audio instanceof File)
-    // );
-    // const refinedAudios = filesAlreadyUploaded.map(audio => {
-    //   return { title: audio.name, body: audio.src };
-    // });
     const audioToSubmit = [...uploadedAudios];
     const formObject = {
       ['farmer_type']: data['farmer_type'],

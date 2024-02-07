@@ -11,6 +11,7 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { useFarmerTypes, useClimateSmartData } from '@/hooks/fetchers';
 import { useForm } from 'react-hook-form';
+import { uploadMulitpleFiles } from '@/utils/helpers/audio';
 
 const defaultValues = {
   ['farmer_type']: '',
@@ -24,23 +25,6 @@ const defaultValues = {
 const NoSSRWidget = dynamic(() => import('@/components/WeatherWidget'), {
   ssr: false,
 });
-
-const uploadAudioFile = async file => {
-  const formData = new FormData();
-  formData.append('audio', file);
-  try {
-    const response = await mtnApi.post('/advices/upload', formData);
-    return { title: file.name, body: response.data.downloadURL };
-  } catch (error) {
-    alert('Failed to upload');
-  }
-};
-
-export const uploadMulitpleFiles = async files => {
-  const promises = files.map(file => uploadAudioFile(file));
-  const results = await Promise.all(promises);
-  return results || [];
-};
 
 const Weather = () => {
   const {
@@ -63,7 +47,8 @@ const Weather = () => {
     new Date(selectedDate).toISOString()
   );
   const [locationValue] = useDebounce(watch('location'), 4000);
-  const [addNew, setAddNew] = useState(true);
+  const [addNew, setAddNew] = useState(false);
+
   const getWeatherData = async location => {
     try {
       const response = await mtnApi.get(
@@ -76,7 +61,7 @@ const Weather = () => {
   };
 
   useEffect(() => {
-    getWeatherData(locationValue || 'accra');
+    getWeatherData(locationValue || 'east-legon');
   }, [locationValue]);
 
   useEffect(() => {
@@ -104,9 +89,11 @@ const Weather = () => {
       body: item['text_advice']?.body,
       ['audio_advices']: item.audio_advices,
     });
+
     const defaultCommodities =
       farmerTypes?.find(type => type.type === watch('farmer_type'))
         ?.commodities || [];
+
     setCommodities(defaultCommodities);
 
     const audioAdivces = item['audio_advices'];
@@ -114,6 +101,7 @@ const Weather = () => {
       name: audio.title,
       src: audio.body,
     }));
+
     setAudioFiles(refinedAudios);
     setSelectedClimateAdivceId(item.id);
     setAddNew(true);
@@ -123,12 +111,6 @@ const Weather = () => {
     setIsLoading(true);
     const filesToUpload = audioFiles.filter(audio => audio instanceof File);
     const uploadedAudios = await uploadMulitpleFiles(filesToUpload);
-    // const filesAlreadyUploaded = audioFiles.filter(
-    //   audio => !(audio instanceof File)
-    // );
-    // const refinedAudios = filesAlreadyUploaded.map(audio => {
-    //   return { title: audio.name, body: audio.src };
-    // });
     const audioToSubmit = [...uploadedAudios];
 
     const formObject = {
@@ -166,10 +148,6 @@ const Weather = () => {
     }
   };
 
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(position => console.log(position));
-  // }, []);
-
   return (
     <div className='flex flex-col min-h-full pb-2 '>
       <AgroSmartNavigationTab />
@@ -181,7 +159,7 @@ const Weather = () => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className='flex items-start justify-between mb-5 md:flex-row '>
-                <label htmlFor='' className='font-medium '>
+                <label htmlFor='' className='text-lg font-medium '>
                   Select Farmer Category:
                   <select
                     id='farmerType'
@@ -196,7 +174,7 @@ const Weather = () => {
                     ))}
                   </select>
                 </label>
-                <label htmlFor='' className='font-medium '>
+                <label htmlFor='' className='text-lg font-medium'>
                   Select Commodity:
                   <select
                     id='commodity'
@@ -320,7 +298,7 @@ const Weather = () => {
         </div>
         <div className='hidden bg-white rounded-lg lg:flex shadow-3xl bg-gradient-to-r from-blue-500 to-blue-400'>
           <NoSSRWidget
-            location={locationValue || 'Dodowa'}
+            location={locationValue || 'East legon'}
             weatherData={weatherData}
           />
         </div>
