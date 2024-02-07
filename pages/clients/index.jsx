@@ -90,21 +90,21 @@ const Clients = () => {
           <PieChartComponent />
           <div className='flex flex-row items-center justify-between'>
             <div className='flex flex-col gap-1'>
-              <div className='w-5 h-2 rounded-xl bg-[#214BB8]'></div>
+              <div className='w-5 h-2 rounded-xl bg-[#214BB8]' />
               <p className='text-lg font-medium'>
                 {serviceStatistics ? serviceStatistics['Insyt'] : ''}
               </p>
               <p className='text-sm text-[#7E7E7E]'>Surveys</p>
             </div>
             <div className='flex flex-col gap-1'>
-              <div className='w-5 h-2 rounded-xl bg-[#FE634E]'></div>
+              <div className='w-5 h-2 rounded-xl bg-[#FE634E]' />
               <p className='text-lg font-medium'>
                 {serviceStatistics ? serviceStatistics['Sms'] : ''}
               </p>
               <p className='text-sm text-[#7E7E7E]'>Sms</p>
             </div>
             <div className='flex flex-col gap-1'>
-              <div className='w-5 h-2 rounded-xl bg-[#45ADDA]'></div>
+              <div className='w-5 h-2 rounded-xl bg-[#45ADDA]' />
               <p className='text-lg font-medium'>
                 {serviceStatistics ? serviceStatistics['Voice'] : ''}
               </p>

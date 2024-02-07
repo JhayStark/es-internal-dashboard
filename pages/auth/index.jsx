@@ -4,14 +4,14 @@ import Spinner from '../../components/svgs/Spinner';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '@/context/AuthProvider';
+const defaultValues = {
+  email: '',
+  password: '',
+};
 
 const Login = () => {
   const { loginUser, saveToken } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
-  const defaultValues = {
-    email: '',
-    password: '',
-  };
 
   const {
     register,
@@ -20,7 +20,7 @@ const Login = () => {
   } = useForm({ defaultValues });
 
   return (
-    <div className='grid h-screen grid-cols-8 font-sans max-w-[2000px] '>
+    <div className='grid h-screen grid-cols-8 font-sans max-w-[2000px] px-8 md:px-5 lg:px-0 '>
       <div className=' hidden col-span-2 bg-[#055189] xl:flex flex-col items-center justify-between py-10 px-5 3xl:px-10'>
         <Image
           src='/images/white_logo.png'
@@ -57,7 +57,7 @@ const Login = () => {
                 });
             })}
           >
-            <div className='w-full space-y-6'>
+            <div className='md:w-[80%] lg:w-full space-y-6'>
               <div className='text-[#055189] text-xl xl:text-2xl '>
                 <p>Login to your</p>
                 <p>management dashboard</p>
@@ -87,9 +87,12 @@ const Login = () => {
               <div className='flex flex-row items-center justify-between w-full'>
                 <button
                   type='submit'
-                  className='bg-[#055189] text-white  rounded-full px-10 py-2 3xl:px-16 3xl:text-lg'
+                  disabled={isLoading}
+                  className={`bg-[#055189] text-white flex items-center  shadow-md font-medium  rounded-lg gap-1 px-5  py-1  3xl:text-lg ${
+                    isLoading && 'animate-pulse'
+                  }`}
                 >
-                  {isLoading ? <Spinner /> : 'LOGIN'}
+                  LOGIN{isLoading && <Spinner />}
                 </button>
                 <p className='text-xs underline cursor-pointer 3xl:text-base decoration-dashed underline-offset-4 text-[#055189]'>
                   Forgot User ID or Password?

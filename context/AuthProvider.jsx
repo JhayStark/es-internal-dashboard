@@ -1,5 +1,5 @@
 import api from '../utils/axiosInstance';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 export const AuthContext = createContext();
@@ -51,18 +51,19 @@ export const AuthContextProvider = ({ children }) => {
     setIsInitializing(false);
   }, []);
 
+  const contextValue = useMemo(
+    () => ({
+      user,
+      saveToken,
+      loginUser,
+      isLoggedIn,
+      logoutUser,
+      isInitializing,
+    }),
+    [user, isLoggedIn, isInitializing]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        saveToken,
-        loginUser,
-        isLoggedIn,
-        logoutUser,
-        isInitializing,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };

@@ -65,10 +65,10 @@ const TableFilterComponent = ({
         ))}
       </div>
       <button
-        className='px-2 my-2 text-sm text-white bg-red-500 rounded-md shadow-md'
-        onClick={() => onChangeHandler('')}
+        className='mt-2 ml-auto mr-0 text-sm text-red-400 '
+        onClick={() => onChangeHandler(prev => [])}
       >
-        Clear filters
+        Clear
       </button>
     </div>
   );

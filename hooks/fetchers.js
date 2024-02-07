@@ -1,7 +1,6 @@
+import { useState } from 'react';
 import api from '@/utils/axiosInstance';
 import useSWR from 'swr';
-import { useState } from 'react';
-import axios from 'axios';
 import mtnApi from '../utils/mtnInstance';
 
 function useTableData(passedUrl, queryAlreadyExists = false) {
@@ -12,7 +11,9 @@ function useTableData(passedUrl, queryAlreadyExists = false) {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterText, setFilterText] = useState('');
+
   let url = `${passedUrl}?page=${pageNumber}&limit=${pageSize}&search=${filterText}`;
+
   if (queryAlreadyExists) {
     url = `${passedUrl}&page=${pageNumber}&limit=${pageSize}&search=${filterText}`;
   }
@@ -78,8 +79,9 @@ function useRegionalDistribution(passedUrl) {
     passedUrl,
     regionalDistributionFetcher
   );
+  const sortedData = data?.sort((a, b) => a.value - b.value);
   return {
-    regionalDistribution: data,
+    regionalDistribution: sortedData,
     regionalDistributionisLoading: isLoading,
     regionalDistributionError: error,
   };

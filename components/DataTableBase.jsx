@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from 'react';
 import { MdClear, MdOutlineSearch } from 'react-icons/md';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { BiFilterAlt } from 'react-icons/bi';
+import { useDebounce } from 'use-debounce';
 
 const customStyles = {
   rows: {
@@ -28,6 +29,7 @@ const customStyles = {
 
 const SearchBox = ({ onSearch, setResetPagination }) => {
   const [input, setInput] = useState('');
+  const [searchValue] = useDebounce(input, 1000);
 
   const handleClear = () => {
     setResetPagination(true);
@@ -35,11 +37,8 @@ const SearchBox = ({ onSearch, setResetPagination }) => {
   };
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      onSearch(input);
-    }, 500);
-    return () => clearTimeout(timeoutId);
-  }, [input]);
+    onSearch(searchValue);
+  }, [searchValue]);
 
   return (
     <div className='flex flex-row items-center border-[1px] focus:outline-none rounded-md p-2 '>
@@ -51,10 +50,12 @@ const SearchBox = ({ onSearch, setResetPagination }) => {
         className='w-full focus:outline-none'
         placeholder='Search...'
       />
-      <MdClear
-        className='hidden text-2xl text-red-500 cursor-pointer lg:block hover:scale-125'
-        onClick={handleClear}
-      />
+      {input.length > 0 && (
+        <MdClear
+          className='hidden text-2xl text-red-500 cursor-pointer lg:block hover:scale-125'
+          onClick={handleClear}
+        />
+      )}
     </div>
   );
 };
@@ -91,7 +92,7 @@ function DataTableBase({
   return (
     <>
       <div className='flex flex-col justify-between gap-3 px-3 pt-2 md:gap-0 md:items-center md:flex-row'>
-        <p className='text-lg antialiased font-medium xl:text-xl '>{title}</p>
+        <p className='text-lg antialiased font-medium '>{title}</p>
         {!hidden && (
           <div className='flex flex-row items-center gap-2'>
             <SearchBox
