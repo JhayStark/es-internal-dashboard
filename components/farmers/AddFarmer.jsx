@@ -60,8 +60,9 @@ const AddFarmer = ({ close }) => {
 
   const farmerId = router.query.farmerId || router.query.id || '';
   const rowData = router.query.rowData || '';
-  // const { farmer, farmerError, farmerIsLoading } =
-  //   useSelectedFarmerData(farmerId);
+  const { farmer, farmerError, farmerIsLoading } =
+    useSelectedFarmerData(farmerId);
+
   const districtOptions = useMemo(() => {
     return (
       countryData[watch('region')]?.map(option => {
@@ -79,9 +80,50 @@ const AddFarmer = ({ close }) => {
   }, [watch('category')]);
 
   useEffect(() => {
-    const fixData = localStorage.getItem('viewData');
-    if (rowData) {
-      const farmer = { data: JSON.parse(rowData) };
+    // const fixData = localStorage.getItem('viewData');
+    // if (rowData) {
+    //   const farmer = { data: JSON.parse(rowData) };
+    //   const farmerName = farmer.data?.name
+    //     .split(' ')
+    //     .map(str => str.trim())
+    //     .filter(str => str !== '');
+    //   reset({
+    //     firstName: farmerName[0],
+    //     lastName: farmerName[1],
+    //     contact: farmer?.data?.phone,
+    //     gender: farmer?.data?.gender,
+    //     language: farmer?.data?.language,
+    //     country: farmer?.data?.country,
+    //     region: farmer?.data?.region,
+    //     location: farmer?.data?.district,
+    //     category: farmer?.data?.category,
+    //     crops: farmer?.data?.crops,
+    //     status: farmer?.data?.status,
+    //     dateOfbirth: farmer?.data?.dob.split('T')[0],
+    //   });
+    // }
+    // if (fixData && farmerId) {
+    //   const farmer = { data: JSON.parse(fixData) };
+    //   const farmerName = farmer.data?.name
+    //     .split(' ')
+    //     .map(str => str.trim())
+    //     .filter(str => str !== '');
+    //   reset({
+    //     firstName: farmerName[0],
+    //     lastName: farmerName[1],
+    //     contact: farmer?.data?.phone,
+    //     gender: farmer?.data?.gender,
+    //     language: farmer?.data?.language,
+    //     country: farmer?.data?.country,
+    //     region: farmer?.data?.region,
+    //     location: farmer?.data?.district,
+    //     category: farmer?.data?.category,
+    //     crops: farmer?.data?.crops,
+    //     status: farmer?.data?.status,
+    //     dateOfbirth: farmer?.data?.dob.split('T')[0],
+    //   });
+    // }
+    if (farmer) {
       const farmerName = farmer.data?.name
         .split(' ')
         .map(str => str.trim())
@@ -101,28 +143,7 @@ const AddFarmer = ({ close }) => {
         dateOfbirth: farmer?.data?.dob.split('T')[0],
       });
     }
-    if (fixData && farmerId) {
-      const farmer = { data: JSON.parse(fixData) };
-      const farmerName = farmer.data?.name
-        .split(' ')
-        .map(str => str.trim())
-        .filter(str => str !== '');
-      reset({
-        firstName: farmerName[0],
-        lastName: farmerName[1],
-        contact: farmer?.data?.phone,
-        gender: farmer?.data?.gender,
-        language: farmer?.data?.language,
-        country: farmer?.data?.country,
-        region: farmer?.data?.region,
-        location: farmer?.data?.district,
-        category: farmer?.data?.category,
-        crops: farmer?.data?.crops,
-        status: farmer?.data?.status,
-        dateOfbirth: farmer?.data?.dob.split('T')[0],
-      });
-    }
-  }, [rowData, farmerId]);
+  }, [farmerId]);
 
   const onSubmit = async event => {
     const formData = {

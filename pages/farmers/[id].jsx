@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/router';
-import { useTableDataMtn } from '@/hooks/fetchers';
+import { useTableDataMtn, useSelectedFarmerData } from '@/hooks/fetchers';
 import { TbEdit } from 'react-icons/tb';
 import Sales from '../../components/farmers/Sales';
 import Link from 'next/link';
@@ -103,6 +103,10 @@ const Page = () => {
     tableData: salestableData,
     tableDataIsLoading: salestableDataIsLoading,
   } = useTableDataMtn(`/farmers/${farmerId}/sales`);
+  const { farmer, farmerError, farmerIsLoading } =
+    useSelectedFarmerData(farmerId);
+
+  console.log(farmer);
 
   useEffect(() => {
     setFarmerData(JSON.parse(localStorage.getItem('viewData')));
@@ -115,34 +119,36 @@ const Page = () => {
           <div className='flex flex-col justify-start'>
             <div className='flex flex-row items-center gap-2'>
               <p className=' text-2xl 3xl:text-3xl font-semibold text-[#2A3547] text-center'>
-                {farmerData?.name || (
+                {farmer?.data?.name || (
                   <Skeleton count={1} width={'8rem'} borderRadius={10} />
                 )}
               </p>
               <p
                 className={` w-14 text-center py-1 rounded-lg text-xs text-gray-600 ${
-                  farmerData?.status ? 'bg-yellow-200' : 'bg-green-200'
+                  farmer?.data?.status === 'pending'
+                    ? 'bg-yellow-200'
+                    : 'bg-green-200'
                 }`}
               >
-                {farmerData?.status ? 'pending' : 'reviewed'}
+                {farmer?.data?.status}
               </p>
             </div>
             <p className='text-[#828282] text-sm mt-3'>
               Joined on{' '}
-              {convertDate(farmerData?.createdAt) || (
+              {convertDate(farmer?.data?.createdAt) || (
                 <Skeleton count={1} width={'8rem'} borderRadius={10} />
               )}
             </p>
           </div>
           <div className='flex flex-col justify-end'>
             <p className='font-medium  text-[#2A3547] '>
-              {farmerData.phone || (
+              {farmer?.data.phone || (
                 <Skeleton count={1} width={'8rem'} borderRadius={10} />
               )}
             </p>
             <p className='font-medium text-sm text-[#2A3547] '>
-              {farmerData ? (
-                `${farmerData.district}, ${farmerData.region} - ${farmerData.country}`
+              {farmer?.data ? (
+                `${farmer?.data.district}, ${farmer?.data.region} - ${farmer?.data.country}`
               ) : (
                 <Skeleton count={1} width={'8rem'} borderRadius={10} />
               )}
@@ -220,26 +226,16 @@ const Page = () => {
         )}
       </div>
       {addModal === 'sale' && (
-        <Sales
-          close={() =>
-            router.push('/farmers/f95a334b-b0ca-432e-a2c8-bf15896fd52d')
-          }
-        />
+        <Sales close={() => router.push(`/farmers/${farmerId}`)} />
       )}
       {addModal === 'harvest' && (
         <Harvest
-          close={() =>
-            router.push('/farmers/f95a334b-b0ca-432e-a2c8-bf15896fd52d')
-          }
+          close={() => router.push(`/farmers/${farmerId}?tab=harvest`)}
         />
       )}
 
       {addModal === 'edit' && (
-        <AddFarmer
-          close={() =>
-            router.push('/farmers/f95a334b-b0ca-432e-a2c8-bf15896fd52d')
-          }
-        />
+        <AddFarmer close={() => router.push(`/farmers/${farmerId}`)} />
       )}
     </div>
   );
