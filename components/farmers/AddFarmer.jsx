@@ -168,7 +168,7 @@ const AddFarmer = ({ close }) => {
       >
         <div
           ref={modalRef}
-          className='w-[90%]  max-w-4xl  p-5 mx-auto bg-white rounded-lg shadow-lg'
+          className='w-[90%] max-h-[90vh] max-w-4xl  p-5 mx-auto bg-white rounded-lg shadow-lg'
         >
           <h2 className='text-lg font-bold text-center text-gray-800'>
             {farmerId ? 'Edit Farmer' : 'Add Farmer'}
