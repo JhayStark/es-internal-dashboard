@@ -39,7 +39,7 @@ const farmerTableColumns = [
     selector: row => row.status,
     cell: row => (
       <p
-        className={` w-14 text-center py-1 rounded-lg text-xs text-gray-600 ${
+        className={` w-16 text-center py-1 rounded-lg text-xs text-gray-600 ${
           row.status === 'pending' ? 'bg-yellow-200' : 'bg-green-200'
         }`}
       >

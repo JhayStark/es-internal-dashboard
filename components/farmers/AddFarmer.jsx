@@ -143,7 +143,7 @@ const AddFarmer = ({ close }) => {
         dateOfbirth: farmer?.data?.dob.split('T')[0],
       });
     }
-  }, [farmerId]);
+  }, [farmerId, farmer]);
 
   const onSubmit = async event => {
     const formData = {
