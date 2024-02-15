@@ -40,6 +40,42 @@ function useTableData(passedUrl, queryAlreadyExists = false) {
   };
 }
 
+function useTableDataMtn(passedUrl, queryAlreadyExists = false) {
+  const tableDataFetcher = async url => {
+    return await mtnApi.get(url).then(res => res.data);
+  };
+
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [filterText, setFilterText] = useState('');
+
+  let url = `${passedUrl}?page=${pageNumber}&limit=${pageSize}`;
+
+  if (queryAlreadyExists) {
+    url = `${passedUrl}&page=${pageNumber}&limit=${pageSize}`;
+  }
+
+  const { data, error, isLoading } = useSWR(url, tableDataFetcher);
+
+  const handlePageNumberChange = (newPerPage, page) => {
+    setPageNumber(page);
+    setPageSize(newPerPage);
+  };
+
+  const handlePageChange = page => {
+    setPageNumber(page);
+  };
+
+  return {
+    tableData: data,
+    tableDataIsLoading: isLoading,
+    tableDataError: error,
+    handlePageNumberChange,
+    setFilterText,
+    filterText,
+    handlePageChange,
+  };
+}
 function useServiceTotals() {
   const statisticsFetcher = async url => {
     return await api.get(url).then(res => res.data.data);
@@ -316,6 +352,23 @@ function useWeatherData(location = 'Accra') {
   };
 }
 
+function useSelectedFarmerData(id) {
+  const getSelectedFarmerData = async url => {
+    return await mtnApi.get(url).then(res => res.data);
+  };
+
+  const { data, isLoading, error } = useSWR(
+    `/farmers/${id}`,
+    getSelectedFarmerData
+  );
+
+  return {
+    farmer: data,
+    farmerIsLoading: isLoading,
+    farmerError: error,
+  };
+}
+
 export {
   useServiceTotals,
   useTableData,
@@ -335,4 +388,6 @@ export {
   useAgronomicAdviceData,
   useWeatherData,
   useClimateSmartData,
+  useTableDataMtn,
+  useSelectedFarmerData,
 };

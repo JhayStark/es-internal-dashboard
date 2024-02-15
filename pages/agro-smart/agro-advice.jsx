@@ -5,10 +5,10 @@ import moment from 'moment';
 import mtnApi from '@/utils/mtnInstance';
 import { useForm } from 'react-hook-form';
 import { useFarmerTypes, useAgronomicAdviceData } from '@/hooks/fetchers';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { useDropzone } from 'react-dropzone';
 import { AudioListItem } from '../../components/VoiceMessages';
 import { uploadMulitpleFiles } from '@/utils/helpers/audio';
+import ViewList from '@/components/agro-smart/ViewList';
 
 const defaultValues = {
   ['farmer_type']: '',
@@ -206,47 +206,15 @@ const AgronomicAdivce = () => {
               </div>
             </form>
           ) : (
-            <div>
-              <div className='flex items-center justify-between'>
-                <p>Total Sent: {`${agronomicAdivce?.data.length}`}</p>
-                <button
-                  className='p-1 text-sm font-medium text-white bg-green-400 rounded round'
-                  onClick={() => {
-                    setSelectedAgronomicAdvice('');
-                    setAudioFiles([]);
-                    reset(defaultValues);
-                    setAddNew(true);
-                  }}
-                >
-                  Add New
-                </button>
-              </div>
-              <div className='max-h-[80vh] py-2 space-y-4 overflow-y-auto '>
-                {agronomicAdivce?.data?.map(item => (
-                  <div
-                    className='p-3 rounded shadow-md bg-blue-50'
-                    key={item.id}
-                  >
-                    <div className='space-y-2 text-sm'>
-                      <div className='flex items-center justify-between'>
-                        <p className='font-medium'>
-                          Targert Group :{' '}
-                          {`${item['farmer_type']}(${item.commodity})`}
-                        </p>
-                        <MdOutlineRemoveRedEye
-                          className='text-xl cursor-pointer text-blue-950 hover:scale-125'
-                          onClick={() => viewSelectedAdvice(item)}
-                        />
-                      </div>
-                      <p>Title : {`${item['text_advice']?.title}`}</p>
-                      <p className='overflow-y-auto max-h-20'>
-                        {item['text_advice']?.body}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ViewList
+              advice={agronomicAdivce}
+              reset={reset}
+              setAddNew={setAddNew}
+              setAdvice={setSelectedAgronomicAdvice}
+              setAudioFiles={setAudioFiles}
+              viewSelectedAdvice={viewSelectedAdvice}
+              defaultValues={defaultValues}
+            />
           )}
         </div>
         <div className='hidden bg-white rounded-lg md:block shadow-3xl'>

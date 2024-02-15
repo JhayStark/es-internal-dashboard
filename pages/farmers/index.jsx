@@ -92,8 +92,8 @@ const Farmers = () => {
     <div>
       <ReportsNavigationTab
         routes={[
-          { route: '/reports', title: 'Reports' },
-          { route: '/reports/farmers', title: 'Farmers' },
+          { route: '/farmers', title: 'Farmers' },
+          { route: '/farmers/review', title: 'New Farmers' },
         ]}
       />
       <div className='flex flex-row items-center justify-between'>

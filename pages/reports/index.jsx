@@ -64,7 +64,12 @@ const Index = () => {
 
   return (
     <>
-      <ReportsNavigationTab />
+      <ReportsNavigationTab
+        routes={[
+          { route: '/reports', title: 'Reports' },
+          { route: '/reports/farmers', title: 'Farmers' },
+        ]}
+      />
       <div className='grid grid-cols-7 gap-3 3xl:gap-5 mb-9'>
         <div className='hidden col-span-7 p-4 bg-white rounded-lg sm:block lg:col-span-5 shadow-3xl '>
           <p className='py-2 text-xl font-bold '>Revenue Per Qtr</p>

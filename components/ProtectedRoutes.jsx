@@ -12,7 +12,7 @@ const ProtectedRoutes = ({ children }) => {
       }
     }
   }, [isInitializing, isLoggedIn, router]);
-  if (isInitializing) <h2>Application loading</h2>;
+  if (isInitializing) return <h2>Application loading</h2>;
   if (!isLoggedIn && !router.pathname.includes('auth')) return null;
   return <>{children}</>;
 };

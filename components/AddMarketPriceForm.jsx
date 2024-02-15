@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { IoIosCloseCircle } from 'react-icons/io';
@@ -44,9 +44,11 @@ const AddMarketPriceForm = ({ setOpenModal }) => {
   const onSubmit = async data => {
     try {
       marketPriceSchema.parse(data);
+
       await mtnApi.post('/market-prices', {
         marketPrices: data.marketPrice,
       });
+
       alert('Price added successfully');
       setOpenModal(false);
     } catch (error) {
@@ -59,12 +61,27 @@ const AddMarketPriceForm = ({ setOpenModal }) => {
           newMessage[path[2]] = message;
           zodErrors[path[1]] = { ...zodErrors[path[1]], ...newMessage };
         });
+
         setFormErrors(zodErrors);
       } else {
         alert('Failed to add market price');
       }
     }
   };
+
+  useEffect(() => {
+    if (fields.length === 0) {
+      append({
+        commodity: '',
+        market: '',
+        location: '',
+        ['wholesale_price']: '',
+        ['retail_price']: '',
+        key: uuidv4(),
+      });
+    }
+  }, []);
+
   return (
     <div className='fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center backdrop-blur-[2px] backdrop-invert-[20%] font-sans'>
       <div className='p-5 lg:p-10 mx-auto bg-white rounded-lg shadow-lg w-[90vw] xl:w-[60vw] min-h-[300px]'>

@@ -4,7 +4,7 @@ import { RiHome5Line } from 'react-icons/ri';
 import { FaRegUser } from 'react-icons/fa';
 import { TbReportSearch } from 'react-icons/tb';
 import { FiSettings } from 'react-icons/fi';
-import { MdOutlineAgriculture } from 'react-icons/md';
+import { MdOutlineAgriculture, MdPeopleOutline } from 'react-icons/md';
 
 const MenuItem = ({ path, isActive, icon, title }) => {
   return (
@@ -49,6 +49,15 @@ const Sidebar = () => {
             isActive={router.pathname.includes('/reports')}
             icon={<TbReportSearch />}
             title='Reports'
+          />
+          <MenuItem
+            path='/farmers'
+            isActive={
+              router.pathname.includes('/farmers') &&
+              !router.pathname.includes('/reports')
+            }
+            icon={<MdPeopleOutline />}
+            title='Farmers'
           />
           <MenuItem
             path='/agro-smart'

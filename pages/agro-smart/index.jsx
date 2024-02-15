@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import AgroSmartNavigationTab from '../../components/AgroSmartNavigationTab';
-import AddMarketPriceForm from '../../components/AddMarketPriceForm';
+import AgroSmartNavigationTab from '@/components/AgroSmartNavigationTab';
+import AddMarketPriceForm from '@/components/AddMarketPriceForm';
 import { useMarketPrices, useMarkets } from '@/hooks/fetchers';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {

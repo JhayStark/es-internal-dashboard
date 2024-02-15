@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import AgroSmartNavigationTab from '../../components/AgroSmartNavigationTab';
 import Calendar from '../../components/Calendar';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
 import mtnApi from '@/utils/mtnInstance';
-import VoiceMessages from '../../components/VoiceMessages';
-import Spinner from '../../components/svgs/Spinner';
+import VoiceMessages from '@/components/VoiceMessages';
 import { useDebounce } from 'use-debounce';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { useFarmerTypes, useClimateSmartData } from '@/hooks/fetchers';
 import { useForm } from 'react-hook-form';
 import { uploadMulitpleFiles } from '@/utils/helpers/audio';
+import ViewList from '@/components/agro-smart/ViewList';
+import AddNew from '../../components/agro-smart/AddNew';
 
 const defaultValues = {
   ['farmer_type']: '',
@@ -42,14 +41,14 @@ const Weather = () => {
   const [weatherData, setWeatherData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [selectedClimateAdivceId, setSelectedClimateAdivceId] = useState('');
+  const [addNew, setAddNew] = useState(true);
   const { farmerTypes } = useFarmerTypes();
   const { climateAdivce, climateAdviceIsLoading } = useClimateSmartData(
     new Date(selectedDate).toISOString()
   );
-  const [locationValue] = useDebounce(watch('location'), 4000);
-  const [addNew, setAddNew] = useState(false);
+  const [locationValue] = useDebounce(watch('location'), 1500);
 
-  const getWeatherData = async location => {
+  const getWeatherData = useCallback(async location => {
     try {
       const response = await mtnApi.get(
         `weather-forecasts?location=${location}`
@@ -58,7 +57,7 @@ const Weather = () => {
     } catch (error) {
       alert('Failed to fetch');
     }
-  };
+  }, []);
 
   useEffect(() => {
     getWeatherData(locationValue || 'east-legon');
@@ -67,20 +66,11 @@ const Weather = () => {
   useEffect(() => {
     if (!climateAdviceIsLoading && climateAdivce.data.length > 0) {
       setAddNew(false);
-    } else setAddNew(true);
+    }
     reset(defaultValues);
-  }, [selectedDate]);
+  }, [selectedDate, climateAdviceIsLoading]);
 
-  useEffect(() => {
-    farmerTypes?.filter(type => {
-      if (type.type === watch('farmer_type')) {
-        setCommodities(type.commodities);
-        return type.type === watch('farmer_type');
-      }
-    });
-  }, [watch('farmer_type')]);
-
-  const viewSelectedAdvice = item => {
+  const viewSelectedAdvice = useCallback(item => {
     reset({
       ['farmer_type']: item['farmer_type'],
       location: item?.location,
@@ -105,7 +95,7 @@ const Weather = () => {
     setAudioFiles(refinedAudios);
     setSelectedClimateAdivceId(item.id);
     setAddNew(true);
-  };
+  }, []);
 
   const onSubmit = async data => {
     setIsLoading(true);
@@ -147,143 +137,34 @@ const Weather = () => {
       alert('Failed to submit');
     }
   };
-
+  console.log(addNew);
   return (
     <div className='flex flex-col min-h-full pb-2 '>
       <AgroSmartNavigationTab />
       <div className='grid flex-grow grid-rows-1 gap-3 lg:grid-rows-2 lg:grid-cols-2'>
         <div className='flex flex-col p-5 bg-white rounded-lg md:row-span-2 shadow-3xl'>
           {addNew ? (
-            <form
-              className='flex flex-col h-full'
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <div className='flex items-start justify-between mb-5 md:flex-row '>
-                <label htmlFor='' className='text-lg font-medium '>
-                  Select Farmer Category:
-                  <select
-                    id='farmerType'
-                    className='text-sm font-normal rounded bg-inherit focus:outline-none'
-                    {...register('farmer_type')}
-                  >
-                    <option value=''>Select option</option>
-                    {farmerTypes?.map(type => (
-                      <option value={type.type} key={type.type}>
-                        {type.type}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label htmlFor='' className='text-lg font-medium'>
-                  Select Commodity:
-                  <select
-                    id='commodity'
-                    className='text-sm font-normal rounded bg-inherit focus:outline-none'
-                    {...register('commodity')}
-                  >
-                    <option value=''>Select option</option>
-                    {commodities?.map(crop => (
-                      <option value={crop} key={crop}>
-                        {crop}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-              <input
-                type='text'
-                className='border-[1px] rounded-lg w-full p-2 mb-5 '
-                placeholder='Location'
-                {...register('location')}
-              />
-              <input
-                type='text'
-                className='border-[1px] rounded-lg w-full p-2  '
-                placeholder='Agronomic advice title'
-                {...register('title')}
-              />
-              <textarea
-                className='border-[1px] rounded-lg w-full p-2 mt-5 flex-grow  box-border'
-                placeholder='Enter agronomic advice here.....'
-                {...register('body')}
-              />
-
-              <div className='flex items-center justify-between pt-2'>
-                <button
-                  className='flex items-center gap-2 text-primary'
-                  type='button'
-                  onClick={() => {
-                    setShowVoiceModal(true);
-                  }}
-                >
-                  <IoIosAddCircleOutline className='text-2xl' />
-                  Add voice messages
-                </button>
-                <div className='flex items-end gap-2'>
-                  <button
-                    className='px-3 py-2 text-sm text-white rounded shadow bg-primary '
-                    type='button'
-                    onClick={() => setAddNew(false)}
-                  >
-                    View Advices
-                  </button>
-                  <button
-                    className='px-3 py-2 text-sm text-white bg-green-500 rounded shadow '
-                    type='submit'
-                  >
-                    {isLoading
-                      ? 'Loading...'
-                      : selectedClimateAdivceId
-                      ? 'Update'
-                      : 'Submit'}
-                  </button>
-                </div>
-              </div>
-            </form>
+            <AddNew
+              submit={handleSubmit(onSubmit)}
+              register={register}
+              selectedAdvice={selectedClimateAdivceId}
+              setAddNew={setAddNew}
+              setShowVoiceModal={setShowVoiceModal}
+              watch={watch}
+              isLoading={isLoading}
+              setCommodities={setCommodities}
+              commodities={commodities}
+            />
           ) : (
-            <div>
-              <div className='flex items-center justify-between'>
-                <p>Total Sent: {`${climateAdivce?.data.length}`}</p>
-                <button
-                  className='p-1 text-sm font-medium text-white bg-green-400 rounded round'
-                  onClick={() => {
-                    setSelectedClimateAdivceId('');
-                    setAudioFiles([]);
-                    reset(defaultValues);
-                    setAddNew(true);
-                  }}
-                >
-                  Add New
-                </button>
-              </div>
-              <div className='max-h-[80vh] py-2 space-y-4 overflow-y-auto '>
-                {climateAdivce?.data?.map(item => (
-                  <div
-                    className='p-3 rounded shadow-md bg-blue-50'
-                    key={item.id}
-                  >
-                    <div className='space-y-2 text-sm'>
-                      <div className='flex items-center justify-between'>
-                        <p className='font-medium'>
-                          Targert Group :{' '}
-                          {`${item['farmer_type']}(${item.commodity})`}
-                        </p>
-                        <MdOutlineRemoveRedEye
-                          className='text-xl cursor-pointer text-blue-950 hover:scale-125'
-                          onClick={() => viewSelectedAdvice(item)}
-                        />
-                      </div>
-                      <p className='text-gray-700'>
-                        Title : {`${item['text_advice']?.title}`}
-                      </p>
-                      <p className='overflow-y-auto text-gray-700 max-h-20'>
-                        {item['text_advice']?.body}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ViewList
+              advice={climateAdivce}
+              reset={reset}
+              setAddNew={setAddNew}
+              setAdvice={setSelectedClimateAdivceId}
+              setAudioFiles={setAudioFiles}
+              viewSelectedAdvice={viewSelectedAdvice}
+              defaultValues={defaultValues}
+            />
           )}
         </div>
 
