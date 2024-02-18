@@ -65,7 +65,7 @@ const Login = () => {
               <input
                 type='text'
                 placeholder={`${
-                  errors.email ? errors.email.message : 'User ID'
+                  errors.email ? errors.email.message : 'Username'
                 }`}
                 className={`px-3 py-2 w-full  border-2 rounded border-[#54545980] focus:outline-none ${
                   errors.email && 'border-error'
