@@ -65,6 +65,7 @@ const BreadCrumbMobileDevices = () => {
           <option value='/'>Dashboard</option>
           <option value='/clients'>Client</option>
           <option value='/reports'>Reports</option>
+          <option value='/farmers'>Farmers</option>
           <option value='/settings'>Settings</option>
         </select>
       </li>
