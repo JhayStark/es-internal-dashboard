@@ -13,26 +13,15 @@ import {
   useRegionalStatsData,
 } from '@/hooks/fetchers';
 import MapChart from '@/components/MapChart';
-import BarGraph from '@/components/BarGraph';
-import { regionBarGraph, ageGroupBarGraph } from '@/data/farmerData';
 
 const NoSSRTable = dynamic(() => import('@/components/DataTableBase'), {
   ssr: false,
 });
 
-const FarmerOverviewStats = ({ title, icon, value, percentage }) => {
+const FarmerOverviewStats = ({ title, icon, value }) => {
   return (
     <div className='flex flex-col gap-5 p-5 bg-white rounded-lg shadow-3xl'>
-      <p className='text-lg font-medium'>
-        {title}{' '}
-        <span
-          className={`${
-            percentage === '43%' ? 'text-red-300' : 'text-green-300'
-          }`}
-        >
-          {percentage}
-        </span>
-      </p>
+      <p className='text-lg font-medium'>{title}</p>
       <div className='flex flex-row items-center justify-between'>
         <p className='text-lg'>{value}</p>
         <div className='text-4xl 3xl:text-5xl'>{icon}</div>
@@ -75,21 +64,21 @@ const Farmers = () => {
       selector: row => row.region,
       sortable: true,
     },
-    // {
-    //   name: 'Network',
-    //   selector: row => row.network,
-    //   sortable: true,
-    // },
+    {
+      name: 'Network',
+      selector: row => row.network,
+      sortable: true,
+    },
     {
       name: 'Category',
       selector: row => row.crops,
       sortable: true,
     },
-    // {
-    //   name: 'Contact',
-    //   selector: row => row.contact,
-    //   sortable: true,
-    // },
+    {
+      name: 'Contact',
+      selector: row => row.contact,
+      sortable: true,
+    },
   ];
 
   const closeFarmerFilterModal = () => {
@@ -101,13 +90,13 @@ const Farmers = () => {
 
   return (
     <div>
-      {/* <ReportsNavigationTab
+      <ReportsNavigationTab
         routes={[
           { route: '/farmers', title: 'Farmers' },
           { route: '/farmers/review', title: 'New Farmers' },
         ]}
-      /> */}
-      {/* <div className='flex flex-row items-center justify-between'>
+      />
+      <div className='flex flex-row items-center justify-between'>
         <div className='flex flex-row items-center mb-1 md:mb-2 '>
           <p className='text-lg font-medium 3xl:text-xl'>Select Country:</p>
           <select
@@ -124,31 +113,29 @@ const Farmers = () => {
             ))}
           </select>
         </div>
-      </div> */}
+      </div>
       <div className='hidden grid-cols-4 gap-4 font-sans 2xl:gap-8 lg:grid'>
         <FarmerOverviewStats
           title='All Countries'
           icon={<FaGlobeAfrica className='text-primary' />}
-          value={20}
-          percentage=''
+          value={tableData?.countriesCovered || 0}
         />
         <FarmerOverviewStats
           title='Female Farmers'
           icon={<BiFemale className='text-[#85B6FF]' />}
-          value={'687,484'}
-          percentage={'43%'}
+          value={tableData?.totalFemaleFarmers || 0}
         />
         <FarmerOverviewStats
           title='Male Farmers'
           icon={<BiMale className='text-[#FFD233]' />}
-          value={'911,317'}
-          percentage={'57%'}
+          value={tableData?.totalMaleFarmers || 0}
         />
         <FarmerOverviewStats
           title='Total Farmers'
           icon={<GiFarmTractor className='text-[#4ECB71]' />}
-          value='1,598,801'
-          percentage=''
+          value={
+            tableData?.totalFemaleFarmers + tableData?.totalMaleFarmers || 0
+          }
         />
       </div>
       <div className='grid grid-cols-4 gap-4 font-sans md:mt-5 2xl:gap-8 '>
@@ -158,7 +145,7 @@ const Farmers = () => {
             columns={farmerTableColumns}
             title='Farmer Profiles'
             loading={tableDataIsLoading}
-            totalRows={1598801}
+            totalRows={tableData?.totalRowCount}
             handlePerRowsChange={handlePageNumberChange}
             setFilterText={setFilterText}
             filterText={filterText}
@@ -169,11 +156,11 @@ const Farmers = () => {
           />
         </div>
         <div className='flex-col items-center hidden px-3 3xl:px-8 overflow-y-auto bg-white rounded-lg lg:flex shadow-3xl max-h-[46rem] '>
-          <p className='py-3 text-lg font-medium text-center bg-white 3xl:text-lg'>
+          <p className='sticky top-0 py-3 text-lg font-medium text-center bg-white 3xl:text-lg '>
             Regional Distribution
           </p>
           <div className='flex flex-col w-full gap-5 pt-5'>
-            {/* {regionalDistribution?.map((region, index) => (
+            {regionalDistribution?.map((region, index) => (
               <div className='grid w-full grid-cols-4 ' key={region.region}>
                 <p
                   className={` text-left col-span-3 ${
@@ -186,26 +173,12 @@ const Farmers = () => {
                   {region.value}
                 </p>
               </div>
-            ))} */}
-            {regionBarGraph?.map((region, index) => (
-              <div className='grid w-full grid-cols-4 ' key={region.name}>
-                <p
-                  className={` text-left col-span-3 ${
-                    index % 2 === 0 ? 'text-primary' : 'text-[#85B6FF]'
-                  }`}
-                >
-                  {region.name.toUpperCase()}
-                </p>
-                <p className='text-lg font-medium text-right '>
-                  {region.male + region.female}
-                </p>
-              </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg shadow-3xl'>
+      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg shadow-3xl'>
         <p className='py-2 mb-2 text-lg font-medium '>
           Regional Distribution of Farmers
         </p>
@@ -214,22 +187,6 @@ const Farmers = () => {
           markers={regionalStats?.data}
           isLoading={regionalStatsIsLoading}
         />
-      </div> */}
-      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg shadow-3xl'>
-        <p className='py-2 mb-2 text-lg font-medium '>
-          Regional Distribution of Farmers
-        </p>
-        <div className='h-[500px]'>
-          <BarGraph data={regionBarGraph} />
-        </div>
-      </div>
-      <div className='w-full px-5 py-2 mt-5 bg-white rounded-lg shadow-3xl'>
-        <p className='py-2 mb-2 text-lg font-medium '>
-          Age Distribution of Farmers
-        </p>
-        <div className='h-[500px]'>
-          <BarGraph data={ageGroupBarGraph} />
-        </div>
       </div>
 
       <UploadModal

@@ -3,6 +3,7 @@ import Select from 'react-select';
 import mtnApi from '@/utils/mtnInstance';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import { useSelectedFarmerData } from '@/hooks/fetchers';
 
 const defaultValues = {
   volume: 0,
@@ -27,6 +28,8 @@ const Harvest = ({ close }) => {
   const farmerId = router.query.id;
   const modalRef = useRef(null);
   const [cropOptions, setCropOptions] = useState([]);
+  const { farmer, farmerError, farmerIsLoading } =
+    useSelectedFarmerData(farmerId);
   const {
     register,
     handleSubmit,
@@ -44,11 +47,11 @@ const Harvest = ({ close }) => {
 
   useEffect(() => {
     const farmerData = JSON.parse(localStorage.getItem('viewData'));
-    const cropData = farmerData?.crops.map(crop => {
+    const cropData = farmer?.data?.crops.map(crop => {
       return { value: crop, label: crop };
     });
     setCropOptions(cropData);
-  }, []);
+  }, [farmer]);
 
   async function addHarvest(data) {
     try {

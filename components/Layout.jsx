@@ -57,9 +57,7 @@ const Layout = ({ children }) => {
           handleMenuToggle={setOpenMenu}
           menuRef={menuRef}
         />
-        <div className='py-2  max-w-[1600px] max-h-[1090px] flex-grow '>
-          {children}
-        </div>
+        <div className='pt-2 pb-10  max-w-[1600px]  flex-grow '>{children}</div>
       </div>
     </div>
   );
